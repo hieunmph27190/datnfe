@@ -1,0 +1,206 @@
+<meta charset="utf-8">
+
+<div id="homepage-1">
+    <div class="ps-home-banner ps-home-banner--1">
+        <div class="ps-container">
+            <div class="ps-section__left">
+                <a class="ps-collection" href="javascript:void(0);"><img src="img/slider/home-1/12.png" height="415px" alt=""></a>
+            </div>
+            <div class="ps-section__right">
+                <a class="ps-collection" href="javascript:void(0);"><img src="img/slider/home-1/promotion-7.png" height="193px" width="390" alt=""></a>
+                <a class="ps-collection" href="javascript:void(0);"><img src="img/slider/home-1/promotion-8.png" height="193px" width="390" alt=""></a>
+            </div>
+        </div>
+    </div>
+    <div class="ps-site-features">
+        <div class="ps-container">
+            <div class="ps-block--site-features">
+                <div class="ps-block__item">
+                    <div class="ps-block__left"><i class="icon-rocket"></i></div>
+                    <div class="ps-block__right">
+                        <h4>Giao hàng miễn phí</h4>
+                        <p>Dành cho tất cả đơn hàng trên 1 triệu</p>
+                    </div>
+                </div>
+                <div class="ps-block__item">
+                    <div class="ps-block__left"><i class="icon-sync"></i></div>
+                    <div class="ps-block__right">
+                        <h4>Đổi trả 90 ngày trở lại</h4>
+                        <p>Nếu hàng hóa có vấn đề</p>
+                    </div>
+                </div>
+                <div class="ps-block__item">
+                    <div class="ps-block__left"><i class="icon-credit-card"></i></div>
+                    <div class="ps-block__right">
+                        <h4>Thanh toán an toàn</h4>
+                        <p>100% thanh toán an toàn</p>
+                    </div>
+                </div>
+                <div class="ps-block__item">
+                    <div class="ps-block__left"><i class="icon-bubbles"></i></div>
+                    <div class="ps-block__right">
+                        <h4>Hỗ trợ 24/7</h4>
+                        <p>Hỗ trợ tận tâm</p>
+                    </div>
+                </div>
+                <div class="ps-block__item">
+                    <div class="ps-block__left"><i class="icon-gift"></i></div>
+                    <div class="ps-block__right">
+                        <h4>Dịch vụ quà tặng</h4>
+                        <p>Hỗ trợ dịch vụ quà tặng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ps-home-ads">
+        <div class="ps-container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 "><a class="ps-collection" href="javascript:void(0);"><img src="img/collection/home-1/8.png" alt=""></a>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 "><a class="ps-collection" href="javascript:void(0);"><img src="img/collection/home-1/11.png" alt=""></a>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 "><a class="ps-collection" href="javascript:void(0);"><img src="img/collection/home-1/14.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+
+    <div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
+        <div class="spinner-border text-warning" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+    </div>
+
+
+    <div class="row" *ngIf="!isLoading">
+        <div class="ps-container">
+            <div class="ps-section__header" style="background-color: #e3e3e3; padding-top: 8px;">
+                <h3 style="padding: 8px;">SẢN PHẨM THỊNH HÀNH</h3>
+            </div>
+            <br>
+            <div class="ps-section__content">
+                <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                    <div ngxSlickItem *ngFor="let item of products.data | paginate: { itemsPerPage: 8, currentPage: 0}" class="slide ">
+                        <div class="ps-product border border-1">
+                            <div class="ps-product__thumbnail">
+                                <a href="javascript:void(0);">
+
+                                    <img [src]="'http://localhost:8080/product/' + item.imageId + '/image'" [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
+
+                                    <img  [routerLink]="['/product-detail/'+item.id]" alt="" />
+                                </a>
+                    
+
+                                <div class="ps-product__badge">-{{item.code}}%</div>
+                                <ul class="ps-product__actions">
+
+                                    <li><a href="javascript:void(0);"  data-toggle="tooltip" data-placement="top" title="Thêm Giỏ Hàng"><i class="icon-bag2"></i></a></li>
+                                    
+                                    <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
+
+                                    <li>
+                                        <a href="javascript:void(0);" (click)="toggleLike(item.id)" data-toggle="tooltip" data-placement="top" title="Yêu Thích">
+                                          <i class="icon-heart" [ngClass]="{ 'liked': productLikes[item.id] }"></i>
+                                        </a>
+                                      </li>
+
+
+                                      <style>
+                                        
+                                        .icon-heart {
+                                            font-size: 25px; /* Kích thước của biểu tượng */
+                                  
+                                          }
+                                          
+                                          .icon-heart::before {
+                                            content: "\2665"; /* Ký tự trái tim */
+                                            color: black; /* Màu đen của biểu tượng trái tim khi sản phẩm được thích */
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                          }
+                                          
+                                          .icon-heart.liked::before {
+                                            color: red; /* Màu đỏ của biểu tượng trái tim */
+                                
+                                          }
+                                          
+                        
+                                      </style>
+                                  
+                           
+                                </ul>
+                            </div>
+
+                            <div class="ps-product__container">
+                                <a class="ps-product__vendor" href="javascript:void(0);">
+                                    <span> {{item.productName}}</span>
+                                </a>
+<!--                                 
+                                <div class="ps-product__content">
+                                    <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]">{{item.productName}}</a>
+                                   <div class="ps-product__prices">
+                                    <span>{{item.minPrice | currency:'VND'}}</span>
+                                    <span>{{item.maxPrice | currency:'VND'}}</span>
+                                   </div>
+                                </div> -->
+                                
+                        
+                                
+                            </div>
+                            <style>
+                               
+                                .thumbnail-image {
+                                    aspect-ratio: 3/4;
+                                    object-fit: cover; /* Maintain aspect ratio and cover the container */
+                                }
+                                .ps-product__title{
+                                    font-size: 18px;
+                                }
+                            
+                                .ps-product__prices{
+                                    display: flex;
+                                    justify-content: space-between;
+                                }
+                                .ps-product__content span {
+                                    font-size: 17px;
+                                    color: rgb(0, 98, 128);
+                                }
+                                
+
+                                
+                                
+                            </style>
+                        </div>
+                    </div>
+                </ngx-slick-carousel>
+            </div>
+        </div>
+    </div>
+    
+    <br><br><br>
+
+    <div class="ps-home-ads">
+        <div class="ps-container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 "><a class="ps-collection" href="javascript:void(0);"><img src="img/collection/home-1/7.jpg" height="435px" alt=""></a>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 "><a class="ps-collection" href="javascript:void(0);"><img src="img/collection/home-1/6.jpg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="ps-newsletter">
+</div>
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>
