@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Cart } from '../common/Cart';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { SellOnRequest } from '../dto/SellOnRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class OrderService {
   url = "http://localhost:8080/api/orders";
 
   urlOrderDetail = "http://localhost:8080/api/orderDetail";
+
 
 
   constructor(private httpClient:HttpClient){ }
@@ -32,11 +34,24 @@ export class OrderService {
   //     })
   //   );
   // }
-  post(email: string, cart: Cart) {
-    return this.httpClient.post(this.url+'/'+email, cart);
+
+
+  postBill(bill: SellOnRequest) {
+    return this.httpClient.post("http://localhost:8080/sellon",bill,{ withCredentials: true });
+  }
+  getTotalPriceByBillId(billID:string) {
+   return this.httpClient.get("http://localhost:8080/sellon/calculate-money/"+billID,{ withCredentials: true });
+  }
+  
+  getsellon() {
+   return this.httpClient.get("http://localhost:8080/bill/sellon",{ withCredentials: true });
   }
 
-  
+
+   getBilldetail(id:string) {
+   return this.httpClient.get("http://localhost:8080/bill-detail?billId="+id,{ withCredentials: true });
+  }
+
 
   get(email:string) {
    return this.httpClient.get(this.url+'/user/'+email);

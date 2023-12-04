@@ -10,6 +10,8 @@ import { FavoritesService } from 'src/app/services/favorites.service';
 import { SessionService } from 'src/app/services/session.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CartDetail } from 'src/app/common/CartDetail';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserLogin } from 'src/app/dto/UserLogin';
 
 
 @Component({
@@ -21,6 +23,7 @@ import { CartDetail } from 'src/app/common/CartDetail';
 export class HeaderComponent implements OnInit {
 
   isLogin: boolean = false;
+
   categories!: Category[];
   favorites!: Favorites[];
   cartDetails!: CartDetail[];
@@ -36,8 +39,9 @@ export class HeaderComponent implements OnInit {
     private sessionService: SessionService,
     private customerService: CustomerService,
     private favoriteService: FavoritesService,
+    private authService: AuthService,
     private router: Router) { }
-
+  
   ngOnInit(): void {
 
     this.favoriteService.$data.subscribe(data => {
@@ -74,43 +78,83 @@ export class HeaderComponent implements OnInit {
 
   
   getAllCartItem() {
-    let email = this.sessionService.getUser();
-    if (email == null) {
-      return;
-    }
-
-
-
-    this.cartService.getCart(email).subscribe(data => {
-      this.cart = data as Cart;
-      this.cartService.getAllDetail(this.cart.cart_id).subscribe(data => {
+      this.cartService.getAllDetail().subscribe(data => {
         this.cartDetails = data as CartDetail[];
         this.cartService.setLength(this.cartDetails.length);
-      }, error => {
-       this.toastr.error('Lỗi server', 'Hệ thống');
-     })
-  }, error => {
-    this.toastr.error('Lỗi server', 'Hệ thống');
-       })
-
-
+      },error => {
+        this.cartDetails = [];
+        this.cartService.setLength(0);
+      });
   }
 
 
+  
+
+
+  // checkLogin() {
+  //   let email = this.sessionService.getUser();
+  //   this.customerService.getByEmail(email).subscribe(data => {
+  //     this.isLogin = true;
+  //   }, error => {
+  //     this.sessionService.signOut();
+  //     this.router.navigate(['home']);
+  //   })
+  // }
+
+    // checkLogin() {
+    // this.login = this.loginForm.value;
+    //   this.isLogin = true;
+    // }
+    //    this.authService.login(this.login).subscribe(
+    //   data => {
+    //     let user = data as UserLogin;
+    //     if(user.roles.includes("ROLE_USER")){
+    //       this.router.navigate(['home']);
+    //        this.isLoginFailed = false;
+    //       this.isLoggedIn = false;
+
+    //     }, error => {
+    //   this.router.navigate(['home']);
+    // })
+    //     }
+
   checkLogin() {
-    let email = this.sessionService.getUser();
-    this.customerService.getByEmail(email).subscribe(data => {
-      this.isLogin = true;
-    }, error => {
-      this.sessionService.signOut();
-      this.router.navigate(['home']);
-    })
+
+  this.authService.profile().subscribe(
+      data => {
+       this.authService.setData(data as any);
+          if(this.authService.isLogin()){
+            this.isLogin = true;
+          }else{
+            this.isLogin = false;
+          }
+      },
+      error => {
+       
+      }
+    );
+
+
+    
   }
 
 
   logout() {
-    this.sessionService.signOut();
-    window.location.href = ('/');
+     this.authService.logout().subscribe(
+      data => {
+       this.authService.setData(null);
+          if(this.authService.isLogin()){
+            this.isLogin = true;
+          }else{
+            this.isLogin = false;
+          }
+          this.ngOnInit();
+          this.toastr.success('Đăng xuất thành công!', 'Hệ thống!');
+      },
+      error => {
+        this.toastr.error('Lỗi', 'Hệ thống');
+      }
+    );
   }
 
 

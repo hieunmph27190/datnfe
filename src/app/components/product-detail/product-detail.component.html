@@ -1,4 +1,5 @@
 
+
 <div class="ps-breadcrumb">
     <div class="ps-container">
         <ul class="breadcrumb">
@@ -27,47 +28,47 @@
                                                 <div class="product-display">
                                                     <div class="main-image">
 
-                                                        
+
                                                     <!-- Ảnh chính -->
-                                                
-                                                        <div style="display: flex; justify-content: center ;">  
-                                                       <img style="aspect-ratio: 3/4;object-fit: cover;" src="https://tse1.mm.bing.net/th?id=OIP.AFalb0hsrAecz-GJSaU04gEsEG&pid=Api&P=0&h=220">
+
+                                                    <div style="display: flex; justify-content: center ;">
+                                                       <img style="width: 50%; aspect-ratio: 3/4;object-fit: cover;" src="http://localhost:8080/product/{{product.id}}/image-main">
                                                     </div>
-                                             
-                                                
-    
+
+
+
                                                     <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" style="height: 150px;" >
                                                         <div ngxSlickItem *ngFor="let item of productImage | paginate: { itemsPerPage: 8, currentPage: 0}" class="slide ">
                                                             <div class=" border border-1">
                                                                 <div class="">
-                                                  
+
                                                                     <img [src]="'http://localhost:8080/product/' + item + '/image'" [ngClass]="{'thumbnail-image': true}">
-                                                          
-                                                        
-                                                                    
+
+
+
                                                                 </div>
-                                    
-                                                            
+
+
                                                                 <style>
-                                                                   
+
                                                                     .thumbnail-image {
                                                                         aspect-ratio: 3/4;
                                                                         object-fit: cover; /* Maintain aspect ratio and cover the container */
                                                                     }
-    
-                                                                    
+
+
                                                                 </style>
                                                             </div>
                                                         </div>
                                                     </ngx-slick-carousel>
-                                               
+
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
-                                
+
                             </figure>
                         </div>
 
@@ -79,11 +80,11 @@
                                 </ngb-rating>
                                 ({{countRate}} đánh giá)
                             </div> -->
-                            <!-- <p >Size:<a href="javascript:void(0);"><strong>{{productdetail.size.name}}</strong></a></p> 
+                            <!-- <p >Size:<a href="javascript:void(0);"><strong>{{productdetail.size.name}}</strong></a></p>
                             <p class="ps-product__price sale">
                                 <del *ngIf="productdetail.price != 0">{{productdetail.price|currency:'VND'}}</del>
                                 {{productdetail.price*(1 - productdetail.amount/100) | currency:'VND'}}
-                                  
+
                                 <del *ngIf="productdetail.amount != 0">{{productdetail.price}}</del>
                                 {{productdetail.price*(1 - productdetail.amount/100)}}
                             </p> -->
@@ -94,38 +95,38 @@
 
                             <p style="font-size: 18px;">
                                 Thể loại: <a href="javascript:void(0);"><strong>{{product.category.name}}</strong></a>
-                            </p> 
+                            </p>
 
                             <p style=" font-size: 18px;">
                                 Loại đế: <a href="javascript:void(0);"><strong>{{product.sole.name}}</strong></a>
                             </p>
 
-                               
-                               
-                         
+
+
+
 
 
                             <section class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Màu Sắc</h3>
-                                <div class="row items-center bR6mEk">                     
+                                <div class="row items-center bR6mEk">
                                     <label *ngFor="let item of colors" class="color-checkbox col-3">
                                         <input type="radio" (change)="selectedColor($event)" name="colorId" value="{{item.id}}" class="color-checkbox-input" #colorRadio > {{item.name}}
                                     </label>
                                 </div>
                             </section>
 
-            
+
 
                             <section *ngIf="showColorSection" class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Size</h3>
-                                <div class="row items-center bR6mEk">                     
+                                <div class="row items-center bR6mEk">
                                     <label *ngFor="let item of sizes" class="color-checkbox col-3">
                                         <input type="radio" name="sizeId" (change)="getProductDetail($event)" value="{{item.id}}" class="color-checkbox-input"> {{item.size}}
                                     </label>
                                 </div>
-                            </section>  
+                            </section>
 
-                            
+
                             <p *ngIf="showPrice" style="font-size: 24px;">
                                 Giá: <strong>{{productdetail?.price| currency:'VND' }}</strong>
                             </p>
@@ -133,22 +134,22 @@
 
                             <style>
                                 .color-checkbox {
-                                    padding: 5px; 
+                                    padding: 5px;
                                     font-size: 20px;
                                 }
-                            
+
                                 .color-checkbox-input {
                                     /* Bổ sung các quy tắc kiểu checkbox nếu cần thiết */
                                 }
-                            
+
                                 .hUWqqt {
                                     /* Bổ sung các quy tắc kiểu nút màu nếu cần thiết */
                                 }
                             </style>
-                            
 
-                            
-                            
+
+
+
                             <script>
                                 function handleCheckboxChange(checkboxId) {
                                     const checkboxes = document.querySelectorAll('.color-checkbox-input');
@@ -163,15 +164,15 @@
 
 
                             <div class="ps-product__shopping">
-                                <a class="ps-btn ps-btn--black" href="javascript:void(0);" >Thêm Giỏ Hàng</a>
-                                 
+                                <a class="ps-btn ps-btn--black" (click)="addCart()" href="javascript:void(0);" >Thêm Giỏ Hàng</a>
+
 
                                  <!-- <div class="cssyt" style="color: coral;">Yêu thích</div> -->
-                                
-                                    <a href="javascript:void(0);" (click)="toggleLike(product.id)" data-toggle="tooltip" data-placement="top" title="Yêu Thích"> 
+<!--
+                                    <a href="javascript:void(0);" (click)="toggleLike(product.id)" data-toggle="tooltip" data-placement="top" title="Yêu Thích">
                                       <i class="icon-heart1" [ngClass]="{ 'liked': productLikes[product.id] }"></i>
-                                    </a>
-                              
+                                    </a> -->
+
 
                             </div>
                             <div class="ps-product__sharing"><a class="facebook" href="#"><i class="fa fa-facebook"></i></a><a class="twitter" href="#"><i class="fa fa-twitter"></i></a><a class="google" href="#"><i class="fa fa-google-plus"></i></a><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></div>
@@ -245,7 +246,7 @@
                         </div>
                     </div>
                 </div> -->
-                
+
                 </div>
             </div>
 

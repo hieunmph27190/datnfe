@@ -45,10 +45,13 @@
                                     <i class="icon-user"></i>
                                 </a>
                             </div>
-                            <div class="menu__content">
+                            <div class="menu__content" style="left: -100%;">
                                 <ul class="menu--dropdown">
+                                  <li *ngIf="isLogin">
+                                    <a [routerLink]="['/profile']">Thông tin</a>
+                                  </li>
                                     <li *ngIf="isLogin">
-                                        <a [routerLink]="['/profile']">Thông tin người dùng</a>
+                                        <a [routerLink]="['/bill']">Đơn hàng</a>
                                     </li>
                                     <li *ngIf="!isLogin">
                                         <a [routerLink]="['/sign-form']">Đăng nhập &amp; Đăng ký</a>

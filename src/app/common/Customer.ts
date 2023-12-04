@@ -8,7 +8,7 @@ export class Customer {
     'image': string;       // Blob trong Java có thể được thay thế bằng một chuỗi mã hóa Base64 hoặc URL
     'name': string;
     'phoneNumber': string;
-    'county': string;
+    'ward': string;
     'city': string;
     'district': string;
     'address': string;
@@ -17,7 +17,7 @@ export class Customer {
 
     constructor(
         id: string, type: number, dateOfBirth: Date, email: string, gender: boolean,
-        image: string, name: string, phoneNumber: string, county: string,
+        image: string, name: string, phoneNumber: string, ward: string,
         city: string, district: string, address: string, createDate: Date, password: string
     ) {
         this['id'] = id;
@@ -28,7 +28,7 @@ export class Customer {
         this['image'] = image;
         this['name'] = name;
         this['phoneNumber'] = phoneNumber;
-        this['county'] = county;
+        this['ward'] = ward;
         this['city'] = city;
         this['district'] = district;
         this['address'] = address;

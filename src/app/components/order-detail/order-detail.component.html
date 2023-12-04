@@ -1,21 +1,22 @@
-<!-- <ng-template #content let-c="close" let-d="dismiss">
+<ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Chi tiết đơn hàng</h4>
-        <h4 class="float-right">Tổng tiền: {{order.amount|currency:'VND'}}</h4>
+        <!-- <h4 class="float-right">Tổng tiền: {{order.amount|currency:'VND'}}</h4> -->
+        <h4 class="float-right">Tổng tiền: {{totalPrice | number:'1.0-0' }} VND</h4>                                                 
     </div>
     <div class="modal-body">
         <table class="table">
             <thead>
                 <tr style="background-color: #fcb800; color: white;">
                     <th class="text-center">STT</th>
+                    <th>Ảnh</th>
                     <th>Sản phẩm</th>
                     <th>Giá</th>
                     <th class="text-center">Số lượng</th>
-                    <th class="text-center" *ngIf="order.type==2">Đánh giá</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of orderDetails, index as i">
+                <!-- <tr *ngFor="let item of orderDetails, index as i">
                     <td class="text-center">{{i+1}}</td>
                     <td><img [src]="" alt="Hình ảnh sản phẩm" width="60px" style="cursor: pointer;"
                             [routerLink]="['/product-detail/'+item.productdetail.product.id]"> {{item.productdetail.product.name}}</td>
@@ -28,7 +29,18 @@
                         </app-rate>
 
                     </td>
-                </tr>
+                </tr> -->
+            <tr *ngFor="let item of dataTableReponse?.data, index as i">
+              <td class="text-center">{{i+1}}</td>
+              <td><img src="http://localhost:8080/product/{{item.productDetail.product.id}}/image-main" alt="Hình ảnh sản phẩm" width="100px" style="cursor: pointer; aspect-ratio: 3/4;object-fit: cover;"></td>
+              <td>{{item.productDetail.product.name}}</td>
+              <td>{{item.productDetail.price | currency:'VND'}}</td>
+              <td class="text-center">{{item.quantity}}</td>
+            </tr>
+
+
+                
+
             </tbody>
         </table>
     </div>
@@ -44,4 +56,4 @@
                                                             background: var(--whitecolor);
                                                             text-shadow: var(--tshadow);"
     onMouseOver="this.style.color='white', this.style.backgroundColor='#fcb800'"
-    onMouseOut="this.style.color='#fcb800', this.style.backgroundColor='white'"><i class="icon-eye"></i></a> -->
+    onMouseOut="this.style.color='#fcb800', this.style.backgroundColor='white'"><i class="icon-eye"></i></a>

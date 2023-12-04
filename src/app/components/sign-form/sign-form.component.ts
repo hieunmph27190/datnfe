@@ -1,184 +1,202 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormControl, FormGroup, Validators } from '@angular/forms';
-// import { Router } from '@angular/router';
-// import { ToastrService } from 'ngx-toastr';
-// import Swal from 'sweetalert2';
-// import { Customer } from 'src/app/common/Customer';
-// import { Login } from 'src/app/common/Login';
-// import { Register } from 'src/app/common/Register';
-// import { AuthService } from 'src/app/services/auth.service';
-// import { CustomerService } from 'src/app/services/customer.service';
-// import { SendmailService } from 'src/app/services/sendmail.service';
-// import { SessionService } from 'src/app/services/session.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { Customer } from 'src/app/common/Customer';
+import { Login } from 'src/app/common/Login';
+import { Register } from 'src/app/common/Register';
+import { AuthService } from 'src/app/services/auth.service';
+import { CustomerService } from 'src/app/services/customer.service';
+import { SendmailService } from 'src/app/services/sendmail.service';
+import { SessionService } from 'src/app/services/session.service';
+import { UserLogin } from 'src/app/dto/UserLogin';
+import { ProvinceService } from 'src/app/services/province.service';
+import { Province } from 'src/app/common/Province';
+import { District } from 'src/app/common/District';
+import { Ward } from 'src/app/common/Ward';
+import { DataService } from 'src/app/services/data.service';
+import { SignupRequest } from 'src/app/dto/SignupRequest';
+@Component({
+  selector: 'app-sign-form',
+  templateUrl: './sign-form.component.html',
+  styleUrls: ['./sign-form.component.css']
+})
+export class SignFormComponent implements OnInit {
 
-// @Component({
-//   selector: 'app-sign-form',
-//   templateUrl: './sign-form.component.html',
-//   styleUrls: ['./sign-form.component.css']
-// })
-// export class SignFormComponent implements OnInit {
+  login!: Login;
+  register !: Register;
+  show: boolean = false;
+  loginForm: FormGroup;
 
-//   login!: Login;
-//   register !: Register;
-//   show: boolean = false;
-//   loginForm: FormGroup;
-//   registerForm!: FormGroup;
-//   isLoggedIn = false;
-//   isLoginFailed = false;
-//   roles: string = '';
-//   otpcode!: any;
+  registerForm!: FormGroup;
+  isLoggedIn = false;
+  isLoginFailed = false;
+  roles: string = '';
 
-//   constructor(
-//     private sendMailService: SendmailService,
-//     private sessionService: SessionService,
-//     private toastr: ToastrService,
-//     private router: Router,
-//     private authService: AuthService,
-//     private userService: CustomerService) {
-//     this.loginForm = new FormGroup({
-//       'email': new FormControl(null),
-//       'password': new FormControl(null)
-//     });
+  provinces!: Province[];
+  districts!: District[];
+
+  wards!: Ward[];
+
+  provinceCode!: number;
+  districtCode!: number;
+  wardCode!: number;
+
+  province!: Province;
+  district!: District;
+  ward!: Ward;
+
+  constructor(
+    private sendMailService: SendmailService,
+    private sessionService: SessionService,
+    private toastr: ToastrService,
+    private location: ProvinceService,
+    private dataService: DataService,
+    private router: Router,
+    private authService: AuthService,
+    private userService: CustomerService) {
+    this.loginForm = new FormGroup({
+      'email': new FormControl(null),
+      'password': new FormControl(null)
+    });
 
     
-//     this.registerForm = new FormGroup({
-//       'email': new FormControl(null, [Validators.required, Validators.email]),
-//       'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
-//       'name': new FormControl(null, [Validators.required, Validators.minLength(6)]),
-//       'status': new FormControl(true),
-//       'gender': new FormControl(true),
-//       'image': new FormControl('https://res.cloudinary.com/veggie-shop/image/upload/v1633795994/users/mnoryxp056ohm0b4gcrj.png'),
-//       'address': new FormControl(null, [Validators.required]),
-//       'phone': new FormControl(null, [Validators.required, Validators.minLength(10), Validators.pattern('(0)[0-9]{9}')]),
-//       'registerDate': new FormControl(new Date()),
-//       'role': new FormControl(["USER"]),
-//       'otp': new FormControl(null, [Validators.required, Validators.minLength(6)])
-//     });
-//   }
+    this.registerForm = new FormGroup({
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'name': new FormControl(null, [Validators.required, Validators.minLength(6)]),
+      'phoneNumber': new FormControl(null, [Validators.required, Validators.minLength(10), Validators.pattern('(0)[0-9]{9}')]),
+      'city': new FormControl(0, [Validators.required, Validators.min(1)]),
+      'district': new FormControl(0, [Validators.required, Validators.min(1)]),
+      'ward': new FormControl(0, [Validators.required, Validators.min(1)]),
+      'address': new FormControl('', Validators.required),
+      'gender': new FormControl(true, Validators.required)
+    });
+  }
 
-//   ngOnInit(): void {
-//     this.checkLogin();
-//   }
+  ngOnInit(): void {
+      this.getProvinces();
+  }
 
 
   
-//   sign_up() {
-//     if (this.registerForm.invalid) {
-//       this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
-//       return;
-//     }
-//     this.otpcode = localStorage.getItem("otp");
+  sign_up() {
+    if (this.registerForm.invalid) {
+      this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
+      return;
+    }
+    
+    if (true) {
+      let signupRequest = (this.registerForm.value as SignupRequest);
+      this.authService.register(signupRequest).subscribe(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Đăng kí thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(() => {
+          window.location.href = ('/');
+        },
+          1500);
+      }, error => {
+        console.log(error)
+        this.toastr.error(error.message, 'Hệ thống');
+      });
+    }
+    else {
 
-//     if (this.registerForm.value.otp == this.otpcode && this.registerForm.value.otp != null) {
-//       this.register = this.registerForm.value;
-//       window.localStorage.removeItem("otp");
+    }
+  }
 
-//       this.authService.register(this.register).subscribe(data => {
-//         Swal.fire({
-//           icon: 'success',
-//           title: 'Đăng kí thành công!',
-//           showConfirmButton: false,
-//           timer: 1500
-//         })
-//         setTimeout(() => {
-//           window.location.href = ('/');
-//         },
-//           500);
-//       }, error => {
-//         this.toastr.error(error.message, 'Hệ thống');
-//       });
-//     }
-//     else {
-//       this.toastr.error('Mã OTP không chính xác!', 'Hệ thống');
-//     }
 
-//   }
 
-//   sign_in() {
-//     this.login = this.loginForm.value;
+  
+  sign_in() {
+    this.login = this.loginForm.value;
 
-//     this.authService.login(this.login).subscribe(
-//       data => {
+    this.authService.login(this.login).subscribe(
+      data => {
+        let user = data as UserLogin;
+        if(user.roles.includes("ROLE_USER")){
+          this.authService.setData(user);
 
-//         this.sessionService.saveToken(data.token);
-//         this.isLoginFailed = false;
-//         this.isLoggedIn = true;
+          setTimeout(() => {
+            window.location.href= ('/home');
+          })
+        Swal.fire({
+          icon: 'success',
+          title: 'Đăng nhập thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        }else{
+             this.toastr.error('Sai Quyền Đăng Nhập', 'Hệ thống');
+        }
+      },
+      error => {
+        this.toastr.error('Sai Thông Tin Đăng Nhập', 'Hệ thống');
+        Swal.fire({
+          icon: 'error',
+          title: 'Đăng nhập thất bại!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.isLoginFailed = true;
+      }
+    );
+  }
 
-//         let userTemp: Customer;
-//         this.userService.getByEmail(String(this.sessionService.getUser())).subscribe(data => {
-//           userTemp = data as Customer;
-//           if (userTemp.roles[0].name == 'ROLE_ADMIN') {
 
-//             Swal.fire({
-//               icon: 'error',
-//               title: 'Đăng nhập thất bại!',
-//               showConfirmButton: false,
-//               timer: 1500
-//             })
-//             this.toastr.error('Sai Thông Tin Đăng Nhập', 'Hệ thống');
 
-//             this.isLoginFailed = true;
-//             this.sessionService.signOut();
-//             return;
-//           } else {
-//             Swal.fire({
-//               icon: 'success',
-//               title: 'Đăng nhập thành công!',
-//               showConfirmButton: false,
-//               timer: 1500
-//             })
 
-//             this.router.navigate(['/home']);
+   getProvinces() {
+    this.location.getAllProvinces().subscribe(data => {
+      this.provinces = data as Province[];
+    })
+  }
 
-//             setTimeout(() => {
-//               window.location.href = ('/home');
-//             },
-//               500);
-//           }
-//         })
-//       },
-//       error => {
-//         this.toastr.error('Sai Thông Tin Đăng Nhập', 'Hệ thống');
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Đăng nhập thất bại!',
-//           showConfirmButton: false,
-//           timer: 1500
-//         })
-//         this.isLoginFailed = true;
-//       }
-//     );
-//   }
+  getDistricts() {
+    this.location.getDistricts(this.provinceCode).subscribe(data => {
+      this.province = data as Province;
+      this.districts = this.province.districts;
+    })
+  }
 
-//   sendOtp() {
+  getWards() {
+    this.location.getWards(this.districtCode).subscribe(data => {
+      this.district = data as District;
+      this.wards = this.district.wards;
+    })
+  }
 
-//     this.sendMailService.sendMailOtp(this.registerForm.value.email).subscribe(data => {
-//       window.localStorage.removeItem("otp");
-//       window.localStorage.setItem("otp", JSON.stringify(data));
+  getWard() {
+    this.location.getWard(this.wardCode).subscribe(data => {
+      this.ward = data as Ward;
+    })
+  }
 
-//       this.toastr.success('Chúng tôi đã gửi mã OTP về email của bạn !', 'Hệ thống');
-//     }, error => {
-//       if (error.status == 404) {
-//         this.toastr.error('Email này đã tồn tại trên hệ thống !', 'Hệ thống');
-//       } else {
-//         this.toastr.warning('Hãy nhập đúng email !', 'Hệ thống');
-//       }
-//     });
+ setProvinceCode(event: Event) {
+  let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+  this.provinceCode = Number(selectedOptionData);
+  this.getDistricts();
+}
 
-//   }
+  setDistrictCode(event: Event) {
+    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+    this.districtCode = Number(selectedOptionData);
+    this.getWards();
+  }
 
-//   checkLogin() {
-//     if (this.sessionService.getUser() != null) {
-//       this.router.navigate(['/sign-form']);
-//       window.location.href = ('/checkLogin');
-//     }
-//   }
+  setWardCode(event: Event) {
+    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+    this.wardCode = Number(selectedOptionData);
+    this.getWard();
+  }
 
-//   toggle() {
-//     this.show = !this.show;
-//   }
-//   sendError() {
-//     this.toastr.warning('Hãy nhập đúng email !', 'Hệ thống');
-//   }
 
-// }
+  toggle() {
+    this.show = !this.show;
+  }
+
+}

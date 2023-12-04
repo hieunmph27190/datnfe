@@ -1,121 +1,92 @@
-<!-- <main class="ps-page--my-account">
+<main class="ps-page--my-account">
     <div class="ps-breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
                 <li><a [routerLink]="['/home']">Trang chủ</a></li>
-                <li><a [routerLink]="['/profile']">Tài khoản</a></li>
-                <li>Tài khoản cá nhân</li>
+                <li><a [routerLink]="['/profile']">Thông tin cá nhân</a></li>
             </ul>
         </div>
     </div>
-    <section class="ps-section--account">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="ps-section__left">
-                        <aside class="ps-widget--account-dashboard">
-                            <div class="ps-widget__header">
-                    >
-                                <figure>
-                                    <p>Tên: <span style="color: #09c;">{{customer?.name}}</span></p>
-                                    <p>Tham gia: <span>{{customer?.registerDate | date:'dd-MM-yyy'}}</span></p>
-                                </figure>
-                            </div>
-                            <div class="ps-widget__content">
-                                <ul>
-                                    <li>
-                                        <a href="javascript:void(0);"><i class="icon-user"></i> {{customer?.email}}</a>
-                                        <a href="javascript:void(0);"><i class="icon-papers"></i> {{customer?.phone}}</a>
-                                        <a href="javascript:void(0);"><i class="icon-user"></i> {{customer?.gender?'Nam':'Nữ'}}</a>
-                                        <a href="javascript:void(0);"><i class="icon-map-marker"></i> {{customer?.address}}</a>
-                                        <a href="javascript:void(0);"><i class="icon-store"></i>Đã giao dịch: {{done}} đơn</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </aside>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="ps-section__right">
-                        <div class="ps-section--account-setting">
-                            <div class="ps-section__header">
-                     
-                            </div>
-                            <div class="ps-section__content">
-                                <div class="table-responsive">
-                                    <table class="table ps-table ps-table--invoices">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Ngày đặt</th>
-                                                <th>Tổng tiền</th>
-                                                <th>Địa chỉ</th>
-                                                <th>Số điện thoại</th>
-                                                <th>Trạng thái</th>
-                                                <th>Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let item of orders | paginate: { itemsPerPage: 5, currentPage: page}, index as i">
-                                                <td>{{i+1}}</td>
-                                                <td style="width: 15%;">{{item.create_date|date:'dd-MM-yyyy'}}</td>
-                                                <td>{{item.amount|currency:'VND'}}</td>
-                                                <td>{{item.address}}</td>
-                                                <td>{{item.phone}}</td>
-                                                <td style="width: 17%;">{{item.type==0?'Chờ xác nhận':(item.type==1?'Đã xác nhận':(item.type==2)?'Đã thanh toán':'Đã huỷ')}}</td>
-                                                <td style="width: 5%;">
-                                                    <app-order-detail [id]="item.billid"></app-order-detail>
-                                                    <a [title]="item.type==0?'Huỷ đơn':'Không thể huỷ đơn này'"
-                                                        (click)="cancel(item.type==0?item.billid:-1)"
-                                                        [style]="item.type==0?'cursor: pointer':'cursor: not-allowed'"
-                                                        onMouseOver="this.style.color='white', this.style.backgroundColor='red'"
-                                                        onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
-                                                        <i class="icon-cross"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <ul>
-                                                <pagination-controls
-                                                    (pageChange)="page = $event"
-                                                    previousLabel=""
-                                                    nextLabel=""
-                                                    class="text-center my-page">
-                                                </pagination-controls>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <form style="" [formGroup]="profileForm" class="row p-5">
+        
+          <div class="form-group col-6">
+            <label for="name">Họ và Tên: 
+            </label>
+              <input class="form-control" type="text" id="name" formControlName="name"  name="name" >
+          </div>
+          <div class="form-group col-2">
+            <label for="gender">Gioi tinh:</label>
+            <select class="form-control" id="gender" formControlName="gender" name="gender">
+              <option value="true">Nam</option>
+              <option value="false">Nữ</option>
+            </select>
+          </div>
+          <div class="form-group col-4">
+            <label for="phoneNumber">Số điện thoại:</label>
+            <input class="form-control" type="tel" formControlName="phoneNumber" id="phoneNumber" name="phoneNumber" >
+          </div>
+          <div class="form-group col-4">
+            <label>Chọn tỉnh thành<sup>*</sup>
+            </label>
+            <div class="form-group__content">
+              <select style="font-size: 16px;" class="product-short-select custom-select" id="city" #citySelect
+                (change)="setProvinceCode($event)" formControlName="city"
+                [ngClass]="{'is-invalid':profileForm.get('city')?.touched && profileForm.get('city')?.invalid}">
+                <option value="0" selected disabled>Chọn tỉnh thành</option>
+                <option *ngFor="let item of provinces" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+              </select>
+              <small class="invalid-feedback">Hãy chọn tỉnh thành của bạn</small>
             </div>
-        </div>
-    </section>
-    <div class="ps-newsletter">
-        <div class="container">
-            <form class="ps-form--newsletter">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                        <div class="ps-form__left">
-                            <h3>Bản tin</h3>
-                            <p>Đăng ký để nhận thông tin về sản phẩm và phiếu giảm giá</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                        <div class="ps-form__right">
-                            <div class="form-group--nest">
-                                <input class="form-control" type="email" placeholder="Địa chỉ Email">
-                                <button class="ps-btn">Gửi</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</main> -->
+          </div>
+          
+          
+          <div class="form-group col-4">
+            <label>Chọn huyện/thành phố <sup>*</sup>
+            </label>
+            <div class="form-group__content">
+              <select style="font-size: 16px;" class="product-short-select custom-select" id="district" #districtSelect
+                (change)="setDistrictCode($event)" formControlName="district"
+                [ngClass]="{'is-invalid':profileForm.get('district')?.touched && profileForm.get('district')?.invalid}">
+                <option value="0" selected disabled>Chọn huyện/thành phố</option>
+                <option *ngFor="let item of districts" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+              </select>
+              <small class="invalid-feedback">Hãy chọn huyện/thành phố của bạn</small>
+            </div>
+          </div>
+          
+          <div class="form-group col-4">
+            <label>Chọn phường/xã<sup>*</sup>
+            </label>
+            <div class="form-group__content">
+              <select style="font-size: 16px;" class="product-short-select custom-select" id="ward" #wardSelect (change)="setWardCode($event)"
+                formControlName="ward"
+                [ngClass]="{'is-invalid':profileForm.get('ward')?.touched && profileForm.get('ward')?.invalid}">
+                <option value="0" selected disabled>Chọn phường/xã</option>
+                <option *ngFor="let item of wards" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+              </select>
+              <small class="invalid-feedback">Hãy chọn phường/xã của bạn</small>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <input [ngClass]="{'is-invalid':profileForm.get('address')?.touched && profileForm.get('address')?.invalid}"
+              formControlName="address"  class="form-control" type="text" placeholder="Địa chỉ">
+          </div>
+        
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input class="form-control" readonly type="email" id="email" name="email" formControlName="email" >
+          </div>
+          
+          
+          <div class="form-group d-flex justify-content-center">
+           <button class="btn btn-primary btn-lg" (click)="changeProfile()" type="button">Thay đổi thông tin</button>
+          </div>
+
+
+
+
+      </form>
+ 
+    
+</main>

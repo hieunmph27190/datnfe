@@ -11,41 +11,44 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { NgxPaginationModule } from 'ngx-pagination';
-// import { AuthGuard } from './guard/auth.guard';
+import { NgxPaginationModule } from 'ngx-pagination';;
 import { OrderModule } from 'ngx-order-pipe';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
-// import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-// import { ProfileComponent } from './components/profile/profile.component';
 // import { FavoriteComponent } from './components/favorite/favorite.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
-// import { CheckoutComponent } from './components/checkout/checkout.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 // import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { AllProductComponent } from './components/all-product/all-product.component';
 // import { ByCategoryComponent } from './components/by-category/by-category.component';
 // import { TestComponent } from './components/test/test.component';
+import { SignFormComponent } from './components/sign-form/sign-form.component';
+import { AuthGuard } from './guard/auth.guard';
+import { BillComponent } from './components/bills/bill.component';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 const routes: Routes = [
-  // {path: 'checkout', component: CheckoutComponent},
+  { path: 'checkout', component: CheckoutComponent },                             
   { path: 'all-product', component: AllProductComponent},
   { path: 'home', component: HomepageComponent },
   { path: 'product-detail', component: ProductDetailComponent },
   { path: 'product-detail/:id', component: ProductDetailComponent }, 
   { path: 'about',component: AboutComponent},
   { path: 'contact', component: ContactComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  // { path: 'sign-form', component: SignFormComponent },
+  { path: 'sign-form', component: SignFormComponent },
   // { path: 'payment', component: PaymentComponent},
   // { path: 'test', component: TestComponent},
   // { path: 'search/:keyword', component: SearchComponent },
-  // { path: 'profile', component: ProfileComponent },
+  { path:'bill', component: BillComponent },
   // { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
-  // { path: 'cart', component: CartComponent, canActivate: [AuthGuard] },
-  // { path: 'cart', component: CartComponent },
+  { path: 'cart', component: CartComponent},
   // { path: 'by-category/:id', component: ByCategoryComponent, canActivate: [AuthGuard] },
   
 ];
@@ -55,23 +58,24 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     CartComponent,
-    // CheckoutComponent,
+    CheckoutComponent,
     // PaymentComponent,
     // TestComponent,
     HeaderComponent,
     FooterComponent,
+    ProfileComponent,
     // SearchComponent,
     HomepageComponent,
-    // SignFormComponent,
+    SignFormComponent,
     AboutComponent,
     ContactComponent,
     // ByCategoryComponent,
     AllProductComponent,
-    // OrderDetailComponent,
-    // ProfileComponent,
+    OrderDetailComponent,
+    BillComponent,
     // FavoriteComponent,
     ProductDetailComponent,
-    // ForgotPasswordComponent,
+    ForgotPasswordComponent,
     ProductDetailComponent,
     // RateComponent,
   ],
@@ -98,7 +102,7 @@ const routes: Routes = [
       // newestOnTop: false,
     }),
   ],
-  // providers: [AuthGuard],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

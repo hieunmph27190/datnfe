@@ -1,0 +1,79 @@
+<main class="ps-page--my-account">
+    <div class="ps-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a [routerLink]="['/home']">Trang chủ</a></li>
+                <li><a [routerLink]="['/bill']">Đơn hàng</a></li>
+            </ul>
+        </div>
+    </div>
+    <section class="ps-section--account pt-5">
+        <div class="container-fluid pl-5 pr-5">
+          <h2 align="center">Đơn Hàng</h2>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ps-section__right">
+                        <div class="ps-section--account-setting">
+                            <div class="ps-section__header">
+                            </div>
+                            <div class="ps-section__content">
+                                <div class="table-responsive">
+                                    <table class="table ps-table ps-table--invoices">
+                                        <thead>
+                                            <tr style="text-align: center;">
+                                                <th>#</th>
+                                                <th>Thời gian</th>
+                                                <th>Tiền ship</th>
+                                                <th>Số DT</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Đã thanh toán</th>
+                                                <th>Trạng thái</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of dataTableReponse.data | paginate: { itemsPerPage: 15, currentPage: page}, index as i" style="text-align: center;">
+                                                <td>{{i+1}}</td>
+                                                <td style="width: 15%;">{{item.billCreateDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                                                <td>{{ item.shipeFee | number:'1.0-0' }} VND</td>
+                                                <td>{{item.phoneNumber}}</td> 
+                                                <td>{{item.address}}</td>
+                                                <td>{{ item.paymentAmount | number:'1.0-0' }} VND</td>
+                                                <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':"")}}</td>
+
+
+                                                <td style="width: 10%; text-align: center;">
+                                                  <app-order-detail [billId]="item.id" ></app-order-detail>
+                                                  <a [title]="item.type==0?'Huỷ đơn':'Không thể huỷ đơn này'" 
+                                                    [style]="item.type==0?'cursor: pointer':'cursor: not-allowed'"
+                                                    onMouseOver="this.style.color='white', this.style.backgroundColor='red'"
+                                                    onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
+                                                    <i class="icon-cross"></i>
+                                                  </a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <ul>
+                                                <!-- <pagination-controls
+                                                    (pageChange)="page = $event"
+                                                    previousLabel=""
+                                                    nextLabel=""
+                                                    class="text-center my-page">
+                                                </pagination-controls> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</main>

@@ -1,4 +1,4 @@
-<!-- <div class="ps-page--my-account">
+<div class="ps-page--my-account">
     <div class="ps-breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
@@ -39,7 +39,7 @@
                                         placeholder="Mật khẩu">
 
                                         <a><forgot-password></forgot-password></a>
-                                        <a><forgot-password></forgot-password></a>
+                                     
                                     
                                 </div>
                                 <div class="form-group">
@@ -77,21 +77,7 @@
                                     type="text"
                                     placeholder="Nhập địa chỉ email">
                                 </div>
-                                <div class="form-group">
-                                    <input
-                                    [ngClass]="{'is-invalid':registerForm.get('otp')?.touched && registerForm.get('otp')?.invalid}"
-                                    formControlName="otp"
-                                    maxlength="6"
-                                    name="otp" id="otp" 
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Mã xác thực OTP">
-                                    <a style="font-size: 14px;"
-                                        class="btn btn-warning"
-                                        (click)="registerForm.get('email')?.valid?sendOtp():sendError()">
-                                        <span>Lấy mã xác thực OTP</span>
-                                    </a>
-                                </div>
+                              
                                 <div class="form-group">
                                     <input
                                     [ngClass]="{'is-invalid':registerForm.get('name')?.touched && registerForm.get('name')?.invalid}"
@@ -100,24 +86,74 @@
                                     type="text"
                                     placeholder="Họ và tên">
                                 </div>
+                              
+                                
                                 <div class="form-group">
                                     <input
-                                    [ngClass]="{'is-invalid':registerForm.get('password')?.touched && registerForm.get('password')?.invalid}"
-                                    id="pass" [type]="show ? 'text' : 'password'"
-                                    formControlName="password"
-                                    class="form-control"
-                                    type="password"
-                                    placeholder="Mật khẩu">
-                                    <button class="btn btn-warning" style="font-size: 14px;" type="button" (click)="toggle()"><span>Hiển thị mật khẩu?</span></button>
-                                </div>
-                                <div class="form-group">
-                                    <input
-                                    [ngClass]="{'is-invalid':registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid}"
-                                    formControlName="phone"
+                                    [ngClass]="{'is-invalid':registerForm.get('phoneNumber')?.touched && registerForm.get('phoneNumber')?.invalid}"
+                                    formControlName="phoneNumber"
                                     class="form-control"
                                     type="text"
                                     placeholder="Số điện thoại">
                                 </div>
+
+                        <div class="form-group">
+                          <label for="gender">Giới tính:</label>
+                          <select formControlName="gender" class="form-control" id="gender"
+                            [ngClass]="{'is-invalid': registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid}">
+                            <option value="true">Nam</option>
+                            <option value="false">Nữ</option>
+                       
+                          </select>
+                          <div *ngIf="registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid" class="invalid-feedback">
+                            Vui lòng chọn giới tính.
+                          </div>
+                        </div>
+
+
+
+                                <div class="form-group">
+                                  <label>Chọn tỉnh thành<sup>*</sup>
+                                  </label>
+                                  <div class="form-group__content">
+                                    <select style="font-size: 16px;" class="product-short-select custom-select" id="city"
+                                      (change)="setProvinceCode($event)" formControlName="city"
+                                      [ngClass]="{'is-invalid':registerForm.get('city')?.touched && registerForm.get('city')?.invalid}">
+                                      <option value="0" selected disabled>Chọn tỉnh thành</option>
+                                      <option *ngFor="let item of provinces" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                                    </select>
+                                    <small class="invalid-feedback">Hãy chọn tỉnh thành của bạn</small>
+                                  </div>
+                                </div>
+                                
+
+                                <div class="form-group">
+                                  <label>Chọn huyện/thành phố <sup>*</sup>
+                                  </label>
+                                  <div class="form-group__content">
+                                    <select style="font-size: 16px;" class="product-short-select custom-select" id="district"
+                                      (change)="setDistrictCode($event)" formControlName="district"
+                                      [ngClass]="{'is-invalid':registerForm.get('district')?.touched && registerForm.get('district')?.invalid}">
+                                      <option value="0" selected disabled>Chọn huyện/thành phố</option>
+                                      <option *ngFor="let item of districts" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                                    </select>
+                                    <small class="invalid-feedback">Hãy chọn huyện/thành phố của bạn</small>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label>Chọn phường/xã<sup>*</sup>
+                                  </label>
+                                  <div class="form-group__content">
+                                    <select style="font-size: 16px;" class="product-short-select custom-select" id="ward" (change)="setWardCode($event)"
+                                      formControlName="ward" [ngClass]="{'is-invalid':registerForm.get('ward')?.touched && registerForm.get('ward')?.invalid}">
+                                      <option value="0" selected disabled>Chọn phường/xã</option>
+                                      <option *ngFor="let item of wards" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                                    </select>
+                                    <small class="invalid-feedback">Hãy chọn phường/xã của bạn</small>
+                                  </div>
+                                </div>
+
                                 <div class="form-group">
                                     <input
                                     [ngClass]="{'is-invalid':registerForm.get('address')?.touched && registerForm.get('address')?.invalid}"
@@ -126,6 +162,7 @@
                                     type="text"
                                     placeholder="Địa chỉ">
                                 </div>
+
                                 <div class="form-group submtit">
                                     <button type="submit" (click)="sign_up()" class="ps-btn ps-btn--fullwidth">Đăng ký miễn phí</button>
                                 </div>
@@ -146,25 +183,4 @@
         </div>
     </div>
 </div>
-<div class="ps-newsletter">
-    <div class="container">
-        <form class="ps-form--newsletter">
-            <div class="row">
-                <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                    <div class="ps-form__left">
-                        <h3>Bản tin</h3>
-                        <p>Đăng ký để nhận thông tin về sản phẩm và phiếu giảm giá</p>
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                    <div class="ps-form__right">
-                        <div class="form-group--nest">
-                            <input class="form-control" type="email" placeholder="Địa chỉ Email">
-                            <button class="ps-btn">Gửi</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div> -->
+

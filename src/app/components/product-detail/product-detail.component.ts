@@ -51,29 +51,19 @@ export class ProductDetailComponent implements OnInit {
   favorites!: Favorites[];
 
   cart!: Cart;
-
   cartDetail! : CartDetail;
   cartDetails!: CartDetail[];
-
-
   itemsComment:number = 3;
-
   selectedSize: any = null;
-
   countRate!:number;
-  
+
   selectedColors: { [key: string]: boolean } = {};
 
   showSelectedColors() {
     // Lọc những màu đã chọn
     const selectedColorList = Object.keys(this.selectedColors).filter(color => this.selectedColors[color]);
-
-    // Thực hiện các hành động với thông tin màu đã chọn, ví dụ: chuyển đến trang khác, gửi lên server, vv.
-    console.log('Màu đã chọn:', selectedColorList);
-
-    // Bạn có thể thêm các hành động khác ở đây tùy thuộc vào yêu cầu của bạn
   }
-  
+
   constructor(
     private modalService: NgbModal,
     private productService :ProductService,
@@ -81,8 +71,9 @@ export class ProductDetailComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private customerService: CustomerService, 
+    private customerService: CustomerService,
     private favoriteService: FavoritesService,
+    
     // private rateService: RateService,
     private sessionService: SessionService) {
     route.params.subscribe(val => {
@@ -127,7 +118,7 @@ export class ProductDetailComponent implements OnInit {
     // this.getAllRate();
     this.itemsComment = size;
     console.log(this.itemsComment);
-    
+
   }
 
 isLoggedOut = true; // Mặc định, người dùng chưa đăng nhập
@@ -146,16 +137,16 @@ selectedColor(event: Event) {
   })
   this.showColorSection = true;
   this.productdetail = {} as ProductDetail;
-  this.showPrice = false;  
+  this.showPrice = false;
 }
-getProductDetail(event: Event) { 
+getProductDetail(event: Event) {
   let checkedRadio = this.colorRadios.find(radio => radio.nativeElement.checked);
   this.productService.getByProductIdAndColorIdAndSizeIdAndType(this.product.id,checkedRadio.nativeElement.value,(event.target as HTMLInputElement).value).subscribe(data => {
     this.productdetail = data as ProductDetail;
-    this.showPrice = true;  
+    this.showPrice = true;
   })
 
-  
+
 }
 
 
@@ -235,7 +226,7 @@ toggleLike(id: string) {
     return;
   }
 
-  // this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {    
+  // this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {
   //   if (data == null) {
   //     this.customerService.getByEmail(email).subscribe(data => {
   //       this.customer = data as Customer;
@@ -271,32 +262,28 @@ toggleLike(id: string) {
 }
 
 
-  
-  // addCart(id: string, price: number) {
-  //   let email = this.sessionService.getUser();
-  //   if (email == null) {
-  //     this.router.navigate(['/sign-form']);
-  //     this.toastr.info('Hãy đăng nhập để sử dụng dịch vụ của chúng tôi', 'Hệ thống');
-  //     return;
-  //   }
-  //   this.cartService.getCart(email).subscribe(data => {
-  //     this.cart = data as Cart;
-  //     this.cartDetail = new CartDetail(0, 1, price, new productdetail(id), new Cart(this.cart.cart_id));
-  //     this.cartService.postDetail(this.cartDetail).subscribe(data => {
-  //       this.toastr.success('Thêm vào giỏ hàng thành công!', 'Hệ thống!');
-  //       this.cartService.getAllDetail(this.cart.cart_id).subscribe(data => {
-  //         this.cartDetails = data as CartDetail[];
-  //         this.cartService.setLength(this.cartDetails.length);
-  //       })
-  //     }, error => {
-  //       this.toastr.error('Sản phẩm này có thể đã hết hàng!', 'Hệ thống');
-  //       this.router.navigate(['/home']);
-  //       window.location.href = "/";
-  //     })
-  //   })
-  // }
 
-
+  addCart() {
+    if(this.productdetail?.id){
+      this.cartService.postDetail(this.productdetail?.id).subscribe(data => {
+        this.toastr.success('Thêm vào giỏ thành công!', 'Hệ thống!');
+        this.cartService.getAllDetail().subscribe(data => {
+          this.cartDetails = data as CartDetail[];
+          this.cartService.setLength(this.cartDetails.length);
+        })
+      }, error => { 
+        if(error.status==401){
+          this.toastr.error("Bạn cần đăng nhập", 'Hệ thống');
+        }else{
+          this.toastr.error(error.error, 'Hệ thống');
+        }
+        
+      })
+    }else{
+       this.toastr.error('Chọn màu và size', 'Hệ thống');
+    }
+    
+  }
 }
 
 

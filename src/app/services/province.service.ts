@@ -26,6 +26,9 @@ export class ProvinceService {
   getDistricts(code:number) {
     return this.http.get(this.districts+'/'+code+'?depth=2');
   }
+  getALLDistricts() {
+    return this.http.get(this.districts);
+  }
 
   getWards(code:number) {
     return this.http.get(this.wards+'/'+code+'?depth=2');
