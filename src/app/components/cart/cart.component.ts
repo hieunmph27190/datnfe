@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { Product } from 'src/app/common/Product';
 import { SellOnProductRequest } from 'src/app/dto/SellOnProductRequest';
 import { DataService } from 'src/app/services/data.service';
 import { ProductDetail } from 'src/app/common/ProductDetail';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -31,10 +31,13 @@ export class CartComponent implements OnInit {
   amount!:number;
   amountReal!:number;
 
+  page: number = 1;
+
   constructor(
     private cartService: CartService,
     private dataService: DataService,
     private toastr: ToastrService,
+    private fb: FormBuilder,
     private router: Router,
     private sessionService: SessionService) {
       this.cartDetails=[];
@@ -51,38 +54,30 @@ export class CartComponent implements OnInit {
     this.amount=0;
     this.amountReal=0;
     this.getAllItem();
-
   }
 
-  //   getAllItem() {
-  //     this.cartService.getAllDetail().subscribe(data => {
-  //       this.cartDetails = data as CartDetail[];
-  //       this.cartService.setLength(this.cartDetails.length);
-  //       this.cartDetails.forEach(item=>{
-  //         this.amountReal += item.productdetail.price * item.quantity;
-  //         this.amount += item.price;
-  //       })
-  //       this.discount = this.amount - this.amountReal;
-  //     })
-  
-  // } 
+
+
 
   getAllItem() {
       this.cartService.getAllDetail().subscribe(data => {
         this.cartDetails = data as CartDetail[];
+         this.cartDetails.forEach(item => item.productDetail.amount =1)
         this.cartService.setLength(this.cartDetails.length);
       });
   }
+
+
   getProductChecked(){
     this.productsChecked = []
     this.productDetailsChecked = []
-    this.selectProducts.forEach((checkbox: any) => { 
+    this.selectProducts.forEach((checkbox: any) => {
         if(checkbox.nativeElement.checked){
             let  sellOnProductRequest = new SellOnProductRequest(checkbox.nativeElement.value,checkbox.nativeElement.closest('tr').querySelector('input[name="quantity"]').value);
             let cartDetailFilter =  this.cartDetails.filter((item) => item.productDetail.id == checkbox.nativeElement.value)
             if(cartDetailFilter.length>0){
               sellOnProductRequest.setProductDetail(cartDetailFilter[0].productDetail);
-            } 
+            }
             this.productsChecked.push(sellOnProductRequest);
         }
     });
@@ -91,7 +86,20 @@ export class CartComponent implements OnInit {
       });
       this.dataService.setData(this.productsChecked);
   }
-  checkProduct(){
+  checkProduct(event?:Event){
+    let selectAllProductInput = document.querySelector('input#selectAllProduct');
+    if(this.isCheckAll()){
+       (selectAllProductInput as HTMLInputElement ).checked = true;
+    }else{
+      (selectAllProductInput as HTMLInputElement ).checked = false;
+    }
+    this.getProductChecked();
+  }
+  changeQuantity(event?:Event,item?:any){
+    if( Number((event?.target as HTMLInputElement).value)<=0){
+      (event?.target as HTMLInputElement).value = "1";
+      item.productDetail.amount=1;
+    }
     let selectAllProductInput = document.querySelector('input#selectAllProduct');
     if(this.isCheckAll()){
        (selectAllProductInput as HTMLInputElement ).checked = true;
@@ -129,35 +137,19 @@ export class CartComponent implements OnInit {
         this.toastr.error('Chưa chọn sản phẩm !', 'Hệ thống');
       }
   }
-  
-//   getAllItem() {
-//   this.cartService.getAllDetail().subscribe((data: CartDetail[]) => {
-//     this.cartDetails = data.map((item: CartDetail) => ({ ...item, amount: 1 }));
-//     this.cartService.setLength(this.cartDetails.length);
-//   });
-// }
 
+largeImageUrl: string | null = null;
 
-
-  // update(id: number, quantity: number) {
-  //   if (quantity < 1) {
-  //     this.delete(id);
-  //   } else {
-  //     this.cartService.getOneDetail(id).subscribe(data => {
-  //       this.cartDetail = data as CartDetail;
-  //       this.cartDetail.quantity = quantity;
-  //       this.cartDetail.price = (this.cartDetail.productdetail.price * (1 - this.cartDetail.productdetail.discount / 100)) * quantity;
-  //       this.cartService.updateDetail(this.cartDetail).subscribe(data => {
-  //         this.ngOnInit();
-  //       }, error => {
-  //         this.toastr.error('Lỗi!' + error.status, 'Hệ thống');
-  //       })
-  //     }, error => {
-  //       this.toastr.error('Lỗi! ' + error.status, 'Hệ thống');
-  //     })
-  //   }
-  // }
-
+  // Phương thức để hiển thị ảnh lớn
+  showLargeImage(event: Event) {
+    let divElement = event.target as HTMLElement;
+    let imgElement = divElement.querySelector('img');
+    console.log(divElement);
+    if (divElement) {
+      let src = divElement.getAttribute('src');
+      this.largeImageUrl = src;
+    }
+  }
 
   delete(id: number) {
     Swal.fire({

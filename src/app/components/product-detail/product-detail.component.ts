@@ -1,5 +1,5 @@
 import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -11,13 +11,15 @@ import { Favorites } from 'src/app/common/Favorites';
 import { Product } from 'src/app/common/Product';
 import { ProductDetail } from 'src/app/common/ProductDetail';
 import { Size } from 'src/app/common/Size';
-// import { Rate } from 'src/app/common/Rate';
+import { SellOnProductRequest } from 'src/app/dto/SellOnProductRequest';
+import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { DataService } from 'src/app/services/data.service';
 import { FavoritesService } from 'src/app/services/favorites.service';
 import { ProductService } from 'src/app/services/product.service';
-// import { RateService } from 'src/app/services/rate.service';
 import { SessionService } from 'src/app/services/session.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -28,10 +30,11 @@ import { SessionService } from 'src/app/services/session.service';
 export class ProductDetailComponent implements OnInit {
 
   @ViewChildren('colorRadio') colorRadios!: QueryList<any>;
-
+  @ViewChild('imageModal') imageModal: any;
   product!: Product;
   productdetail!: ProductDetail;
-
+ 
+  productsChecked: SellOnProductRequest[]=[];
   productdetails!: ProductDetail[];
 
   productImage!:string[];
@@ -57,6 +60,9 @@ export class ProductDetailComponent implements OnInit {
   selectedSize: any = null;
   countRate!:number;
 
+
+
+
   selectedColors: { [key: string]: boolean } = {};
 
   showSelectedColors() {
@@ -68,13 +74,13 @@ export class ProductDetailComponent implements OnInit {
     private modalService: NgbModal,
     private productService :ProductService,
     private cartService: CartService,
+    private dataService: DataService,
+    private authService:AuthService,
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
     private customerService: CustomerService,
     private favoriteService: FavoritesService,
-    
-    // private rateService: RateService,
     private sessionService: SessionService) {
     route.params.subscribe(val => {
       this.ngOnInit();
@@ -99,6 +105,53 @@ export class ProductDetailComponent implements OnInit {
 
 
 
+  largeImageUrl: string | null = null;
+
+  // Phương thức để hiển thị ảnh lớn
+  showLargeImage(event: Event) {
+    let divElement = event.target as HTMLElement;
+    let imgElement = divElement.querySelector('img');
+    if (divElement) {
+      let src = divElement.getAttribute('src');
+      this.largeImageUrl = src;
+    
+    }else{
+
+    }
+  }
+
+
+//  currentImageIndex!: number;
+//   imageUrls: string[] = []; // Mảng chứa tất cả URL của ảnh
+//   largeImageUrl: string | null = null; // Chỉnh sửa thành 'string | null'
+
+
+  // showLargeImage(event: Event, index: number) {
+  //   const imgElement = event.target as HTMLImageElement;
+  //   if (imgElement) {
+  //     this.currentImageIndex = index;
+  //     this.largeImageUrl = this.imageUrls[index];
+  //   }
+  // }
+
+  // showPreviousImage() {
+  //   if (this.currentImageIndex > 0) {
+  //     this.currentImageIndex--;
+  //     this.largeImageUrl = this.imageUrls[this.currentImageIndex];
+  //   }
+  // }
+
+  // showNextImage() {
+  //   if (this.currentImageIndex < this.imageUrls.length - 1) {
+  //     this.currentImageIndex++;
+  //     this.largeImageUrl = this.imageUrls[this.currentImageIndex];
+  //   }
+  // }
+
+
+
+
+
   reloadCurrentPage() {
     // Lấy URL hiện tại
     const currentUrl = this.router.url;
@@ -111,11 +164,10 @@ export class ProductDetailComponent implements OnInit {
     window.location.reload();
   }
 
+
   setItemsComment(size: number) {
     this.getProduct();
-    // this.getRates();
     this.getTotalLike();
-    // this.getAllRate();
     this.itemsComment = size;
     console.log(this.itemsComment);
 
@@ -145,39 +197,7 @@ getProductDetail(event: Event) {
     this.productdetail = data as ProductDetail;
     this.showPrice = true;
   })
-
-
 }
-
-
-// getAllRate() {
-//   this.rateService.getAll().subscribe(data => {
-//     this.rateAll = data as Rate[];
-//   })
-// }
-
-
-
-// getRates() {
-//   this.rateService.getByProductdetail(this.id).subscribe((data: any)=>{
-//     this.rates = data as Rate[];
-//   },
-//   (error: any)=>{
-//     this.toastr.error('Lỗi hệ thống!', 'Hệ thống');
-//   })
-// }
-
-// getAvgRate(id: string): number {
-//   let avgRating: number = 0;
-//   this.countRate = 0;
-//   for (const item of this.rates) {
-//     if (item.productdetail.id === id) {
-//       avgRating += item.rating;
-//       this.countRate++;
-//     }
-//   }
-//   return Math.round(avgRating/this.countRate * 10) / 10;
-// }
 
   getProduct() {
     this.productService.getOne(this.id).subscribe(data => {
@@ -273,7 +293,8 @@ toggleLike(id: string) {
         })
       }, error => { 
         if(error.status==401){
-          this.toastr.error("Bạn cần đăng nhập", 'Hệ thống');
+          // this.toastr.error("Bạn cần đăng nhập", 'Hệ thống');
+          this.checklogindk();
         }else{
           this.toastr.error(error.error, 'Hệ thống');
         }
@@ -282,6 +303,56 @@ toggleLike(id: string) {
     }else{
        this.toastr.error('Chọn màu và size', 'Hệ thống');
     }
+    
+  }
+  
+  muaNgay() {
+    this.authService.profile().subscribe(data => {
+    if(this.productdetail?.id){
+          
+          let quantityStr = prompt("Nhập số lượng :");
+          if(quantityStr){
+          }else{
+            return;
+          }
+          let quantity = parseInt(quantityStr as string);
+          if((!quantity)||(quantity<=0)){
+            alert("Số lượng bạn nhập không đúng");
+            return;
+          }
+
+        Swal.fire({
+          title: 'Số lượng bạn mua là : '+quantity+" ?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Không',
+          confirmButtonText: 'Đúng'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.productsChecked=[];
+            let  sellOnProductRequest = new SellOnProductRequest(this.productdetail.id,quantity);
+            sellOnProductRequest.setProductDetail(this.productdetail);
+            this.productsChecked.push(sellOnProductRequest);
+            this.dataService.setData(this.productsChecked);
+            if(this.productsChecked.length>0){
+            this.router.navigate(['/checkout']);
+            }else{
+              this.toastr.error('Chưa chọn sản phẩm !', 'Hệ thống');
+            }
+          }
+        })
+        }else{
+          this.toastr.error('Chọn màu và size', 'Hệ thống');
+        }
+    }, err => {
+      // this.toastr.error('Cần đăng nhập để mua hàng', 'Hệ thống');
+            this.checklogindk();
+    });
+  
+
+   
     
   }
 }

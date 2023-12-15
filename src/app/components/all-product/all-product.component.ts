@@ -24,18 +24,19 @@ import { SessionService } from 'src/app/services/session.service';
 export class AllProductComponent implements OnInit {
 
   products!: DataTableReponse<ProductBanHangResponse>;
-  
+  categorys!: DataTableReponse<Category>;
   isLoading = true;
   customer!: Customer;
   favorite!: Favorites;
   favorites!: Favorites[];
-  categories!: Category[];
 
+  activeItem: any = null;
   cart!: Cart;
   cartDetail!: CartDetail;
   cartDetails!: CartDetail[];
 
   page: number = 1;
+  size: number = 10;
 
   key: string = '';
   keyF: string = '';
@@ -44,13 +45,13 @@ export class AllProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private categoryService:CategoryService,
     private cartService: CartService,
     private customerService: CustomerService,
     private toastr: ToastrService,
     private favoriteService: FavoritesService,
     private sessionService: SessionService,
     // private location: Location,
-    private categoryService : CategoryService,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }
 
@@ -70,16 +71,29 @@ export class AllProductComponent implements OnInit {
     
 
 
-
-    this.getAllProductRated();
+    this.getCategorys();
+    this.getAllProduct('');
    
  
+  }
+   setActive(item: any) {
+    this.activeItem = item;
+    this.getAllProduct(this.activeItem as string);
+  }
+
+  getCategorys() {
+    this.categoryService.gets().subscribe(data=>{
+      this.categorys = data as DataTableReponse<Category>;
+    }, error=>{
+      this.toastr.error('Lỗi server!', 'Hệ thống')   
+      console.log(error);
+    })
   }
 
   
 
-  getAllProductRated() {
-    this.productService.getAll().subscribe(data=>{
+  getAllProduct(categoryId:string) {
+    this.productService.getAll({"categoryId":(categoryId==''?null:categoryId)}).subscribe(data=>{
       this.products = data as DataTableReponse<ProductBanHangResponse>;
       this.isLoading = false;
     }, error=>{
@@ -88,6 +102,7 @@ export class AllProductComponent implements OnInit {
          
     })
   }
+ 
 
     // yeu thich
 productLikes: { [id: string]: boolean } = {};

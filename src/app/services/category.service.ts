@@ -6,13 +6,13 @@ import { Injectable } from '@angular/core';
 })
 export class CategoryService {
 
-  url = "http://localhost:8080/api/categories";
+  url = "http://localhost:8080/category";
   
   constructor(private httpClient: HttpClient) { }
   
 
-  getAll() {
-    return this.httpClient.get(this.url);
+  gets() {
+    return this.httpClient.get(this.url+"?length=99999999");
   }
 
   getAllBestSeller() {

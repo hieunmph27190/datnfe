@@ -47,7 +47,7 @@
                                     <label>Chọn tỉnh thành<sup>*</sup>
                                     </label>
                                     <div class="form-group__content">
-                                        <select style="font-size: 16px;" class="product-short-select custom-select" id="city" (change)="setProvinceCode($event)" formControlName="city"
+                                        <select style="font-size: 16px;" #citySelect class="product-short-select custom-select" id="city" (change)="setProvinceCode($event)" formControlName="city"
                                         [ngClass]="{'is-invalid':postForm.get('city')?.touched && postForm.get('city')?.invalid}">
                                             <option value="0" selected disabled>Chọn tỉnh thành</option>
                                             <option *ngFor="let item of provinces" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
@@ -60,7 +60,7 @@
                                     <label>Chọn huyện/thành phố <sup>*</sup>
                                     </label>
                                     <div class="form-group__content">
-                                        <select style="font-size: 16px;" class="product-short-select custom-select" id="district" (change)="setDistrictCode($event)" formControlName="district"
+                                        <select style="font-size: 16px;" #districtSelect class="product-short-select custom-select" id="district" (change)="setDistrictCode($event)" formControlName="district"
                                         [ngClass]="{'is-invalid':postForm.get('district')?.touched && postForm.get('district')?.invalid}">
                                         <option value="0" selected disabled>Chọn huyện/thành phố</option>
                                         <option *ngFor="let item of districts" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>

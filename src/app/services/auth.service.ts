@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Login } from '../common/Login';
@@ -48,6 +48,19 @@ export class AuthService {
 
   changeProfile(signupRequest :SignupRequest) {
     return this.http.put('http://localhost:8080/profile/change-profile-user',signupRequest,{ withCredentials: true });
+  }
+
+  
+  changePass(object : any) {
+      let params = new HttpParams(); 
+
+      for (const key in object) {
+        if (object.hasOwnProperty(key)) {
+          params = params.set(key, object[key]);
+        }
+      }
+
+    return this.http.put('http://localhost:8080/profile/change-password',{},{ withCredentials: true, params: params });
   }
 
 

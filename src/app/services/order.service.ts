@@ -39,14 +39,22 @@ export class OrderService {
   postBill(bill: SellOnRequest) {
     return this.httpClient.post("http://localhost:8080/sellon",bill,{ withCredentials: true });
   }
+  cancelBill(billId: string) {
+    return this.httpClient.put("http://localhost:8080/bill/cancel-bill/"+billId,{},{ withCredentials: true });
+  }
+
+
   getTotalPriceByBillId(billID:string) {
    return this.httpClient.get("http://localhost:8080/sellon/calculate-money/"+billID,{ withCredentials: true });
   }
-  
+
   getsellon() {
-   return this.httpClient.get("http://localhost:8080/bill/sellon",{ withCredentials: true });
+   return this.httpClient.get("http://localhost:8080/bill/sellon?length=999999",{ withCredentials: true });
   }
 
+  vnpay(billID:string) {
+   return this.httpClient.get("http://localhost:8080/api/vnpay/"+billID,{ withCredentials: true });
+  }
 
    getBilldetail(id:string) {
    return this.httpClient.get("http://localhost:8080/bill-detail?billId="+id,{ withCredentials: true });
@@ -57,16 +65,16 @@ export class OrderService {
    return this.httpClient.get(this.url+'/user/'+email);
   }
 
-  getById(id:number) {
-    return this.httpClient.get(this.url+'/'+id);
+  getById(billId:string) {
+    return this.httpClient.get("http://localhost:8080/bill"+'/'+billId,{ withCredentials: true });
   }
 
   getByOrder(id:number) {
     return this.httpClient.get(this.urlOrderDetail+'/order/'+id);
   }
-  
+
   cancel(id: number) {
     return this.httpClient.get(this.url+'/cancel/'+id);
   }
-  
+
 }

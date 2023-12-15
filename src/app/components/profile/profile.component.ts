@@ -47,6 +47,14 @@ export class ProfileComponent implements OnInit {
   province!: Province;
   district!: District;
   ward!: Ward;
+  
+
+  oldPassword!: string;
+  newPassword!: string;
+  confirmNewPassword!: string;
+
+   @ViewChild('changePasswordModal') changePasswordModal!: ElementRef;
+
 
   constructor(
     private customerService: CustomerService,
@@ -203,9 +211,17 @@ export class ProfileComponent implements OnInit {
       this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
       return;
     }
-    
-    if (true) {
-      let signupRequest = (this.profileForm.value as SignupRequest);
+     Swal.fire({
+      title: 'Bạn muốn thay đổi thông tin ??',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Không',
+      confirmButtonText: 'Có'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let signupRequest = (this.profileForm.value as SignupRequest);
       this.authService.changeProfile(signupRequest).subscribe(data => {
         Swal.fire({
           icon: 'success',
@@ -218,10 +234,63 @@ export class ProfileComponent implements OnInit {
         console.log(error)
         this.toastr.error(error.message, 'Hệ thống');
       });
-    }
-    else {
+      }
+    })
+    
+     
+  
 
+  }
+
+   openChangePasswordDialog() {
+    if (this.changePasswordModal) {
+      this.changePasswordModal.nativeElement.style.display = 'block';
     }
   }
 
+
+  closeChangePasswordDialog() {
+    if (this.changePasswordModal) {
+      this.changePasswordModal.nativeElement.style.display = 'none';
+    }
+  }
+
+
+  changePassword() {
+    // Kiểm tra xác nhận mật khẩu
+    if (this.newPassword !== this.confirmNewPassword) {
+       this.toastr.error("Mật khẩu mới và xác nhận mật khẩu mới không khớp.", 'Hệ thống');
+      return;
+    }
+    Swal.fire({
+          title: 'Bạn muốn thay đổi mật khẩu ?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Không',
+          confirmButtonText: 'Có'
+        }).then((result) => {
+          if (result.isConfirmed) {
+         
+    this.authService.changePass({"password":this.oldPassword,"newPassword":this.newPassword}).subscribe(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Thay đổi thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.oldPassword="";
+        this.newPassword="";
+        this.confirmNewPassword="";
+        this.closeChangePasswordDialog();
+      }, error => {
+
+        this.toastr.error(error.error, 'Hệ thống');
+      });
+          }
+      })
+
+
+}
 }
