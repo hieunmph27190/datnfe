@@ -1,9 +1,62 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title">Chi tiết đơn hàng</h4>
-        <!-- <h4 class="float-right">Tổng tiền: {{order.amount|currency:'VND'}}</h4> -->
-        <h4 class="float-right">Tổng tiền: {{totalPrice | number:'1.0-0' }} VND</h4>                                                 
+        <h4 class="float-right">Tổng tiền: {{totalPrice+(bill.shipeFee?bill.shipeFee:0)| number:'1.0-0' }} VND</h4>
     </div>
+
+
+  <div id="form-bill-update" class="row p-5" enctype="multipart/form-data">
+      <div class="form-group col-4">
+        <label>Thời gian tạo:</label>
+        <input type="text" readonly class="form-control" name="billCreateDate"
+          [value]="bill.billCreateDate | date:'dd-MM-yyyy HH:mm:ss'">
+      </div>
+      <div class="form-group col-4">
+        <label>Số tiền của đơn:</label>
+        <input type="text" readonly class="form-control" name="soTienCuaDon" [value]="totalPrice | number:'1.0-0'">
+      </div>
+      <div class="form-group col-4">
+            <label>Trạng thái :</label>
+            <input type="text" readonly class="form-control" name="" id=""
+              value="{{bill.type==1?'Chờ xử lí':(bill.type==2?'Chờ xác thực':(bill.type==3)?'Đã xác thực':(bill.type==4)?'Chờ giao hàng':(bill.type==5)?'Đang giao hàng':(bill.type==6)?'Đã nhận hàng':(bill.type==7)?'Đã hoàn thành':(bill.type==0)?'Đã hủy':'')}}">
+      </div>
+        <div class="form-group col-4">
+          <label>Thời gian thanh toán:</label>
+          <input type="text" readonly class="form-control" name="paymentTime"
+            [value]="bill.paymentTime | date:'dd-MM-yyyy HH:mm:ss'">
+        </div>
+    
+    <div class="form-group col-4">
+      <label>Tiền ship :</label>
+      <input type="text" readonly  class="form-control" name="shipeFee" [value]="bill.shipeFee | number:'1.0-0'" >
+    </div>
+    
+    <div class="form-group col-4">
+      <label>Đã thanh toán :</label>
+      <input type="text" readonly class="form-control" name="paymentAmount" [value]="bill.paymentAmount | number:'1.0-0'">
+    </div>
+   
+    <div class="form-group col-4">
+      <label>Số điện thoại:</label>
+      <input type="text" readonly class="form-control" name="phoneNumber" [value]="bill.phoneNumber">
+    </div>
+ 
+
+  
+    <div class="form-group col-12">
+      <label>Địa chỉ:</label>
+      <input type="text" readonly class="form-control" name="address" [value]="bill.address">
+    </div>
+    <div class="form-group col-12 mb-3">
+      <label>Note :</label>
+      <textarea class="form-control" readonly placeholder="note" name="note" style="height: 100px" rows="5" [value]="bill.note" ></textarea>
+    </div>
+  
+  </div>
+
+
+
+    
     <div class="modal-body">
         <table class="table">
             <thead>
@@ -11,6 +64,8 @@
                     <th class="text-center">STT</th>
                     <th>Ảnh</th>
                     <th>Sản phẩm</th>
+                    <th>Màu sắc</th>
+                    <th>Size</th>
                     <th>Giá</th>
                     <th class="text-center">Số lượng</th>
                 </tr>
@@ -33,21 +88,20 @@
             <tr *ngFor="let item of dataTableReponse?.data, index as i">
               <td class="text-center">{{i+1}}</td>
               <td><img src="http://localhost:8080/product/{{item.productDetail.product.id}}/image-main" alt="Hình ảnh sản phẩm" width="100px" style="cursor: pointer; aspect-ratio: 3/4;object-fit: cover;"></td>
-              <td>{{item.productDetail.product.name}}</td>
+              <a style="padding: 0px;" [routerLink]="['/product-detail/'+item.productDetail.product.id]">{{item.productDetail.product.name}}</a>
+              <td>{{item.productDetail.color.name}}</td>
+              <td>{{item.productDetail.size.size}}</td>
               <td>{{item.productDetail.price | currency:'VND'}}</td>
               <td class="text-center">{{item.quantity}}</td>
             </tr>
-
-
-                
 
             </tbody>
         </table>
     </div>
 </ng-template>
-<a (click)="open(content)" title="Chi tiết đơn hàng" style="cursor: pointer;width: 35px;
-                                                            height: 35px;
-                                                            font-size: 14px;
+<a (click)="open(content)" title="Chi tiết đơn hàng" style="cursor: pointer;width: 40px;
+                                                            height: 40px;
+                                                            font-size: 25px;
                                                             line-height: 35px;
                                                             text-align: center;
                                                             border-radius: 5px;
@@ -55,5 +109,5 @@
                                                             color: var(--brandcolor);
                                                             background: var(--whitecolor);
                                                             text-shadow: var(--tshadow);"
-    onMouseOver="this.style.color='white', this.style.backgroundColor='#fcb800'"
+    onMouseOver="this.style.color='white',  this.style.backgroundColor='#fcb800'"
     onMouseOut="this.style.color='#fcb800', this.style.backgroundColor='white'"><i class="icon-eye"></i></a>

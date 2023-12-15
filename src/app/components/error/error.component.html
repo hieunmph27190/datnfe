@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh Toán Lỗi Error</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .ps-page--simple {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .ps-breadcrumb {
+      background-color: #f5f5f5;
+      padding: 10px 0;
+    }
+
+    .breadcrumb {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .breadcrumb li {
+      display: inline;
+      margin-right: 5px;
+    }
+
+    .breadcrumb li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .ps-section__cart-actions {
+      margin-top: 20px;
+    }
+
+    .ps-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .ps-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 40px;
+margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+      <div class="ps-breadcrumb">
+        <div class="container">
+          <ul class="breadcrumb">
+            <li><a [routerLink]="['/home']">Trang chủ</a></li>
+            <li><a [routerLink]="['/payment-failed']">Đơn hàng</a></li>
+          </ul>
+        </div>
+      </div>
+
+  <div class="ps-page--simple">
+    <div class="error-message">Thanh Toán Lỗi Error</div>
+    <div class="ps-section__cart-actions mt-2">
+      <a class="ps-btn" href="/bill" style="margin-top: 100px;">
+        <i class="icon-arrow-left"></i> Quay lại Đơn Hàng
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>

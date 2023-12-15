@@ -7,6 +7,8 @@
             </ul>
         </div>
     </div>
+
+    
     <section class="ps-section--account pt-5">
         <div class="container-fluid pl-5 pr-5">
           <h2 align="center">Đơn Hàng</h2>
@@ -25,48 +27,38 @@
                                                 <th>Thời gian</th>
                                                 <th>Tiền ship</th>
                                                 <th>Số DT</th>
-                                                <th>Địa chỉ</th>
                                                 <th>Đã thanh toán</th>
                                                 <th>Trạng thái</th>
                                                 <th>Hành động</th>
+                                                <th>Thanh Toan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let item of dataTableReponse.data | paginate: { itemsPerPage: 15, currentPage: page}, index as i" style="text-align: center;">
+                                            <tr *ngFor="let item of dataTableReponse.data | paginate: { itemsPerPage: size, currentPage: page}, index as i" style="text-align: center;">
                                                 <td>{{i+1}}</td>
                                                 <td style="width: 15%;">{{item.billCreateDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
                                                 <td>{{ item.shipeFee | number:'1.0-0' }} VND</td>
-                                                <td>{{item.phoneNumber}}</td> 
-                                                <td>{{item.address}}</td>
+                                                <td>{{item.phoneNumber}}</td>
                                                 <td>{{ item.paymentAmount | number:'1.0-0' }} VND</td>
                                                 <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':"")}}</td>
 
 
                                                 <td style="width: 10%; text-align: center;">
                                                   <app-order-detail [billId]="item.id" ></app-order-detail>
-                                                  <a [title]="item.type==0?'Huỷ đơn':'Không thể huỷ đơn này'" 
-                                                    [style]="item.type==0?'cursor: pointer':'cursor: not-allowed'"
+                                                  <a [title]="item.type==1?'Huỷ đơn':'Không thể huỷ đơn này'"
+                                                    [style]="item.type==1?'cursor: pointer':'cursor: not-allowed'"
                                                     onMouseOver="this.style.color='white', this.style.backgroundColor='red'"
                                                     onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
-                                                    <i class="icon-cross"></i>
+                                                    <i class="icon-cross" (click)="huyBill(item.id,item.type)"  style="font-size: 25px;"></i>
                                                   </a>
+                                                </td>
+                                                <td>
+                                                      <button (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
                                                 </td>
 
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <ul>
-                                                <!-- <pagination-controls
-                                                    (pageChange)="page = $event"
-                                                    previousLabel=""
-                                                    nextLabel=""
-                                                    class="text-center my-page">
-                                                </pagination-controls> -->
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -74,6 +66,15 @@
                 </div>
             </div>
         </div>
+        
+        <div class="row" style="padding-top: 15px">
+          <div class="col-lg-12">
+            <ul>
+              <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel="" class="text-center my-page">
+              </pagination-controls>
+            </ul>
+          </div>
+        </div>
     </section>
-    
+
 </main>

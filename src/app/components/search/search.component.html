@@ -1,189 +1,169 @@
-<!-- <div class="ps-breadcrumb">
-    <div class="ps-container">
-        <ul class="breadcrumb">
-            <li><a [routerLink]="['/home']">Trang chủ</a></li>
-            <li>Cửa hàng</li>
-            <li>Sản phẩm có từ khóa <b>"{{keyword}}"</b></li>
-        </ul>
-    </div>
+<div class="ps-breadcrumb">
+  <div class="ps-container">
+    <ul class="breadcrumb">
+      <li><a [routerLink]="['/home']">Trang chủ</a></li>
+      <li>Cửa hàng</li>
+      <li>Sản phẩm có từ khóa <b>"{{keyword}}"</b></li>
+    </ul>
+  </div>
 </div>
 <div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
-    <div class="spinner-border text-warning" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+  <div class="spinner-border text-warning" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
 </div>
 
 
-<div class="row mt-5 mb-5" style="min-height: 700px !important;" *ngIf="productdetails.length == 0">
-    <div class="col-8 offset-2 text-center">
-        <h1 style="margin: auto; color: #fcb800;">Không tìm thấy sản phẩm có từ khoá "<b>{{keyword}}</b>"</h1>
-    </div>
+<div class="row mt-5 mb-5" style="min-height: 700px !important;" *ngIf="products.data?.length == 0">
+  <div class="col-8 offset-2 text-center">
+    <h1 style="margin: auto; color: #fc5c00;">Không tìm thấy sản phẩm có từ khóa</h1> <br>
+    <strong style="font-size: 40px;">"<b>{{keyword}}</b>"</strong>
+  </div>
 </div>
-<div class="ps-page--shop" id="shop-sidebar" *ngIf="!isLoading && productdetails.length > 0">
-    <div class="container">
-        <div class="ps-layout--shop">
-            <div class="ps-layout__left">
-                <aside class="widget widget_shop">
-                    <h4 class="widget-title">Thể loại</h4>
-                    <ul class="ps-list--categories">
-                        <li *ngFor="let item of categories">
-                            <a [routerLink]="['/by-category/'+item.id]">{{item.name}}</a>
-                        </li>
+<!-- <div class="ps-page--shop" id="shop-sidebar"> -->
+<div class="ps-page--shop" id="shop-sidebar" *ngIf="!isLoading && products.data.length > 0">
+  <div class="container-fluid pl-5 pr-5">
+    <div class="ps-layout--shop">
+      <div class="">
+        <div class="ps-shopping ps-tab-root">
+          <div>
+            <img src="" alt="" />
+          </div>
+          <div class="ps-shopping__header">
+            <div class="product-page-number" style="margin: auto;">
+              <p style="font-size: 30px; padding-bottom: 20px;"> Tìm được <strong>{{products.data.length}}</strong> sản
+                phẩm</p>
+            </div>
+            <div class="ps-shopping">
+              <select class="product-short-select custom-select ml-auto" style="font-size: 15px;" [(ngModel)]="keyF">
+                <option value="">Sản phẩm mới</option>
+              </select>
+            </div>
+          </div>
+          <div class="ps-tabs">
+            <div class="ps-tab active" id="tab-1">
+              <div class="ps-shopping-product">
+                <div class="row">
+
+                  <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 border border-1 ps-product"
+                    *ngFor="let item of products.data | orderBy : key : reverse | paginate: { itemsPerPage: size, currentPage: page}">
+                    <div class="p-1">
+
+                      <div class="ps-product__thumbnail">
+                        <a [routerLink]="['/product-detail/'+item.id]">
+                          <img [src]="'http://localhost:8080/product/' + item.imageId + '/image'"
+                            [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
+
+                        </a>
+                        <!-- <div class="ps-product__badge">-{{item.discount}}%</div> -->
+                        <ul class="ps-product__actions">
+                    
+                          <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top"
+                              title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
+                          <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top"
+                              title="Yêu Thích"><i class="icon-heart"
+                                [ngClass]="{ 'liked': productLikes[item.id] }"></i></a></li>
+
+                          <style>
+                            .icon-heart {
+                              font-size: 25px;
+                            }
+
+                            .icon-heart::before {
+                              content: "\2665";
+                              color: black;
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                            }
+
+                            .icon-heart.liked::before {
+                              color: red;
+                            }
+                          </style>
+
+                        </ul>
+                      </div>
+
+                      <div class="ps-product__container">
+                        <a class="ps-product__vendor" href="javascript:void(0);">
+                          <span> {{item.productName}}</span>
+                        </a>
+
+                        <div class="ps-product__content">
+                          <a class="ps-product__title"
+                            [routerLink]="['/product-detail/'+item.id]">{{item.productName}}</a>
+                          <div class="ps-product__prices">
+                            <span>{{item.minPrice | currency:'VND'}}</span>
+                            <span>{{item.maxPrice | currency:'VND'}}</span>
+                          </div>
+                        </div>
+
+
+
+                      </div>
+                      <style>
+                        .thumbnail-image {
+                          aspect-ratio: 3/4;
+                          object-fit: cover;
+                          /* Maintain aspect ratio and cover the container */
+                        }
+
+                        .ps-product__title {
+                          font-size: 18px;
+                        }
+
+                        .ps-product__prices {
+                          display: flex;
+                          justify-content: space-between;
+                        }
+
+                        .ps-product__content span {
+                          font-size: 17px;
+                          color: rgb(0, 98, 128);
+                        }
+                      </style>
+
+
+
+                      <!-- </div> -->
+
+
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Phân trang -->
+                <div class="row" style="padding-top: 50px">
+                  <div class="col-lg-12">
+                    <ul>
+                      <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel=""
+                        class="text-center my-page">
+                      </pagination-controls>
                     </ul>
-                </aside>
-
-                <aside class="widget widget_shop">
-                    <figure class="ps-custom-scrollbar" data-height="250">
-                        <aside class="widget widget--vendor widget--open-time">
-                            <h4 class="widget-title">LỌC SẢN PHẨM</h4>
-                            <ul>
-                                <li>
-                                  <div class="ps-shopping">
-                                    <select class="product-short-select custom-select ml-auto" style="font-size: 15px;" [(ngModel)]="keyF">
-                                        <option selected value="">Tất cả sản phẩm</option>
-                                        <option value="enteredDate">Sản phẩm nổi bật</option>
-                                        <option value="priceDesc">Giá giảm dần</option>
-                                        <option value="priceAsc">Giá tăng dần</option>
-                                    </select>
-                                </div>
-                                </li>
-                                <li>
-                                  <input type="checkbox"><span>&nbsp;&nbsp; &nbsp;&nbsp;Sneakers Giày thể thao</span><br>
-                                  <input type="checkbox"><span>&nbsp;&nbsp; &nbsp;&nbsp;Giày chạy Running Shoes</span><br>
-                                  <input type="checkbox"><span>&nbsp;&nbsp; &nbsp;&nbsp;Giày lười Loafers</span><br>
-                                  <input type="checkbox"><span>&nbsp;&nbsp; &nbsp;&nbsp;Giày oxford và derby</span><br>
-                                  <input type="checkbox"><span>&nbsp;&nbsp; &nbsp;&nbsp;Giày oxford và derby</span><br>
-                                </li>
-                            </ul>
-                        </aside>
-                    </figure>
-                </aside>
-
-            </div>
-            <div class="ps-layout__right">
-                <div class="ps-shopping ps-tab-root">
-                    <div class="ps-shopping__header">
-                        <div class="product-page-number">
-                            <p>Hiển thị <strong>{{(page-1)*12+1}}–{{((page-1)*12+12)>keyword.length?keyword.length:(page-1)*12+12}}</strong> trong số <strong>{{productdetails.length}}</strong> sản phẩm</p>
-                        </div>
-                        <div class="ps-shopping">
-                            <select class="product-short-select custom-select ml-auto" style="font-size: 15px;" [(ngModel)]="keyF">
-                                <option selected value="">Tất cả sản phẩm</option>
-                                <option value="enteredDate">Sản phẩm mới</option>
-                                <option value="priceDesc">Giá giảm dần</option>
-                                <option value="priceAsc">Giá tăng dần</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="ps-tabs">
-                        <div class="ps-tab active" id="tab-1">
-                            <div class="ps-shopping-product">
-                                <div class="row">
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 " *ngFor="let item of productdetails | orderBy : key : reverse | paginate: { itemsPerPage: 12, currentPage: page}">
-                                        <div class="ps-product" *ngIf="item.amount>0">
-                                            
-                                            <div class="ps-product__thumbnail">
-                                                <a [routerLink]="['/product-detail/'+item.id]">
-                                                    <img src="https://tse1.mm.bing.net/th?id=OIP.AFalb0hsrAecz-GJSaU04gEsEG&pid=Api&P=0&h=220">
-                                                </a>
-                                                <div class="ps-product__badge">-{{item.discount}}%</div>
-                                                <ul class="ps-product__actions">
-                                                    <li><a href="javascript:void(0);" (click)="addCart(item.id, item.price*(1 - item.discount/100))" data-toggle="tooltip" data-placement="top" title="Thêm Giỏ Hàng"><i class="icon-bag2"></i></a></li>
-                                                    <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
-                                                    <li><a href="javascript:void(0);" (click)="toggleLike(item.id)" data-toggle="tooltip" data-placement="top" title="Yêu Thích"><i class="icon-heart" [ngClass]="{ 'liked': productLikes[item.id] }"></i></a></li>
-
-                                                    <style>
-                                                        .icon-heart {
-                                                            font-size: 25px; 
-                                                          }
-                                                          .icon-heart::before {
-                                                            content: "\2665"; 
-                                                            color: black; 
-                                                            position: absolute;
-                                                            top: 0;
-                                                            left: 0;
-                                                          }
-                                                          .icon-heart.liked::before {
-                                                            color: red; 
-                                                          }
-                                                      </style>
-
-                                                </ul>
-                                            </div>
-
-                                            <div class="ps-product__container">
-                                                <a class="ps-product__vendor" href="javascript:void(0);">
-                                                </a>
-                                                <div class="ps-product__content">
-                                                    <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]">{{item.product.name}}</a>
-                                                    <p class="ps-product__price sale">
-                                                        <del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>
-                                                        {{item.price*(1 - item.discount/100) | currency:'VND'}}
-                                                    </p>
-                                                </div>
-                                                <div class="ps-product__content hover">
-                                                    <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]">{{item.product.name}}</a>
-                                                    <p class="ps-product__price sale">
-                                                        <del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>
-                                                        {{item.price*(1 - item.discount/100) | currency:'VND'}}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>                                   
-                                </div>                              
-                            </div>
-
-                            
-                            <div class="row" style="padding-top: 50px">
-                                <div class="col-lg-12">
-                                    <ul>
-                                        <pagination-controls
-                                            (pageChange)="page = $event"
-                                            previousLabel=""
-                                            nextLabel=""
-                                            class="text-center my-page">
-                                        </pagination-controls>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    
-</div>
-<div class="ps-newsletter">
-    <div class="container">
-        <form class="ps-form--newsletter">
-            <div class="row">
-                <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                    <div class="ps-form__left">
-                        <h3>Bản tin</h3>
-                        <p>Đăng ký để nhận thông tin về sản phẩm và phiếu giảm giá</p>
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 ">
-                    <div class="ps-form__right">
-                        <div class="form-group--nest">  
-                            <input class="form-control" type="email" placeholder="Địa chỉ Email">
-                            <button class="ps-btn">Gửi</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+
+
+
+
     </div>
+  </div>
+
+
 </div>
+
 
 
 <ng-template #t let-fill="fill">
-    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
-        <span class="half" [style.width.%]="fill">
-            <i class="fa fa-star"></i>
-        </span>
-        <i class="fa fa-star"></i>
+  <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+    <span class="half" [style.width.%]="fill">
+      <i class="fa fa-star"></i>
     </span>
+    <i class="fa fa-star"></i>
+  </span>
 </ng-template>
- -->

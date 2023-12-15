@@ -12,47 +12,6 @@
             </div>
         </div>
     </div>
-    <div class="ps-site-features">
-        <div class="ps-container">
-            <div class="ps-block--site-features">
-                <div class="ps-block__item">
-                    <div class="ps-block__left"><i class="icon-rocket"></i></div>
-                    <div class="ps-block__right">
-                        <h4>Giao hàng miễn phí</h4>
-                        <p>Dành cho tất cả đơn hàng trên 1 triệu</p>
-                    </div>
-                </div>
-                <div class="ps-block__item">
-                    <div class="ps-block__left"><i class="icon-sync"></i></div>
-                    <div class="ps-block__right">
-                        <h4>Đổi trả 90 ngày trở lại</h4>
-                        <p>Nếu hàng hóa có vấn đề</p>
-                    </div>
-                </div>
-                <div class="ps-block__item">
-                    <div class="ps-block__left"><i class="icon-credit-card"></i></div>
-                    <div class="ps-block__right">
-                        <h4>Thanh toán an toàn</h4>
-                        <p>100% thanh toán an toàn</p>
-                    </div>
-                </div>
-                <div class="ps-block__item">
-                    <div class="ps-block__left"><i class="icon-bubbles"></i></div>
-                    <div class="ps-block__right">
-                        <h4>Hỗ trợ 24/7</h4>
-                        <p>Hỗ trợ tận tâm</p>
-                    </div>
-                </div>
-                <div class="ps-block__item">
-                    <div class="ps-block__left"><i class="icon-gift"></i></div>
-                    <div class="ps-block__right">
-                        <h4>Dịch vụ quà tặng</h4>
-                        <p>Hỗ trợ dịch vụ quà tặng</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="ps-home-ads">
         <div class="ps-container">
             <div class="row">
@@ -75,7 +34,7 @@
     <div class="row" *ngIf="!isLoading">
         <div class="ps-container">
             <div class="ps-section__header" style="background-color: #e3e3e3; padding-top: 8px;">
-                <h3 style="padding: 8px;">SẢN PHẨM THỊNH HÀNH</h3>
+                <h3 style="padding: 8px;">SẢN PHẨM</h3>
             </div>
             <br>
             <div class="ps-section__content">
@@ -91,10 +50,8 @@
                                 </a>
                     
 
-                                <div class="ps-product__badge">-{{item.code}}%</div>
+                                <!-- <div class="ps-product__badge">-{{item.code}}%</div> -->
                                 <ul class="ps-product__actions">
-
-                                    <li><a href="javascript:void(0);"  data-toggle="tooltip" data-placement="top" title="Thêm Giỏ Hàng"><i class="icon-bag2"></i></a></li>
                                     
                                     <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
 
@@ -124,8 +81,6 @@
                                             color: red; /* Màu đỏ của biểu tượng trái tim */
                                 
                                           }
-                                          
-                        
                                       </style>
                                   
                            
@@ -133,20 +88,18 @@
                             </div>
 
                             <div class="ps-product__container">
-                                <a class="ps-product__vendor" href="javascript:void(0);">
-                                    <span> {{item.productName}}</span>
-                                </a>
-<!--                                 
+                                <!-- <a class="ps-product__vendor" href="javascript:void(0);">
+                                    <span style=" font-size: 18px;"> {{item.productName}}</span>
+                                </a> -->
+                              
                                 <div class="ps-product__content">
                                     <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]">{{item.productName}}</a>
                                    <div class="ps-product__prices">
                                     <span>{{item.minPrice | currency:'VND'}}</span>
                                     <span>{{item.maxPrice | currency:'VND'}}</span>
                                    </div>
-                                </div> -->
-                                
-                        
-                                
+                                </div> 
+
                             </div>
                             <style>
                                

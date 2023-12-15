@@ -7,7 +7,7 @@ export class Order {
     'paymentTime': Date;    // Tương tự như trên
     'paymentType': number;
     'type': number;
-    'shipFee': number;      // BigDecimal trong Java có thể được xử lý như một number hoặc string
+    'shipeFee': number;      // BigDecimal trong Java có thể được xử lý như một number hoặc string
     'paymentAmount': number; // Tương tự như trên
     'phoneNumber': string;
     'address': string;
@@ -26,7 +26,7 @@ export class Order {
         this['paymentTime'] = paymentTime;
         this['paymentType'] = paymentType;
         this['type'] = type;
-        this['shipFee'] = shipFee;
+        this['shipeFee'] = shipFee;
         this['paymentAmount'] = paymentAmount;
         this['phoneNumber'] = phoneNumber;
         this['address'] = address;

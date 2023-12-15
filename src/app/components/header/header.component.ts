@@ -133,9 +133,6 @@ export class HeaderComponent implements OnInit {
        
       }
     );
-
-
-    
   }
 
 
@@ -150,6 +147,7 @@ export class HeaderComponent implements OnInit {
           }
           this.ngOnInit();
           this.toastr.success('Đăng xuất thành công!', 'Hệ thống!');
+            this.router.navigate(['/sign-form']);
       },
       error => {
         this.toastr.error('Lỗi', 'Hệ thống');
