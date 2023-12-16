@@ -1,0 +1,131 @@
+
+<div class="ps-breadcrumb">
+    <div class="ps-container">
+        <ul class="breadcrumb">
+            <li><a [routerLink]="['/home']">Trang chủ</a></li>
+            <li><a [routerLink]="['/all-product']">Cửa hàng</a></li>
+            <li>Chi tiết sản phẩm</li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
+    <div class="spinner-border text-success" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+</div>
+<div class="ps-page--product" *ngIf="!isLoading">
+    <div class="ps-container">
+        <div class="ps-page__container">
+
+            <div class="ps-page__left">
+                <div class="ps-product--detail ps-product--fullwidth">
+                    <div class="ps-product__header">
+                        <div class="ps-product__thumbnail">
+                            <figure>
+                                <div class="ps-wrapper">
+                                    <div class="ps-product__gallery">
+                                        <div class="item">
+                                            <a href="#">
+                                                <!-- <img [src]="product.image" alt=""> -->
+                                                <img src="https://tse1.mm.bing.net/th?id=OIP.AFalb0hsrAecz-GJSaU04gEsEG&pid=Api&P=0&h=220">
+
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </figure>
+                        </div>
+
+                        <div class="ps-product__info">
+                            <h1>{{productdetail.product.name}}</h1>
+                            <!-- <div>{{productdetail.product.categoryy.name}}</div> -->
+                            <p class="ps-product__price sale">
+                                <del *ngIf="productdetail.price != 0">{{productdetail.price|currency:'VND'}}</del>
+                                {{productdetail.price*(1 - productdetail.amount/100) | currency:'VND'}}
+                                  
+                                <!-- <del *ngIf="productdetail.amount != 0">{{productdetail.price}}</del> -->
+                                <!-- {{productdetail.price*(1 - productdetail.amount/100)}} -->
+                            </p>
+                            <div class="ps-product__desc">
+                                <p >Thể loại:<a href="javascript:void(0);"><strong>{{productdetail.product.category.name}}</strong></a></p> 
+                                <p style="text-decoration: underline;font-size: 16px;">Mô tả sản phẩm <strong> (Đã bán {{productdetail.sold}} sản phẩm):</strong></p>
+                                <!-- <p>{{productdetail.product.description}}</p> -->
+                            </div>
+                            <div class="ps-product__shopping">
+                                <a class="ps-btn ps-btn--black" href="javascript:void(0);" (click)="addCart(productdetail.id,productdetail.price*(1-productdetail.discount/100))">Thêm Giỏ Hàng</a>
+                                 
+                                <div class="ps-product__actions">
+                                    <a href="javascript:void(0);" (click)="toggleLike(productdetail.id)"><i style="color: #ffcc23;" class="icon-heart"></i></a> {{totalLike}} lượt thích
+                                </div>
+                            </div>
+
+                            <div class="ps-product__specification">
+                                <p class="categories"><strong> Categories:</strong><a href="#">Consumer Electronics</a>,<a href="#"> Refrigerator</a>,<a href="#">Babies & Moms</a></p>
+                                <p class="tags"><strong> Tags</strong><a href="#">sofa</a>,<a href="#">technologies</a>,<a href="#">wireless</a></p>
+                            </div>
+                            <div class="ps-product__sharing"><a class="facebook" href="#"><i class="fa fa-facebook"></i></a><a class="twitter" href="#"><i class="fa fa-twitter"></i></a><a class="google" href="#"><i class="fa fa-google-plus"></i></a><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+
+                    <div >
+                      <ul class="ps-tab-list">
+                          <li class="active"><a href="javascript:void(0);">Mô tả sản phẩm</a></li>
+                      </ul>
+                      <div class="ps-tab active" id="tab-1">
+                            <!-- <p>{{productdetail.product.description}}</p> -->
+                      </div>
+                  </div>
+                
+                </div>
+            </div>
+
+
+            <div class="ps-page__right">
+                <aside class="widget widget_product widget_features">
+                    <p><i class="icon-network"></i> Vận chuyển toàn quốc</p>
+                    <p><i class="icon-3d-rotate"></i> Hoàn trả miễn phí trong 7 ngày nếu đủ điều kiện</p>
+                    <p><i class="icon-receipt"></i> Nhà cung cấp đưa ra hóa đơn cho sản phẩm này</p>
+                    <p><i class="icon-credit-card"></i> Thanh toán trực tuyến hoặc khi nhận hàng</p>
+                </aside>
+                <aside class="widget widget_sell-on-site">
+                    <p><i class="icon-store"></i> Bán trên Martfury?<a href="#"> Đăng ký ngay !</a></p>
+                </aside>
+                <aside class="widget widget_ads"><a href="#"><img src="img/ads/product-ads.png" alt=""></a></aside>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="ps-newsletter">
+    <div class="container">
+        <form class="ps-form--newsletter">
+            <div class="row">
+                <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                    <div class="ps-form__left">
+                        <h3>Bản tin</h3>
+                        <p>Đăng ký để nhận thông tin về sản phẩm và phiếu giảm giá</p>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                    <div class="ps-form__right">
+                        <div class="form-group--nest">
+                            <input class="form-control" type="email" placeholder="Địa chỉ Email">
+                            <button class="ps-btn">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>
