@@ -11,7 +11,6 @@ import { SessionService } from 'src/app/services/session.service';
 import { FavoritesService } from 'src/app/services/favorites.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CartDetail } from 'src/app/common/CartDetail';
-import { ProductDetail } from 'src/app/common/ProductDetail';
 import { DataTableReponse } from 'src/app/dto/DataTableReponse';
 import { ProductBanHangResponse } from 'src/app/dto/ProductBanHangResponse';
 @Component({
