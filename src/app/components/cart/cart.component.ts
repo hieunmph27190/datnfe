@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+  
   @ViewChildren('selectProduct') selectProducts!: QueryList<any>;
 
   cart!: Cart;
@@ -84,6 +85,7 @@ export class CartComponent implements OnInit {
       this.dataService.setData(this.productsChecked);
   }
 
+  selectedProductCount: number = 0;
 
   checkProduct(event?:Event){
     let selectAllProductInput = document.querySelector('input#selectAllProduct');
@@ -122,6 +124,7 @@ export class CartComponent implements OnInit {
             checkbox.nativeElement.checked = false;
           });
       }
+
        this.getProductChecked();
   }
 
