@@ -47,10 +47,8 @@ export class AllProductComponent implements OnInit {
     private productService: ProductService,
     private categoryService:CategoryService,
     private cartService: CartService,
-    private customerService: CustomerService,
     private toastr: ToastrService,
     private favoriteService: FavoritesService,
-    private sessionService: SessionService,
     // private location: Location,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }

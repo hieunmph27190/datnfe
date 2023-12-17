@@ -27,11 +27,10 @@
                 <div class="table-responsive" *ngIf="cartDetails.length>0">
                     <div class="table-responsive" >
 
+                        <h4 style="color: #05a">Tổng số: {{cartDetails.length}} Sản phẩm</h4>
                     <table class="table ps-table--shopping-cart ps-table--responsive">
-
-                        <thead>
-
-
+ 
+                        <thead>                         
                             <tr>
                                <th><input style="text-align: center;width: 25px;height: 25px;" (change)="checkAll($event)" type="checkbox" id="selectAllProduct"></th>
 
@@ -45,8 +44,7 @@
                         <tbody>
 
                             <tr *ngFor="let item of cartDetails, index as i">
-                               <td><input style="text-align: center;width: 20px;height: 20px;" #selectProduct type="checkbox" (change)="checkProduct()"
-                                [value]="item.productDetail.id"></td>
+                               <td><input style="text-align: center;width: 20px;height: 20px;" #selectProduct type="checkbox" (change)="checkProduct()" [value]="item.productDetail.id"></td>
                                 <td data-label="Product">
                                     <div class="ps-product--cart">
 
@@ -60,20 +58,16 @@
 
 
                                       </div>
-                                        <div class="ps-product__content">
-                                            <a [routerLink]="['/product-detail/'+item.productDetail.product.id]">{{item.productDetail.product.name}}</a>
-                                            <p>Thể loại:<strong> {{item.productDetail.product.category.name}}</strong></p>
-                                            <p>Màu sắc:<strong> {{item.productDetail.color.name}}</strong>   |   Size:<strong> {{item.productDetail.size.size}}</strong></p>
+                                        <div class="ps-product__content" style="font-size: 19px;">
+                                            <a [routerLink]="['/product-detail/'+item.productDetail.product.id]" style="font-size:25px;">{{item.productDetail.product.name}}</a>
+                                            <p style="font-size: 17px;">Thể loại:<strong> {{item.productDetail.product.category.name}}</strong></p>
+                                            <p style="font-size: 17px;">Màu sắc:<strong> {{item.productDetail.color.name}}</strong>   |   Size:<strong> {{item.productDetail.size.size}}</strong></p>
                                         </div>
                                     </div>
                                 </td>
                                 <td style="text-align: center;font-size:22px" class="price" data-label="Price">
                                     {{item.productDetail.price|currency:'VND'}}
                                 </td>
-
-                                    <!-- <td style="text-align: center;" class="amount" data-label="Price">
-                                    {{item.productDetail.amount}} </td> -->
-
 
                                 <td data-label="Quantity" style="text-align: center;">
                                     <input (change)="changeQuantity($event,item)"
@@ -85,25 +79,18 @@
                                     name="quantity"
                                     [(ngModel)]="item.productDetail.amount"/></td>
 
-
-
-
-
                                 <td style="text-align: center;font-size:22px" data-label="Total">
                                     {{item.productDetail.price * item.productDetail.amount| currency:'VND'}}
                                 </td>
 
                                 <td style="text-align: center; font-size:22px" data-label="Actions">
-                                    <a href="javascript:void(0);" (click)="delete(item.cartDetailId)"><i class="icon-cross"></i></a>
+                                    <a  (click)="delete(item.cartDetailId)"><i class="icon-cross"></i></a>
+                                    <!-- <a href="javascript:void(0);" (click)="delete(item.cartDetailId)"><i class="icon-cross"></i></a> -->
                                 </td>
-
-
                             </tr>
-
-
-
                         </tbody>
                     </table>
+
                 </div>
 
                         <!-- Modal cho ảnh lớn -->
@@ -117,16 +104,13 @@
                           </div>
                         </div>
 
-
-
-
             <div class="ps-section__footer">
             <div class="ps-section__footer" *ngIf="cartDetails.length>0">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-12 ">
                         <div class="ps-block--shopping-total">
                             <div class="ps-block__content">
-                                <h3>Tổng tiền <span> {{totalPrice | currency:'VND'}}</span></h3>
+                                <h3>Tổng tiền Thanh Toán  <span> {{totalPrice | currency:'VND'}}</span></h3>
                             </div>
                         </div><a class="ps-btn ps-btn--fullwidth" (click)="datHang()" >Đặt hàng</a>
                     </div>

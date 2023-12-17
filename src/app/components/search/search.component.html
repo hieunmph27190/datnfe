@@ -29,8 +29,7 @@
           </div>
           <div class="ps-shopping__header">
             <div class="product-page-number" style="margin: auto;">
-              <p style="font-size: 30px; padding-bottom: 20px;"> Tìm được <strong>{{products.data.length}}</strong> sản
-                phẩm</p>
+              <p style="font-size: 30px; padding-bottom: 20px;"> Tìm được <strong>{{products.data.length}}</strong> sản phẩm</p>
             </div>
             <div class="ps-shopping">
               <select class="product-short-select custom-select ml-auto" style="font-size: 15px;" [(ngModel)]="keyF">
@@ -53,7 +52,6 @@
                             [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
 
                         </a>
-                        <!-- <div class="ps-product__badge">-{{item.discount}}%</div> -->
                         <ul class="ps-product__actions">
                     
                           <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top"
