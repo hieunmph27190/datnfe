@@ -1,7 +1,6 @@
 // import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ICreateOrderRequest, IPayPalConfig } from 'ngx-paypal';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from 'src/app/common/Cart';
 import { CartDetail } from 'src/app/common/CartDetail';
@@ -37,17 +36,18 @@ import { SellOnRequest } from 'src/app/dto/SellOnRequest';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements OnInit {
-
+  @ViewChild('citySelect') citySelect!: ElementRef;
+  @ViewChild('districtSelect') districtSelect!: ElementRef;
   cart!: Cart;
   cartDetail!: CartDetail;
   cartDetails!: CartDetail[];
   productsChecked!: SellOnProductRequest[];
   totalPrice:number = 0;
-  
+
   postForm!: FormGroup;
   customer: Customer={} as Customer;
   provinces!: Province[];
-  
+
   districts!: District[];
   wards!: Ward[];
 
@@ -59,7 +59,6 @@ export class CheckoutComponent implements OnInit {
   provinceCode!: number;
   districtCode!: number;
   wardCode!: number;
-  public payPalConfig ? : IPayPalConfig;
 
   constructor(
     private cartService: CartService,
@@ -75,6 +74,7 @@ export class CheckoutComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     ) {
+      
     this.postForm = new FormGroup({
       'phoneNumber': new FormControl(this.customer.phoneNumber,[Validators.required, Validators.pattern('(0)[0-9]{9}')]),
       'city': new FormControl(0, [Validators.required, Validators.min(1)]),
@@ -83,7 +83,7 @@ export class CheckoutComponent implements OnInit {
       'address': new FormControl('', Validators.required),
       'note': new FormControl(''),
     })
-    
+
    }
 
   ngOnInit(): void {
@@ -108,30 +108,78 @@ export class CheckoutComponent implements OnInit {
 
     });
 
-    this.authService.profile().subscribe(data => {
-      this.customer = data as Customer;
-      this.postForm = new FormGroup({
-        'phoneNumber': new FormControl(this.customer.phoneNumber,[Validators.required, Validators.pattern('(0)[0-9]{9}')]),
-        'city': new FormControl(0, [Validators.required, Validators.min(1)]),
-        'district': new FormControl(0, [Validators.required, Validators.min(1)]),
-        'ward': new FormControl(0, [Validators.required, Validators.min(1)]),
-        'address': new FormControl('', Validators.required),
-        'note': new FormControl(''),
-     })
+    // this.authService.profile().subscribe(data => {
+    //   this.customer = data as Customer;
+    //   this.postForm = new FormGroup({
+    //     'phoneNumber': new FormControl(this.customer.phoneNumber,[Validators.required, Validators.pattern('(0)[0-9]{9}')]),
+    //     'city': new FormControl(0, [Validators.required, Validators.min(1)]),
+    //     'district': new FormControl(0, [Validators.required, Validators.min(1)]),
+    //     'ward': new FormControl(0, [Validators.required, Validators.min(1)]),
+    //     'address': new FormControl('', Validators.required),
+    //     'note': new FormControl(''),
+    //  })
 
-    },error => {
-        this.toastr.error('Lỗi lấy thông tin đăng nhập!', 'Hệ thống')
-    });
+    // },error => {
+    //     this.toastr.error('Lỗi lấy thông tin đăng nhập!', 'Hệ thống')
+    // });
+    this.getProfile(); 
 
-     
-    
+
 
     this.amountPaypal = 0;
 
     // this.getAllItem();
     this.getProvinces();
 
-  
+
+  }
+
+  getProfile() {
+    this.authService.profile().subscribe(data => {
+        this.customer = data as Customer;
+        this.postForm.setValue({
+            'phoneNumber': this.customer.phoneNumber,
+            'city': this.customer.city,
+            'district': this.customer.district,
+            'ward': this.customer.ward,
+            'address': this.customer.address,
+            'note':""
+        });
+        setTimeout(() => {
+            let citySelectElement: HTMLSelectElement = this.citySelect.nativeElement;
+           let citySelectedOptionData = (citySelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+            this.provinceCode = Number(citySelectedOptionData);
+         this.getDistricts();
+          this.postForm.setValue({
+            'phoneNumber': this.customer.phoneNumber,
+            'city': this.customer.city,
+            'district': this.customer.district,
+            'ward': this.customer.ward,
+            'address': this.customer.address,
+            'note':""
+        });
+         setTimeout(() => {
+            let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
+                    let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                    this.districtCode = Number(districtSelectOptionData);
+                    this.getWards();
+                       this.postForm.setValue({
+                          'phoneNumber': this.customer.phoneNumber,
+                          'city': this.customer.city,
+                          'district': this.customer.district,
+                          'ward': this.customer.ward,
+                          'address': this.customer.address,
+                          'note':""
+                      });
+         }, 500);
+        }, 500);
+        
+           
+        
+      },error =>{
+        this.toastr.error('lỗi!', 'Hệ thống');
+      }
+    ); 
   }
 
 
@@ -157,7 +205,9 @@ checkOut() {
           sellOnRequest.setAddress(dataForm.address+" "+dataForm.ward+" "+dataForm.district+" "+dataForm.city);
           sellOnRequest.setNote(dataForm.note);
           this.orderService.postBill(sellOnRequest).subscribe((result) => {
-              this.toastr.success('Đặt hàng thành công : '+result , 'Hệ thống');
+              this.toastr.success('Đặt hàng thành công : '+(result as any).message , 'Hệ thống');
+              window.location.href = "http://localhost:4200/bill";
+
           },error =>{
               if(error.status==200){
                 this.toastr.success('Đặt hàng thành công :  '+error.text, 'Hệ thống');
@@ -173,40 +223,6 @@ checkOut() {
     this.toastr.error('Hãy nhập đầy đủ thông tin', 'Hệ thống');
   }
 }
-
-
-
-
-  // getAllItem() {
-  //   let email = this.sessionService.getUser();
-  //   this.cartService.getCart(email).subscribe(data => {
-  //     this.cart = data as Cart;
-  //     this.postForm = new FormGroup({
-  //       'phone': new FormControl(this.cart.phone, [Validators.required, Validators.pattern('(0)[0-9]{9}')]),
-  //       'province': new FormControl(0, [Validators.required, Validators.min(1)]),
-  //       'district': new FormControl(0, [Validators.required, Validators.min(1)]),
-  //       'ward': new FormControl(0, [Validators.required, Validators.min(1)]),
-  //       'number': new FormControl('', Validators.required),
-  //     })
-  //     this.cartService.getAllDetail(this.cart.cart_id).subscribe(data => {
-  //       this.cartDetails = data as CartDetail[];
-  //       this.cartService.setLength(this.cartDetails.length);
-  //       if (this.cartDetails.length == 0) {
-  //         this.router.navigate(['/']);
-  //         this.toastr.info('Hãy chọn một vài sản phẩm rồi tiến hành thanh toán', 'Hệ thống');
-  //       }
-  //       this.cartDetails.forEach(item => {
-  //         this.amountReal += item.productdetail.price * item.quantity;
-  //         this.amountReal1 = item.price;
-  //         this.amount += item.price;
-  //       })
-  //       this.discount = this.amount - this.amountReal;
-
-  //       this.amountPaypal = (this.amount/22727.5);
-  //     });
-  //   });
-  // }
-
 
   // sendMessage(id:number) {
   //   let chatMessage = new ChatMessage(this.cart.user.name, ' đã đặt một đơn hàng');
@@ -228,6 +244,7 @@ checkOut() {
       this.districts = this.province.districts;
     })
   }
+
 
   getWards() {
     this.location.getWards(this.districtCode).subscribe(data => {
@@ -260,55 +277,5 @@ checkOut() {
     this.getWard();
   }
 
- 
-
-// private checkOutPaypal(): void {
-//   this.payPalConfig = {
-//     currency: 'USD',
-//     clientId: 'Af5ZEdGAlk3_OOp29nWn8_g717UNbdcbpiPIZOZgSH4Gdneqm_y_KVFiHgrIsKM0a2dhNBfFK8TIuoOG',
-    
-//     createOrderOnClient: (data) => <ICreateOrderRequest > {
-//       intent: 'CAPTURE',
-//       purchase_units: [{
-//         amount: {
-//           currency_code: 'USD',
-//           value: this.amountPaypal.toFixed(2), // Tổng giá trị phải thanh toán
-//         },
-        
-//       }]
-//   },
-//     advanced: {
-//       commit: 'true',
-//     },
-//     style: {
-//       label: 'paypal',
-//       layout: 'vertical',
-//       color: 'blue',
-//       size: 'small',
-//       shape: 'rect',
-//     },
-//     onApprove: (data, actions) => {
-//       // Xử lý sau khi giao dịch được chấp thuận
-//     },
-//     onClientAuthorization: (data) => {
-//       // Xử lý khi giao dịch hoàn thành
-//       // this.checkOut();
-//     },
-//     onCancel: (data, actions) => {
-//       // Xử lý khi người dùng hủy giao dịch
-//     },
-//     onError: err => {
-//       // Xử lý khi có lỗi xảy ra
-//     },
-//     onClick: (data, actions) => {
-//       // Xử lý khi nút PayPal được click
-//     },
-//   };
-//   }
 }
-    
-//   };
-  
-// }
-
 

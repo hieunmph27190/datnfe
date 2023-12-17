@@ -15,9 +15,9 @@ export class OrderDetailComponent implements OnInit {
   @Input() billId!:string;
   orderDetails!:OrderDetail[];
   totalPrice!:number;
-  order!:Order;
 
-   dataTableReponse!: DataTableReponse<OrderDetail>;
+  bill!:Order; 
+  dataTableReponse!: DataTableReponse<OrderDetail>;
 
   @Input() id!:string;
 
@@ -54,6 +54,15 @@ export class OrderDetailComponent implements OnInit {
          this.toastr.error('Lỗi server!', 'Hệ thống')
     });
    }
+
+  getBill() {
+   this.orderService.getById(this.billId).subscribe(data => {
+      this.bill = data as Order;
+    },error =>{
+         this.toastr.error('Lỗi server!', 'Hệ thống')
+    });
+   }
+
   getTotalPrice() {
    this.orderService.getTotalPriceByBillId(this.billId).subscribe(data => {
       this.totalPrice = data as number;
@@ -67,8 +76,9 @@ export class OrderDetailComponent implements OnInit {
 
 
   open(content: TemplateRef<any>) {
-    this.modalService.open(content, {centered: true, size: 'lg'})
+    this.modalService.open(content, {centered: true, size: 'xl'})
      this.getBillDetail();
+     this.getBill();
     this.getTotalPrice();
   }
 

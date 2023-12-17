@@ -19,17 +19,16 @@ import { ContactComponent } from './components/contact/contact.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-// import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { NgxPayPalModule } from 'ngx-paypal';
 import { AllProductComponent } from './components/all-product/all-product.component';
 // import { ByCategoryComponent } from './components/by-category/by-category.component';
-// import { TestComponent } from './components/test/test.component';
 import { SignFormComponent } from './components/sign-form/sign-form.component';
 import { AuthGuard } from './guard/auth.guard';
 import { BillComponent } from './components/bills/bill.component';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ErrorComponent } from './components/error/error.component';
+import { SearchComponent } from './components/search/search.component';
 
 
 const routes: Routes = [
@@ -43,9 +42,9 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'sign-form', component: SignFormComponent },
-  // { path: 'payment', component: PaymentComponent},
-  // { path: 'test', component: TestComponent},
-  // { path: 'search/:keyword', component: SearchComponent },
+  { path: 'payment-failed', component: ErrorComponent},
+  { path: 'search/:keyword', component: SearchComponent },
+  { path: 'search', component: AllProductComponent },
   { path:'bill', component: BillComponent },
   // { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent},
@@ -59,12 +58,11 @@ const routes: Routes = [
     AppComponent,
     CartComponent,
     CheckoutComponent,
-    // PaymentComponent,
-    // TestComponent,
     HeaderComponent,
     FooterComponent,
     ProfileComponent,
-    // SearchComponent,
+    ErrorComponent,
+    SearchComponent,
     HomepageComponent,
     SignFormComponent,
     AboutComponent,
@@ -73,7 +71,6 @@ const routes: Routes = [
     AllProductComponent,
     OrderDetailComponent,
     BillComponent,
-    // FavoriteComponent,
     ProductDetailComponent,
     ForgotPasswordComponent,
     ProductDetailComponent,
@@ -89,7 +86,6 @@ const routes: Routes = [
     BrowserAnimationsModule,
     NgxPaginationModule,
     OrderModule,
-    NgxPayPalModule,
     RouterModule.forRoot(routes, { enableTracing: true }),
     NgbModule,
      // NgModule,

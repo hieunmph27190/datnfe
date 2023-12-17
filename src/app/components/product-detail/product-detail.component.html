@@ -27,40 +27,39 @@
                                         <div class="item">
                                                 <div class="product-display">
                                                     <div class="main-image">
-
-
-                                                    <!-- Ảnh chính -->
-
-                                                    <div style="display: flex; justify-content: center ;">
-                                                       <img style="width: 50%; aspect-ratio: 3/4;object-fit: cover;" src="http://localhost:8080/product/{{product.id}}/image-main">
+                                                      
+                                              <!-- Mã HTML cho ảnh chính -->
+                                    
+                                              <div style="display: flex; justify-content: center ;" class="thumbnail-clickable" data-toggle="modal"
+                                                data-target="#imageModal">
+                                                <img (click)="showLargeImage($event)" style="width: 50%; aspect-ratio: 3/4;object-fit: cover;"
+                                                  src="http://localhost:8080/product/{{product.id}}/image-main">
+                                              </div>
+                                              
+                                              <!-- Modal cho ảnh lớn -->
+                                              <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                  <div class="center-image" style="display: flex; justify-content:center;align-items:center;">
+                                                    <div class="modal-body">
+                                                      <img *ngIf="largeImageUrl" style="width: 80% ; aspect-ratio: 3/4;object-fit: cover;" [src]="largeImageUrl"
+                                                        class="img-fluid" alt="Large Image">
                                                     </div>
-
-
-
-                                                    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" style="height: 150px;" >
-                                                        <div ngxSlickItem *ngFor="let item of productImage | paginate: { itemsPerPage: 8, currentPage: 0}" class="slide ">
-                                                            <div class=" border border-1">
-                                                                <div class="">
-
-                                                                    <img [src]="'http://localhost:8080/product/' + item + '/image'" [ngClass]="{'thumbnail-image': true}">
-
-
-
-                                                                </div>
-
-
-                                                                <style>
-
-                                                                    .thumbnail-image {
-                                                                        aspect-ratio: 3/4;
-                                                                        object-fit: cover; /* Maintain aspect ratio and cover the container */
-                                                                    }
-
-
-                                                                </style>
-                                                            </div>
-                                                        </div>
-                                                    </ngx-slick-carousel>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                              <!-- Thay đổi mã HTML của carousel -->
+                                              <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" style="height: 150px;">
+                                                <div ngxSlickItem *ngFor="let item of productImage | paginate: { itemsPerPage: 8, currentPage: 0 }" class="slide">
+                                                  <div class="border border-1">
+                                                    <div class="thumbnail-clickable" style="display: flex; justify-content:center;align-items:center;"
+                                                      data-toggle="modal" data-target="#imageModal">
+                                                      <img (click)="showLargeImage($event)" style="width: 50%; aspect-ratio: 3/4;object-fit: cover;"
+                                                        [src]="'http://localhost:8080/product/' + item + '/image'" class="thumbnail-image">
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </ngx-slick-carousel>
 
                                                 </div>
                                             </div>
@@ -165,7 +164,7 @@
 
                             <div class="ps-product__shopping">
                                 <a class="ps-btn ps-btn--black" (click)="addCart()" href="javascript:void(0);" >Thêm Giỏ Hàng</a>
-
+                                <a class="ps-btn ps-btn--black" (click)="muaNgay()" href="javascript:void(0);">Mua Ngay</a>
 
                                  <!-- <div class="cssyt" style="color: coral;">Yêu thích</div> -->
 <!--
@@ -178,7 +177,6 @@
                             <div class="ps-product__sharing"><a class="facebook" href="#"><i class="fa fa-facebook"></i></a><a class="twitter" href="#"><i class="fa fa-twitter"></i></a><a class="google" href="#"><i class="fa fa-google-plus"></i></a><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></div>
                         </div>
                     </div>
-
                     <div >
                       <ul class="ps-tab-list">
                           <li class="active"><a href="javascript:void(0);">Mô tả sản phẩm</a></li>
@@ -187,66 +185,6 @@
                             <p style="font-size: 18 px;">{{product.description}}</p>
                       </div>
                   </div>
-
-                  <!-- <div >
-                    <ul class="ps-tab-list">
-                        <li class="active"><a href="javascript:void(0);">Đánh giá sản phẩm</a></li>
-                    </ul>
-                    <div class="ps-tab active" id="tab-1">
-                        <div class="table-responsive">
-                            <p *ngIf="rates.length==0" style="text-decoration: underline;">Sản phẩm này chưa có đánh giá nào.</p>
-                            <div class="row">
-                                <div class="col-10">
-                                    <table class="table table-bordered ps-table ps-table--specification">
-                                        <tbody>
-                                            <tr *ngFor="let item of rates | paginate: { itemsPerPage: itemsComment, currentPage: 1}">
-                                                <td>
-                                                    <a [href]="item.user.image">
-                                                    <img [src]="item.user.image" alt="" /></a>
-                                                </td>
-                                                <td>
-                                                    <h5>
-                                                        Họ và Tên: <a>{{item.user.name}}</a><br>
-                                                    </h5>
-                                                    <h5>
-                                                        Ngày: <span>{{item.rateDate|date:'dd-MM-yyyy'}}</span>
-                                                    </h5>
-                                                    <h5>
-                                                        Đánh giá:
-                                                        <ngb-rating class="ml-2" [(rate)]="item.rating"
-                                                            title="{{item.rating}} sao" [starTemplate]="t" [readonly]="true" [max]="5">
-                                                        </ngb-rating>
-                                                    </h5>
-                                                    <h5>
-                                                        Nội dung :
-                                                        <p style="color: #09c; font-size: 16px;">
-                                                            {{item.comment}}
-                                                        </p>
-                                                    </h5>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-2" *ngIf="rates.length!=0">
-                                    <div class="padding-right">
-                                        <h5>Hiển thị: </h5>
-                                        <select class="product-short-select custom-select ml-auto"
-                                            style="font-size: 14px;"
-                                            [(ngModel)]="itemsComment"
-                                            (change)="setItemsComment(itemsComment)">
-                                            <option selected value="3">3</option>
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="100">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
                 </div>
             </div>
 

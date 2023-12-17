@@ -5,7 +5,6 @@ import { Cart } from 'src/app/common/Cart';
 import { Color } from 'src/app/common/Color';
 import { Customer } from 'src/app/common/Customer';
 import { Favorites } from 'src/app/common/Favorites';
-// import { localStorage } from 'Storage'; // Đối với phiên bản Angular cụ thể nào đó
 import { CustomerService } from 'src/app/services/customer.service';localStorage
 import { ProductService } from 'src/app/services/product.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -15,19 +14,12 @@ import { CartDetail } from 'src/app/common/CartDetail';
 import { ProductDetail } from 'src/app/common/ProductDetail';
 import { DataTableReponse } from 'src/app/dto/DataTableReponse';
 import { ProductBanHangResponse } from 'src/app/dto/ProductBanHangResponse';
-// import { RateService } from 'src/app/services/rate.service';
-// import { Rate } from 'src/app/common/Rate';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-
-  // productSeller!:Product[];
-  // productLatest!:Product[];
-
-  // productRated!:Product[];
 
   isLoading = true;
 
@@ -44,8 +36,6 @@ export class HomepageComponent implements OnInit {
   cart!: Cart;
   cartDetail!: CartDetail;
   cartDetails!: CartDetail[];
-  
-  // rates!: Rate[];
 
   countRate!: number;
 
@@ -58,7 +48,6 @@ export class HomepageComponent implements OnInit {
     private sessionService: SessionService,
     private favoriteService: FavoritesService,
     private cartService: CartService,
-    // private rateService: RateService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -69,87 +58,15 @@ export class HomepageComponent implements OnInit {
       window.scrollTo(0, 0)
     });
     this.getAllProductRated();
-    // this.getAllRate();
-    // this.rates = []; // khởi tạo đánh giá là 1 mảng
   }
-
-  // getAllProductBestSeller() {
-  //   this.productService.getBestSeller().subscribe(data=>{
-  //     this.productSeller = data as Product[];
-  //     this.isLoading = false;
-  //   }, error=>{
-  //     this.toastr.error('Lỗi server!', 'Hệ thống')   
-  //     console.log(error);   
-  //   })
-  // }
-  
-  // getAllProductLatest() {
-  //   this.productService.getLasted().subscribe(data=>{
-  //     this.productLatest = data as Product[];
-  //     this.isLoading = false;
-  //   }, error=>{
-  //     this.toastr.error('Lỗi server!', 'Hệ thống')  
-  //     console.log(error);    
-  //   })
-  // }
-  
-
-  // getAllRate() {
-  //   this.rateService.getAll().subscribe(data => {
-  //     this.rates = data as Rate[];
-  //   })
-  // }
-
-
-  // getAvgRate(id: string): number {
-  //   let avgRating: number = 0;
-  //   this.countRate = 0;
-
-  //   for (const item of this.rates) {
-  //     if (item.productdetail.id === id) {
-  //       avgRating += item.rating;
-  //       this.countRate++;
-  //     }
-  //   }
-  //   return Math.round(avgRating/this.countRate * 10) / 10;
-  // }
-
-
-
-  // getAvgRate(id: string): number {
-  //   if (!this.rates || !Array.isArray(this.rates)) {
-  //     // Kiểm tra nếu this.rates không được khởi tạo hoặc không phải là một mảng
-  //     console.error("Invalid rates data.");
-  //     return 0; // Hoặc một giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
-  //   }
-  
-  //   let avgRating: number = 0;
-  //   this.countRate = 0;
-  
-  //   for (const item of this.rates) {
-  //     if (item.productdetail && item.productdetail.id === id) {
-  //       avgRating += item.rating;
-  //       this.countRate++;
-  //     }
-  //   }
-  
-  //   // Kiểm tra nếu có ít nhất một đánh giá trước khi thực hiện phép chia
-  //   if (this.countRate > 0) {
-  //     return Math.round((avgRating / this.countRate) * 10) / 10;
-  //   } else {
-  //     return 0; // Hoặc một giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
-  //   }
-  // }
-
 
   getAllProductRated() {
     this.productService.getAll().subscribe(data=>{
       this.products = data as DataTableReponse<ProductBanHangResponse>;
       this.isLoading = false;
     }, error=>{
-      this.toastr.error('Lỗi server!', 'Hệ thống')   
+      this.toastr.error('Lỗi server!', 'Hệ thống')
       console.log(error);
-         
     })
   }
 
@@ -165,8 +82,9 @@ export class HomepageComponent implements OnInit {
       this.toastr.info('Hãy đăng nhập để sử dụng dịch vụ của chúng tôi', 'Hệ thống');
       return;
     }
-  
-    // this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {    
+
+
+    // this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {
     //   if (data == null) {
     //     this.customerService.getByEmail(email).subscribe(data => {
     //       this.customer = data as Customer;
@@ -200,38 +118,5 @@ export class HomepageComponent implements OnInit {
     //   }
     // })
   }
-  
-
-
-
-  // addCart(id: string, price:number) {
-  //   let email = this.sessionService.getUser();
-  //   if (email == null) {
-  //     this.router.navigate(['/sign-form']);
-  //     this.toastr.info('Hãy đăng nhập để sử dụng dịch vụ của chúng tôi', 'Hệ thống');
-  //     return;
-  //   }
-  //   this.cartService.getCart(email).subscribe(data => {
-  //     this.cart = data as Cart;
-  //     console.log(this.cart);
-  //     this.cartDetail = new CartDetail(0, 1, price, new productDetail(id), new Cart(this.cart.cart_id));
-  //     console.log(this.cartDetail);
-  //     this.cartService.postDetail(this.cartDetail).subscribe(data => {
-  //       this.toastr.success('Thêm vào giỏ hàng thành công!', 'Hệ thống!');
-  //       this.cartService.getAllDetail(this.cart.cart_id).subscribe(data => {
-  //         this.cartDetails = data as CartDetail[];
-  //         this.cartService.setLength(this.cartDetails.length);
-  //       console.log(this.cartDetail)
-  //       })
-  //     }, error => {
-  //       this.toastr.error('Sản phẩm này có thể đã hết hàng!', 'Hệ thống');
-  //       this.router.navigate(['/home']);
-  //       window.location.href = "/";
-  //     })
-  //   })
-  // }
-
-
-
 
 }

@@ -26,8 +26,9 @@ export class BillComponent implements OnInit {
   orders!: Order[];
 
   dataTableReponse!:DataTableReponse<BillReponse>;
-  
+
   page: number = 1;
+  size: number = 10;
 
   done!: number;
 
@@ -52,7 +53,6 @@ export class BillComponent implements OnInit {
       window.scrollTo(0, 0)
     });
      this.getBillReponses();
-    // this.getOrder();
   }
 
 
@@ -60,67 +60,44 @@ export class BillComponent implements OnInit {
      this.orderService.getsellon().subscribe((data: any) => {
         this.dataTableReponse = data as DataTableReponse<BillReponse>;
       }
-    ); 
+    );
+  }
+  
+   thanhToanVNPay(billId:string) {
+     this.orderService.vnpay(billId).subscribe((data: any) => {
+        window.location.href = (data as any).message;
+      },error =>{
+        this.toastr.error(error.error, 'Hệ thống');
+      }
+    );
+  }
+  
+  huyBill(billId:string,type:number) {
+    if(type!=1) {
+      return;
+    }
+    Swal.fire({
+      title: 'Bạn có muốn huỷ đơn hàng này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonText: 'Không',
+      confirmButtonText: 'Huỷ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+           this.orderService.cancelBill(billId).subscribe(data => {
+          this.toastr.success((data as any).message, 'Hệ thống');
+          this.getBillReponses();
+        }, error => {
+          this.toastr.error(error.error, 'Hệ thống');
+        })
+      }
+    })
+
   }
 
 
-  
 
-  //   getAllProductRated() {
-  //   this.productService.getAll().subscribe(data=>{
-  //     this.products = data as DataTableReponse<ProductBanHangResponse>;
-  //     this.isLoading = false;
-  //   }, error=>{
-  //     this.toastr.error('Lỗi server!', 'Hệ thống')   
-  //     console.log(error);
-         
-  //   })
-  // }
-
-
-  // getOrder() {
-  //   let email = this.sessionService.getUser();
-  //   this.orderService.get(email).subscribe(data => {
-  //     this.orders = data as Order[];
-  //     this.done = 0;
-  //     this.orders.forEach(o => {
-  //       if (o.type === 2) {
-  //         this.done += 1
-  //       }
-  //     })
-  //   }, error => {
-  //     this.toastr.error('Lỗi server', 'Hệ thống');
-  //   })
-  // }
-
-
-
-  // cancel(id: number) {
-  //   if(id===-1) {
-  //     return;
-  //   }
-  //   Swal.fire({
-  //     title: 'Bạn có muốn huỷ đơn hàng này?',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#d33',
-  //     cancelButtonText: 'Không',
-  //     confirmButtonText: 'Huỷ'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.orderService.cancel(id).subscribe(data => {
-  //         this.getOrder();
-  //         this.sendMessage(id);
-  //         this.toastr.success('Huỷ đơn hàng thành công!', 'Hệ thống');
-  //       }, error => {
-  //         this.toastr.error('Lỗi server', 'Hệ thống');
-  //       })
-  //     }
-  //   })
-
-  // }
-
-  
   // sendMessage(id:number) {
   //   let chatMessage = new ChatMessage(this.customer.name, ' đã huỷ một đơn hàng');
   //   this.notificationService.post(new Notification(0, this.customer.name + ' đã huỷ một đơn hàng ('+id+')')).subscribe(data => {

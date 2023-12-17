@@ -51,14 +51,19 @@
                                     <div class="ps-product--cart">
 
                                       <div class="ps-product__thumbnail">
-                                        <a [routerLink]="['/product-detail/'+item.productDetail.id]">
-                                          <img style=" aspect-ratio: 3/4;object-fit: cover;"
-                                            src="http://localhost:8080/product/{{item.productDetail.product.id}}/image-main">
-                                        </a>
+                                        
+                                          <div style="display: flex; justify-content: center ; " class="thumbnail-clickable" data-toggle="modal"
+                                            data-target="#imageModal" (click)="showLargeImage($event)">
+                                            <img style="aspect-ratio: 3/4;object-fit: cover;cursor: pointer;"
+                                              src="http://localhost:8080/product/{{item.productDetail.product.id}}/image-main">
+                                          </div>
+                                  
+                               
                                       </div>
                                         <div class="ps-product__content">
                                             <a [routerLink]="['/product-detail/'+item.productDetail.product.id]">{{item.productDetail.product.name}}</a>
                                             <p>Thể loại:<strong> {{item.productDetail.product.category.name}}</strong></p>
+                                            <p>Màu sắc:<strong> {{item.productDetail.color.name}}</strong>   |   Size:<strong> {{item.productDetail.size.size}}</strong></p>
                                         </div>
                                     </div>
                                 </td>
@@ -71,14 +76,7 @@
 
 
                                 <td data-label="Quantity" style="text-align: center;">
-                        
-                                    <!-- <input style="text-align: center; width: 50%;font-size:24px;"
-                                    type="number" min="1"
-                                    [value]="1"
-                                    placeholder="0" name="quantity"
-                                    [(ngModel)]="item.productDetail.amount"
-                                   /> -->
-                                           <input (change)="checkProduct()"
+                                    <input (change)="changeQuantity($event,item)"
                                     style="text-align: center; width: 50%; font-size: 24px;"
                                     type="number"
                                     min="1"
@@ -86,6 +84,9 @@
                                     placeholder="0"
                                     name="quantity"
                                     [(ngModel)]="item.productDetail.amount"/></td>
+
+
+
 
                                 
                                 <td style="text-align: center;font-size:22px" data-label="Total">
@@ -105,8 +106,19 @@
                     </table>
                 </div>
           
+                        <!-- Modal cho ảnh lớn -->
+                        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="center-image" style="display: flex; justify-content:center;align-items:center;">
+                              <div class="modal-body">
+                                <img *ngIf="largeImageUrl" style="width: 80% ; aspect-ratio: 3/4;object-fit: cover;"  [src]="largeImageUrl" class="img-fluid" alt="Large Image">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
            
                 
+           
            
             <div class="ps-section__footer">
             <div class="ps-section__footer" *ngIf="cartDetails.length>0">   

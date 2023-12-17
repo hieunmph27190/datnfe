@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -20,8 +20,21 @@ export class ProductService {
     return this.httpClient.get(this.url+'/latest');
   }
 
-  getAll() {
-    return this.httpClient.get(this.url);
+  getAll(params?:any) {
+    let httpParams = new HttpParams();
+    if (params) {
+        // Append each parameter to the HttpParams object
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                if( params[key]){
+                    httpParams = httpParams.append(key, params[key]);
+                }
+               
+            }
+        }
+    }
+
+    return this.httpClient.get(this.url,{ params: httpParams });
   }
 
 
