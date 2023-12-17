@@ -33,7 +33,7 @@ export class SignFormComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   roles: string = '';
-
+  isSingUp = false;
   provinces!: Province[];
   districts!: District[];
 
@@ -61,7 +61,7 @@ export class SignFormComponent implements OnInit {
       'password': new FormControl(null)
     });
 
-    
+
     this.registerForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'name': new FormControl(null, [Validators.required, Validators.minLength(6)]),
@@ -79,29 +79,36 @@ export class SignFormComponent implements OnInit {
   }
 
 
-  
-  sign_up() {
+
+  sign_up(event?:Event) {
+    if(this.isSingUp){
+      this.toastr.error('Đang chờ xử lí!', 'Hệ thống');
+      return;
+    }
     if (this.registerForm.invalid) {
       this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
       return;
     }
-    
+
     if (true) {
+      (event?.target  as HTMLButtonElement).textContent = "Chờ xử lí ... ";
+      this.isSingUp=true;
       let signupRequest = (this.registerForm.value as SignupRequest);
       this.authService.register(signupRequest).subscribe(data => {
         Swal.fire({
           icon: 'success',
-          title: 'Đăng kí thành công!',
+          title: 'Đăng kí thành công!\n Mật khẩu của bạn được gửi về email!',
           showConfirmButton: false,
-          timer: 1500
+          timer: 4000
         })
         setTimeout(() => {
           window.location.href = ('/');
         },
           1500);
       }, error => {
-        console.log(error)
         this.toastr.error(error.message, 'Hệ thống');
+        this.isSingUp=false;
+         (event?.target  as HTMLButtonElement).textContent = "Đăng ký miễn phí";
       });
     }
     else {
@@ -111,7 +118,7 @@ export class SignFormComponent implements OnInit {
 
 
 
-  
+
   sign_in() {
     this.login = this.loginForm.value;
 
