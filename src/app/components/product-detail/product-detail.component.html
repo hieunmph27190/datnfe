@@ -89,8 +89,8 @@
                             <section class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Màu Sắc</h3>
                                 <div class="row items-center bR6mEk">
-                                    <label *ngFor="let item of colors" class="color-checkbox col-3">
-                                        <input type="radio" (change)="selectedColor($event)" name="colorId" value="{{item.id}}" class="color-checkbox-input" #colorRadio > {{item.name}}
+                                    <label *ngFor="let item of colors" class="color-checkbox col-3" style=" font-size: 22px;">
+                                        <input type="radio" (change)="selectedColor($event)" name="colorId" value="{{item.id}}" class="color-checkbox-input" #colorRadio> {{item.name}}
                                     </label>
                                 </div>
                             </section>
@@ -98,7 +98,7 @@
                             <section *ngIf="showColorSection" class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Size</h3>
                                 <div class="row items-center bR6mEk">
-                                    <label *ngFor="let item of sizes" class="color-checkbox col-3">
+                                    <label *ngFor="let item of sizes" class="color-checkbox col-3" style=" font-size: 22px;">
                                         <input type="radio" name="sizeId" (change)="getProductDetail($event)" value="{{item.id}}" class="color-checkbox-input"> {{item.size}}
                                     </label>
                                 </div>
@@ -135,8 +135,6 @@
                                     });
                                 }
                             </script>
-
-
 
                             <div class="ps-product__shopping">
                                 <a class="ps-btn ps-btn--black" (click)="addCart()" href="javascript:void(0);" >Thêm Giỏ Hàng</a>

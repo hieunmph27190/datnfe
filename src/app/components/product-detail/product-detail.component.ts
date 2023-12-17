@@ -293,7 +293,6 @@ toggleLike(id: string) {
         })
       }, error => { 
         if(error.status==401){
-          // this.toastr.error("Bạn cần đăng nhập", 'Hệ thống');
           this.checklogindk();
         }else{
           this.toastr.error(error.error, 'Hệ thống');
@@ -332,7 +331,7 @@ toggleLike(id: string) {
         }).then((result) => {
           if (result.isConfirmed) {
             this.productsChecked=[];
-            let  sellOnProductRequest = new SellOnProductRequest(this.productdetail.id,quantity);
+            let sellOnProductRequest = new SellOnProductRequest(this.productdetail.id,quantity);
             sellOnProductRequest.setProductDetail(this.productdetail);
             this.productsChecked.push(sellOnProductRequest);
             this.dataService.setData(this.productsChecked);
@@ -347,7 +346,6 @@ toggleLike(id: string) {
           this.toastr.error('Chọn màu và size', 'Hệ thống');
         }
     }, err => {
-      // this.toastr.error('Cần đăng nhập để mua hàng', 'Hệ thống');
             this.checklogindk();
     });
   
