@@ -74,7 +74,7 @@ export class CheckoutComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     ) {
-      
+
     this.postForm = new FormGroup({
       'phoneNumber': new FormControl(this.customer.phoneNumber,[Validators.required, Validators.pattern('(0)[0-9]{9}')]),
       'city': new FormControl(0, [Validators.required, Validators.min(1)]),
@@ -98,7 +98,7 @@ export class CheckoutComponent implements OnInit {
     this.dataService.data$.subscribe(data => {
       this.productsChecked = data ;
       if(this.productsChecked==null||this.productsChecked?.length<=0){
-         this.router.navigate(['/home']);
+        //  this.router.navigate(['/all-product']);
          return;
       }else{
         this.cartService.getTotalPrice(this.productsChecked).subscribe((data) => {
@@ -122,7 +122,7 @@ export class CheckoutComponent implements OnInit {
     // },error => {
     //     this.toastr.error('Lỗi lấy thông tin đăng nhập!', 'Hệ thống')
     // });
-    this.getProfile(); 
+    this.getProfile();
 
 
 
@@ -173,13 +173,13 @@ export class CheckoutComponent implements OnInit {
                       });
          }, 500);
         }, 500);
-        
-           
-        
+
+
+
       },error =>{
         this.toastr.error('lỗi!', 'Hệ thống');
       }
-    ); 
+    );
   }
 
 
@@ -196,7 +196,11 @@ checkOut() {
     }).then((result) => {
       if(result.isConfirmed){
           let dataForm = this.postForm.value;
-          const newProductsChecked = this.productsChecked.map(item => {
+          if(this.productsChecked==null||this.productsChecked.length<=0){
+             this.toastr.error('Lỗi : Không thể đặt hàng khi không chọn sản phẩm !', 'Hệ thống');
+             return;
+          }
+          let newProductsChecked = this.productsChecked.map(item => {
             let { productDetail, ...rest } = item;
             return rest;
           });

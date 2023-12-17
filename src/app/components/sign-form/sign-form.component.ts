@@ -61,7 +61,7 @@ export class SignFormComponent implements OnInit {
       'password': new FormControl(null)
     });
 
-    
+
     this.registerForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'name': new FormControl(null, [Validators.required, Validators.minLength(6)]),
@@ -78,8 +78,8 @@ export class SignFormComponent implements OnInit {
       this.getProvinces();
   }
 
- 
-  
+
+
   sign_up(event?:Event) {
     if(this.isSingUp){
       this.toastr.error('Đang chờ xử lí!', 'Hệ thống');
@@ -89,7 +89,7 @@ export class SignFormComponent implements OnInit {
       this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
       return;
     }
-    
+
     if (true) {
       (event?.target  as HTMLButtonElement).textContent = "Chờ xử lí ... ";
       this.isSingUp=true;
@@ -118,7 +118,7 @@ export class SignFormComponent implements OnInit {
 
 
 
-  
+
   sign_in() {
     this.login = this.loginForm.value;
 
