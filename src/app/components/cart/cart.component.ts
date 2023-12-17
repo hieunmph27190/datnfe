@@ -56,9 +56,6 @@ export class CartComponent implements OnInit {
     this.getAllItem();
   }
 
-
-
-
   getAllItem() {
       this.cartService.getAllDetail().subscribe(data => {
         this.cartDetails = data as CartDetail[];
@@ -86,6 +83,8 @@ export class CartComponent implements OnInit {
       });
       this.dataService.setData(this.productsChecked);
   }
+
+
   checkProduct(event?:Event){
     let selectAllProductInput = document.querySelector('input#selectAllProduct');
     if(this.isCheckAll()){
@@ -95,6 +94,8 @@ export class CartComponent implements OnInit {
     }
     this.getProductChecked();
   }
+
+
   changeQuantity(event?:Event,item?:any){
     if( Number((event?.target as HTMLInputElement).value)<=0){
       (event?.target as HTMLInputElement).value = "1";
@@ -108,6 +109,8 @@ export class CartComponent implements OnInit {
     }
     this.getProductChecked();
   }
+
+
   checkAll(event : Event) {
       let isChecked = (event.target as HTMLInputElement).checked;
       if(isChecked){
@@ -121,6 +124,7 @@ export class CartComponent implements OnInit {
       }
        this.getProductChecked();
   }
+
   isCheckAll() {
       let checkAll = true;
       this.selectProducts.forEach((checkbox: any) => {
@@ -130,6 +134,8 @@ export class CartComponent implements OnInit {
       });
      return checkAll;
   }
+
+
   datHang() {
       if(this.productsChecked.length>0){
         this.router.navigate(['/checkout']);
@@ -138,8 +144,9 @@ export class CartComponent implements OnInit {
       }
   }
 
-largeImageUrl: string | null = null;
 
+
+largeImageUrl: string | null = null;
   // Phương thức để hiển thị ảnh lớn
   showLargeImage(event: Event) {
     let divElement = event.target as HTMLElement;

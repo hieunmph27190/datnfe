@@ -72,8 +72,6 @@
                         </div>
 
                         <div class="ps-product__info pl-5">
-                            <!-- <h1 style=" font-size: 35px;">[{{product.code}}] {{product.name}}</h1> -->
-
                             <span style=" font-size: 35px;">[{{product.code}}] {{product.name}}</span>
                             <p style=" font-size: 20px;">
                                 Thương Hiệu: <a href="javascript:void(0);"><strong>{{product.brand.name}}</strong></a>
@@ -97,8 +95,6 @@
                                 </div>
                             </section>
 
-
-
                             <section *ngIf="showColorSection" class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Size</h3>
                                 <div class="row items-center bR6mEk">
@@ -107,7 +103,6 @@
                                     </label>
                                 </div>
                             </section>
-
 
                             <p *ngIf="showPrice" style="font-size: 24px;">
                                 Giá: <strong style=" color: #ee4d2d;">{{productdetail?.price| currency:'VND' }}</strong>
