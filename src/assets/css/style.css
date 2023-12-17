@@ -14638,6 +14638,21 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     padding-bottom: 40px;
   }
 } */
+/* css name giá product */
+
+.thumbnail-image {
+  aspect-ratio: 3/4;
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+.ps-product__prices{
+  display: flex;
+  justify-content: space-between;
+}
+.ps-product__content span {
+  font-size: 20px;
+  color: #ee4d2d;
+}
 
 
 @media (max-width: 479px) {
@@ -14650,6 +14665,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   margin-top: 80px;
   margin-bottom: 100px;
 }
+
 
 @media (max-width: 767px) {
   #homepage-1 .ps-download-app {

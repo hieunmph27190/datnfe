@@ -60,7 +60,6 @@
                                                     <img [src]="'http://localhost:8080/product/' + item.imageId + '/image'" [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
 
                                                 </a>
-                                                <!-- <div class="ps-product__badge">-{{item.discount}}%</div> -->
                                                 <ul class="ps-product__actions">
                                                    
                                                     <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
@@ -84,44 +83,29 @@
 
                                                 </ul>
                                             </div>
-
-                                            <div class="ps-product__container">
-                                                <a class="ps-product__vendor" href="javascript:void(0);">
-                                                    <span> {{item.productName}}</span>
-                                                </a>
-                                                
-                                                <div class="ps-product__content">
-                                                    <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]">{{item.productName}}</a>
-                                                   <div class="ps-product__prices">
+                        
+                                            <div class="ps-product__content">
+                                                <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]" style="text-align: center; font-size: 20px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{{item.productName}}</a>
+                                                <div class="ps-product__prices">
                                                     <span>{{item.minPrice | currency:'VND'}}</span>
                                                     <span>{{item.maxPrice | currency:'VND'}}</span>
-                                                   </div>
                                                 </div>
-                                                
-                                            
-                                                
                                             </div>
                                             <style>
                                
                                                 .thumbnail-image {
                                                     aspect-ratio: 3/4;
                                                     object-fit: cover; /* Maintain aspect ratio and cover the container */
-                                                }
-                                                .ps-product__title{
-                                                    font-size: 18px;
-                                                }
-                                            
-                                                .ps-product__prices{
+                                                  }
+                                                  
+                                                  .ps-product__prices{
                                                     display: flex;
                                                     justify-content: space-between;
-                                                }
-                                                .ps-product__content span {
-                                                    font-size: 17px;
-                                                    color: rgb(0, 98, 128);
-                                                }
-                                                
-                
-                                                
+                                                  }
+                                                  .ps-product__content span {
+                                                    font-size: 18px;
+                                                    color: #ee4d2d;
+                                                  }
                                                 
                                             </style>
 

@@ -36,7 +36,7 @@ export class AllProductComponent implements OnInit {
   cartDetails!: CartDetail[];
 
   page: number = 1;
-  size: number = 10;
+  size: number = 12;
 
   key: string = '';
   keyF: string = '';

@@ -72,37 +72,20 @@
                         </div>
 
                         <div class="ps-product__info pl-5">
-                            <h1 style=" font-size: 35px;">[{{product.code}}] {{product.name}}</h1>
-                            <!-- <div class="ps-product__desc" *ngIf="getAvgRate(productdetail.id)>0">
-                                <ngb-rating [rate]="getAvgRate(productdetail.id)" [starTemplate]="t" [readonly]="true" [max]="5"
-                                        title="{{getAvgRate(productdetail.id)}} sao">
-                                </ngb-rating>
-                                ({{countRate}} đánh giá)
-                            </div> -->
-                            <!-- <p >Size:<a href="javascript:void(0);"><strong>{{productdetail.size.name}}</strong></a></p>
-                            <p class="ps-product__price sale">
-                                <del *ngIf="productdetail.price != 0">{{productdetail.price|currency:'VND'}}</del>
-                                {{productdetail.price*(1 - productdetail.amount/100) | currency:'VND'}}
+                            <!-- <h1 style=" font-size: 35px;">[{{product.code}}] {{product.name}}</h1> -->
 
-                                <del *ngIf="productdetail.amount != 0">{{productdetail.price}}</del>
-                                {{productdetail.price*(1 - productdetail.amount/100)}}
-                            </p> -->
-
-                            <p style=" font-size: 18px;">
+                            <span style=" font-size: 35px;">[{{product.code}}] {{product.name}}</span>
+                            <p style=" font-size: 20px;">
                                 Thương Hiệu: <a href="javascript:void(0);"><strong>{{product.brand.name}}</strong></a>
                             </p>
 
-                            <p style="font-size: 18px;">
+                            <p style="font-size: 20px;">
                                 Thể loại: <a href="javascript:void(0);"><strong>{{product.category.name}}</strong></a>
                             </p>
 
-                            <p style=" font-size: 18px;">
+                            <p style=" font-size: 20px;">
                                 Loại đế: <a href="javascript:void(0);"><strong>{{product.sole.name}}</strong></a>
                             </p>
-
-
-
-
 
 
                             <section class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
@@ -127,7 +110,7 @@
 
 
                             <p *ngIf="showPrice" style="font-size: 24px;">
-                                Giá: <strong>{{productdetail?.price| currency:'VND' }}</strong>
+                                Giá: <strong style=" color: #ee4d2d;">{{productdetail?.price| currency:'VND' }}</strong>
                             </p>
 
 
@@ -145,8 +128,6 @@
                                     /* Bổ sung các quy tắc kiểu nút màu nếu cần thiết */
                                 }
                             </style>
-
-
 
 
                             <script>
