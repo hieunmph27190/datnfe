@@ -5,7 +5,7 @@
                 <li><a [routerLink]="['/home']">Trang chủ</a></li>
                 <li><a [routerLink]="['/all-product']">Cửa hàng</a></li>
                 <li>Giỏ hàng</li>
-            </ul> 
+            </ul>
         </div>
     </div>
     <div class="ps-section__cart-actions mt-2">
@@ -26,15 +26,15 @@
             <div class="ps-section__content">
                 <div class="table-responsive" *ngIf="cartDetails.length>0">
                     <div class="table-responsive" >
-                      
+
                     <table class="table ps-table--shopping-cart ps-table--responsive">
-                      
+
                         <thead>
-                                                      
+
 
                             <tr>
                                <th><input style="text-align: center;width: 25px;height: 25px;" (change)="checkAll($event)" type="checkbox" id="selectAllProduct"></th>
-                                
+
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
@@ -51,14 +51,14 @@
                                     <div class="ps-product--cart">
 
                                       <div class="ps-product__thumbnail">
-                                        
+
                                           <div style="display: flex; justify-content: center ; " class="thumbnail-clickable" data-toggle="modal"
                                             data-target="#imageModal" (click)="showLargeImage($event)">
                                             <img style="aspect-ratio: 3/4;object-fit: cover;cursor: pointer;"
                                               src="http://localhost:8080/product/{{item.productDetail.product.id}}/image-main">
                                           </div>
-                                  
-                               
+
+
                                       </div>
                                         <div class="ps-product__content">
                                             <a [routerLink]="['/product-detail/'+item.productDetail.product.id]">{{item.productDetail.product.name}}</a>
@@ -80,7 +80,7 @@
                                     style="text-align: center; width: 50%; font-size: 24px;"
                                     type="number"
                                     min="1"
-                                    [value]="item.productDetail.amount || 1"
+                                    [value]="item.productDetail.amount||1"
                                     placeholder="0"
                                     name="quantity"
                                     [(ngModel)]="item.productDetail.amount"/></td>
@@ -88,7 +88,7 @@
 
 
 
-                                
+
                                 <td style="text-align: center;font-size:22px" data-label="Total">
                                     {{item.productDetail.price * item.productDetail.amount| currency:'VND'}}
                                 </td>
@@ -105,7 +105,7 @@
                         </tbody>
                     </table>
                 </div>
-          
+
                         <!-- Modal cho ảnh lớn -->
                         <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-lg">
@@ -116,12 +116,12 @@
                             </div>
                           </div>
                         </div>
-           
-                
-           
-           
+
+
+
+
             <div class="ps-section__footer">
-            <div class="ps-section__footer" *ngIf="cartDetails.length>0">   
+            <div class="ps-section__footer" *ngIf="cartDetails.length>0">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-12 ">
                         <div class="ps-block--shopping-total">

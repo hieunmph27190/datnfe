@@ -95,6 +95,7 @@ export class CartComponent implements OnInit {
     }
     this.getProductChecked();
   }
+
   changeQuantity(event?:Event,item?:any){
     if( Number((event?.target as HTMLInputElement).value)<=0){
       (event?.target as HTMLInputElement).value = "1";
