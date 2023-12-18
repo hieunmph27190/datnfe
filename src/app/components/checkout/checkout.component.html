@@ -21,7 +21,7 @@
                                 <h3 class="ps-form__heading">Thông tin nhận hàng</h3>
                                 <div class="form-group">
                                     <label style="font-size: 20px;">Họ và tên <sup>*</sup> : <span >{{customer.name}}</span>
-                                    </label>    
+                                    </label>
                                     <div class="form-group__content">
                                         <!-- <input class="form-control" type="text" formControlName="userName" [value]="cart?.user?.name" readonly placeholder="Họ và tên"> -->
                                     </div>
@@ -36,7 +36,7 @@
                                         type="text"
                                         [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}"
                                         placeholder="Số điện thoại"
-                                        formControlName="phoneNumber"  
+                                        formControlName="phoneNumber"
                                           [value]="customer.phoneNumber">
                                         <small class="invalid-feedback">Số điện thoại không hợp lệ</small>
                                     </div>
@@ -55,7 +55,7 @@
                                         <small class="invalid-feedback">Hãy chọn tỉnh thành của bạn</small>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label>Chọn huyện/thành phố <sup>*</sup>
                                     </label>
@@ -92,7 +92,7 @@
                                         <small class="invalid-feedback">Hãy nhập địa chỉ của bạn</small>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="col-xl-5 col-lg-4 col-md-12 col-sm-12  ">
@@ -104,9 +104,9 @@
                                             <table class="table ps-block__products">
                                                 <tbody>
                                                     <tr *ngFor="let item of productsChecked, index as i">
-                                                        <td> 
+                                                        <td>
                                                             <a href="javascript:void(0);"> {{item.productDetail.product.name}} <u style="font-size: 24px;">×</u>   <b style="font-size: 26px;" >{{item.quantity}}</b></a>
-                    
+
                                                             <p>Màu:<strong> {{item.productDetail.color.name}}</strong>  |   Size:<strong> {{item.productDetail.size.size}}</strong> | Giá:<strong> {{item.productDetail.price | currency:'VND'}}</strong>  </p>
                                                         </td>
                                                         <td style="font-size: 20px;">{{item.quantity*item.productDetail.price | currency:'VND'}}</td>
@@ -117,6 +117,7 @@
                                             <h3>Tiền ship: <span style="color: red;padding-left: 40px;"> {{shipFee | currency:'VND'}}</span></h3>
                                             <h3>Tổng tiền thanh toán: <span style="color: red;padding-left: 40px;"> {{totalPrice+shipFee | currency:'VND'}}</span></h3>
                                         </div>
+
                                     </div>
                                       <div class="form-group">
                                         <label>Ghi chú đơn hàng</label>
@@ -125,9 +126,9 @@
                                             placeholder="Ghi chú về đơn hàng của bạn"></textarea>
                                         </div>
                                       </div>
-                                   
+
                                     <a class="ps-btn ps-btn--fullwidth" href="javascript:void(0);" (click)="checkOut()" >Xác nhận đặt hàng</a>
-                               
+
                                 </div>
                             </div>
                         </div>

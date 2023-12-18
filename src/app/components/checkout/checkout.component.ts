@@ -16,6 +16,7 @@ import { SellOnProductRequest } from 'src/app/dto/SellOnProductRequest';
 import { Customer } from 'src/app/common/Customer';
 import { AuthService } from 'src/app/services/auth.service';
 import { SellOnRequest } from 'src/app/dto/SellOnRequest';
+import { District } from '../../common/District';
 
 @Component({
   selector: 'app-checkout',
@@ -70,6 +71,7 @@ export class CheckoutComponent implements OnInit {
       'ward': new FormControl("", [Validators.required, Validators.min(1)]),
       'address': new FormControl('', Validators.required),
       'note': new FormControl(''),
+      "thanhToan":new FormControl(0)
     })
 
    }
@@ -101,28 +103,29 @@ export class CheckoutComponent implements OnInit {
     this.getProvinces1();
 
 
-    this.getProvinces();
-    
 
   }
    getTienShip() {
-         
         let dataForm = this.postForm.value;
       if(dataForm.city==""||
         dataForm.district==""||
         dataForm.ward==""||this.productsChecked.length==0||this.totalPrice==0||this.totalPrice==null){
           return;
       }
+      let quantity = 0;
+      this.productsChecked.forEach((item)=>{
+        quantity+=Number(item.quantity);
+      });
       let data = {"tinh":dataForm.city,
       "huyen":dataForm.district,
       "xa":dataForm.ward,
-      "quantity":this.productsChecked.length,
+      "quantity":quantity,
       "price":this.totalPrice
      }
       this.orderService.tinhTienShip(data).subscribe(datax=>{
          this.shipFee = (datax as any).data.total
       }, error=>{
-        this.toastr.error('Lỗi server!', "Địa chỉ không đúng");         
+        this.toastr.error('Lỗi server!', "Vui lòng nhập đủ địa chỉ");
       })
     }
 
@@ -135,24 +138,26 @@ export class CheckoutComponent implements OnInit {
             'district': this.customer.district,
             'ward': this.customer.ward,
             'address': this.customer.address,
-            'note':""
+            'note':"",
+            "thanhToan":0
         });
         setTimeout(() => {
             let citySelectElement: HTMLSelectElement = this.citySelect.nativeElement;
-           let citySelectedOptionData = (citySelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+           let citySelectedOptionData = (citySelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
             this.provinceCode = Number(citySelectedOptionData);
-         this.getDistricts1();
-          this.postForm.setValue({
+           this.getDistricts1();
+            this.postForm.setValue({
             'phoneNumber': this.customer.phoneNumber,
             'city': this.customer.city,
             'district': this.customer.district,
             'ward': this.customer.ward,
             'address': this.customer.address,
-            'note':""
+            'note':"",
+            "thanhToan":0
         });
          setTimeout(() => {
             let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
-                    let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                    let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
                     this.districtCode = Number(districtSelectOptionData);
                     this.getWards1();
                        this.postForm.setValue({
@@ -161,7 +166,8 @@ export class CheckoutComponent implements OnInit {
                           'district': this.customer.district,
                           'ward': this.customer.ward,
                           'address': this.customer.address,
-                          'note':""
+                          'note':"",
+                          "thanhToan":0
                       });
                      setTimeout(() => {
                       this.getTienShip();
@@ -199,10 +205,12 @@ checkOut() {
           let sellOnRequest = new SellOnRequest(newProductsChecked);
           sellOnRequest.setPhoneNumber(dataForm.phoneNumber);
           sellOnRequest.setAddress(dataForm.address+" "+dataForm.ward+" "+dataForm.district+" "+dataForm.city);
+          sellOnRequest.setCity(dataForm.city);
+          sellOnRequest.setDistrict(dataForm.district);
+          sellOnRequest.setWard(dataForm.ward);
           sellOnRequest.setNote(dataForm.note);
           this.orderService.postBill(sellOnRequest).subscribe((result) => {
               this.toastr.success('Đặt hàng thành công : '+(result as any).message , 'Hệ thống');
-
               window.location.href = "http://localhost:4200/bill";
 
           },error =>{
@@ -230,7 +238,7 @@ checkOut() {
       this.province = (data as any).data;
        this.districts = this.province;
     })
-    
+
   }
 
   getWards1() {
@@ -241,23 +249,23 @@ checkOut() {
   }
 
  setProvinceCode(event: Event) {
-  let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+  let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
   this.provinceCode = Number(selectedOptionData);
 
-  this.postForm?.get('city')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).value);
+  this.postForm?.get('city')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.value);
 
   this.getDistricts1();
    setTimeout(() => {
         let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
-                let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
                 this.districtCode = Number(districtSelectOptionData);
-                 this.postForm?.get('district')?.setValue((districtSelectElement.selectedOptions[0] as HTMLOptionElement).value);
+                 this.postForm?.get('district')?.setValue((districtSelectElement.selectedOptions[0] as HTMLOptionElement)?.value);
                 this.getWards1();
                 setTimeout(() => {
               let wardSelectElement: HTMLSelectElement = this.wardSelect.nativeElement;
-                let wardSelectOptionData = (wardSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                let wardSelectOptionData = (wardSelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
                 this.wardCode = Number(wardSelectOptionData);
-                 this.postForm?.get('ward')?.setValue((wardSelectElement.selectedOptions[0] as HTMLOptionElement).value);
+                 this.postForm?.get('ward')?.setValue((wardSelectElement.selectedOptions[0] as HTMLOptionElement)?.value);
                   setTimeout(() => {
                       this.getTienShip();
                   }, 500);
@@ -267,16 +275,16 @@ checkOut() {
 }
 
   setDistrictCode(event: Event) {
-    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
     this.districtCode = Number(selectedOptionData);
 
-     this.postForm?.get('district')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).value);
+     this.postForm?.get('district')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.value);
     this.getWards1();
     setTimeout(() => {
               let wardSelectElement: HTMLSelectElement = this.wardSelect.nativeElement;
-                let wardSelectOptionData = (wardSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                let wardSelectOptionData = (wardSelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
                 this.wardCode = Number(wardSelectOptionData);
-                 this.postForm?.get('ward')?.setValue((wardSelectElement.selectedOptions[0] as HTMLOptionElement).value);
+                 this.postForm?.get('ward')?.setValue((wardSelectElement.selectedOptions[0] as HTMLOptionElement)?.value);
                   setTimeout(() => {
                       this.getTienShip();
                   }, 500);
@@ -285,11 +293,11 @@ checkOut() {
   }
 
   setWardCode(event: Event) {
-    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+    let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
     this.wardCode = Number(selectedOptionData);
 
-      this.postForm?.get('ward')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).value);
-                
+      this.postForm?.get('ward')?.setValue(((event.target as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement)?.value);
+
      setTimeout(() => {
             this.getTienShip();
     }, 500);

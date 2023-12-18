@@ -2,9 +2,12 @@ import { SellOnProductRequest } from "./SellOnProductRequest";
 
 
 export class SellOnRequest {
-    'sanPhams': any[];  
+    'sanPhams': any[];
     'phoneNumber': string;
     'address': string;
+    'city': string;
+    'district': string;
+    'ward': string;
     'note': string;
 
      constructor(sanPhams: any[] ) {
@@ -18,6 +21,15 @@ export class SellOnRequest {
 
       setPhoneNumber(phoneNumber: string) {
          this['phoneNumber'] = phoneNumber;
+      }
+      setCity(city: string) {
+         this['city'] = city;
+      }
+      setDistrict(district: string) {
+         this['district'] = district;
+      }
+      setWard(ward: string) {
+         this['ward'] = ward;
       }
 
 
