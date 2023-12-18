@@ -72,7 +72,7 @@
                                     <label>Chọn phường/xã<sup>*</sup>
                                     </label>
                                     <div class="form-group__content">
-                                        <select style="font-size: 16px;" class="product-short-select custom-select" id="ward" (change)="setWardCode($event)" formControlName="ward"
+                                        <select style="font-size: 16px;" class="product-short-select custom-select" id="ward" (change)="setWardCode($event)" formControlName="ward" #wardSelect
                                             [ngClass]="{'is-invalid':postForm.get('ward')?.touched && postForm.get('ward')?.invalid}">
                                             <option value="0" selected disabled>Chọn phường/xã</option>
                                             <option *ngFor="let item of wards" [attr.data]="item.WardCode" [value]="item.WardName">{{item.WardName}}</option>
@@ -113,8 +113,9 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-
-                                            <h3>Tổng tiền thanh toán: <span style="color: red;padding-left: 40px;"> {{totalPrice | currency:'VND'}}</span></h3>
+                                            <h3>Tổng tiền của đơn: <span style="color: red;padding-left: 40px;"> {{totalPrice | currency:'VND'}}</span></h3>
+                                            <h3>Tiền ship: <span style="color: red;padding-left: 40px;"> {{shipFee | currency:'VND'}}</span></h3>
+                                            <h3>Tổng tiền thanh toán: <span style="color: red;padding-left: 40px;"> {{totalPrice+shipFee | currency:'VND'}}</span></h3>
                                         </div>
                                     </div>
                                       <div class="form-group">

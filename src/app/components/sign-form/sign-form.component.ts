@@ -132,7 +132,8 @@ export class SignFormComponent implements OnInit {
           timer: 1500
         })
         }else{
-             this.toastr.error('Sai Quyền Đăng Nhập', 'Hệ thống');
+            this.authService.logout().subscribe(data => {});
+            this.toastr.error('Sai Quyền Đăng Nhập', 'Hệ thống');
         }
       },
       error => {

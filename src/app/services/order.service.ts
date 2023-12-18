@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cart } from '../common/Cart';
 import { catchError, tap } from 'rxjs/operators';
@@ -44,6 +44,24 @@ export class OrderService {
   }
 
 
+  tinhTienShip(params?:any) {
+    let httpParams = new HttpParams();
+    if (params) {
+        // Append each parameter to the HttpParams object
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                if( params[key]){
+                    httpParams = httpParams.append(key, params[key]);
+                }
+               
+            }
+        }
+    }
+
+    return this.httpClient.get("http://localhost:8080/public/shipfee",{ params: httpParams });
+  }
+
+
   getTotalPriceByBillId(billID:string) {
    return this.httpClient.get("http://localhost:8080/sellon/calculate-money/"+billID,{ withCredentials: true });
   }
@@ -56,7 +74,7 @@ export class OrderService {
    return this.httpClient.get("http://localhost:8080/api/vnpay/"+billID,{ withCredentials: true });
   }
 
-   getBilldetail(id:string) {
+  getBilldetail(id:string) {
    return this.httpClient.get("http://localhost:8080/bill-detail?billId="+id,{ withCredentials: true });
   }
 

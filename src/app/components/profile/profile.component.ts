@@ -172,7 +172,16 @@ export class ProfileComponent implements OnInit {
 setProvinceCode1(event: Event) {
   let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
   this.provinceCode = Number(selectedOptionData);
+
   this.getDistricts1();
+  setTimeout(() => {
+        let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
+                let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                this.districtCode = Number(districtSelectOptionData);
+                this.getWards1();
+          
+  }, 500);
+
 }
   setDistrictCode1(event: Event) {
     let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
