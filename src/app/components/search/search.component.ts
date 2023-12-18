@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { filter } from 'rxjs/operators';
 import { Cart } from 'src/app/common/Cart';
 import { CartDetail } from 'src/app/common/CartDetail';
 import { Category } from 'src/app/common/Category';
@@ -9,7 +8,6 @@ import { Customer } from 'src/app/common/Customer';
 import { Favorites } from 'src/app/common/Favorites';
 import { DataTableReponse } from 'src/app/dto/DataTableReponse';
 import { ProductBanHangResponse } from 'src/app/dto/ProductBanHangResponse';
-import { CategoryService } from 'src/app/services/category.service';
 import { FavoritesService } from 'src/app/services/favorites.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -34,7 +32,7 @@ export class SearchComponent implements OnInit {
     cartDetails!: CartDetail[];
   
     page: number = 1;
-    size: number = 10;
+    size: number = 12;
     key: string = '';
     keyF: string = '';
 
@@ -48,7 +46,6 @@ export class SearchComponent implements OnInit {
       private productService: ProductService,
       private toastr: ToastrService,
       private favoriteService: FavoritesService,
-      private categoryService : CategoryService,
       private route: ActivatedRoute,
       private activatedRoute: ActivatedRoute,
       private router: Router) {
@@ -64,7 +61,10 @@ export class SearchComponent implements OnInit {
             }
             window.scrollTo(0, 0)
           });
+
         this.keyword = this.route.snapshot.params['keyword'];
+
+
         this.router.events.subscribe((evt) => {
             if (!(evt instanceof NavigationEnd)) {
               return;
@@ -88,20 +88,9 @@ export class SearchComponent implements OnInit {
            
       })
     }
-
   
   
-  
-  
-  //   getCategories() {
-  //     this.categoryService.getAll().subscribe(data => {
-  //       this.categories = data as Category[];
-  //     })
-  //   }
-  
-  
-  
-  //   // yeu thich
+  // yeu thich
   productLikes: { [id: string]: boolean } = {};
   //   toggleLike(id: string) {
   //     let email = this.sessionService.getUser();

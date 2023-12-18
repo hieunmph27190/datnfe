@@ -5,12 +5,10 @@ import Swal from 'sweetalert2';
 import { Cart } from 'src/app/common/Cart';
 import { CartDetail } from 'src/app/common/CartDetail';
 import { CartService } from 'src/app/services/cart.service';
-import { SessionService } from 'src/app/services/session.service';
 import { Product } from 'src/app/common/Product';
 import { SellOnProductRequest } from 'src/app/dto/SellOnProductRequest';
 import { DataService } from 'src/app/services/data.service';
 import { ProductDetail } from 'src/app/common/ProductDetail';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -38,9 +36,7 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private dataService: DataService,
     private toastr: ToastrService,
-    private fb: FormBuilder,
-    private router: Router,
-    private sessionService: SessionService) {
+    private router: Router,) {
       this.cartDetails=[];
    }
 
@@ -64,7 +60,6 @@ export class CartComponent implements OnInit {
         this.cartService.setLength(this.cartDetails.length);
       });
   }
-
 
   getProductChecked(){
     this.productsChecked = []
@@ -97,7 +92,6 @@ export class CartComponent implements OnInit {
     this.getProductChecked();
   }
 
-
   changeQuantity(event?:Event,item?:any){
     if( Number((event?.target as HTMLInputElement).value)<=0){
       (event?.target as HTMLInputElement).value = "1";
@@ -111,7 +105,6 @@ export class CartComponent implements OnInit {
     }
     this.getProductChecked();
   }
-
 
   checkAll(event : Event) {
       let isChecked = (event.target as HTMLInputElement).checked;
@@ -138,7 +131,6 @@ export class CartComponent implements OnInit {
      return checkAll;
   }
 
-
   datHang() {
       if(this.productsChecked.length>0){
         this.router.navigate(['/checkout']);
@@ -146,8 +138,6 @@ export class CartComponent implements OnInit {
         this.toastr.error('Chưa chọn sản phẩm !', 'Hệ thống');
       }
   }
-
-
 
 largeImageUrl: string | null = null;
   // Phương thức để hiển thị ảnh lớn
