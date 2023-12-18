@@ -81,64 +81,49 @@
                         </ul>
                       </div>
 
-                      <div class="ps-product__container">
-                        <a class="ps-product__vendor" href="javascript:void(0);">
-                          <span> {{item.productName}}</span>
-                        </a>
-
                         <div class="ps-product__content">
-                          <a class="ps-product__title"
-                            [routerLink]="['/product-detail/'+item.id]">{{item.productName}}</a>
+                          <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]" style="text-align: center; font-size: 25px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{{item.productName}}</a>
                           <div class="ps-product__prices">
                             <span>{{item.minPrice | currency:'VND'}}</span>
                             <span>{{item.maxPrice | currency:'VND'}}</span>
                           </div>
                         </div>
 
-
-
-                      </div>
-                      <style>
-                        .thumbnail-image {
-                          aspect-ratio: 3/4;
-                          object-fit: cover;
-                          /* Maintain aspect ratio and cover the container */
-                        }
-
-                        .ps-product__title {
-                          font-size: 18px;
-                        }
-
-                        .ps-product__prices {
-                          display: flex;
-                          justify-content: space-between;
-                        }
-
-                        .ps-product__content span {
-                          font-size: 17px;
-                          color: rgb(0, 98, 128);
-                        }
+                        <style>
+                          .thumbnail-image {
+                              aspect-ratio: 3/4;
+                              object-fit: cover; 
+                            }
+                            .ps-product__prices{
+                              display: flex;
+                              justify-content: space-between;
+                            }
+                            .ps-product__content span {
+                              font-size: 19px;
+                              color: #ee4d2d;
+                            }    
                       </style>
-
-
-
-                      <!-- </div> -->
-
-
 
                     </div>
                   </div>
                 </div>
                 <!-- Phân trang -->
-                <div class="row" style="padding-top: 50px">
+                <div class="row" style="padding-top: 50px; font-size: 25px;">
                   <div class="col-lg-12">
-                    <ul>
-                      <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel=""
-                        class="text-center my-page">
-                      </pagination-controls>
-                    </ul>
+                      
+                      <ul *ngIf="products.data.length>0">
+                          <pagination-controls
+                              (pageChange)="page = $event"
+                              previousLabel=""
+                              nextLabel=""
+                              class="text-center my-page">
+                          </pagination-controls>
+                      </ul>
                   </div>
-                </div>
+              </div>
+
+
+
               </div>
             </div>
           </div>

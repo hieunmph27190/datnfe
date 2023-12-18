@@ -3,13 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { Customer } from 'src/app/common/Customer';
 import { Login } from 'src/app/common/Login';
 import { Register } from 'src/app/common/Register';
 import { AuthService } from 'src/app/services/auth.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { SendmailService } from 'src/app/services/sendmail.service';
-import { SessionService } from 'src/app/services/session.service';
 import { UserLogin } from 'src/app/dto/UserLogin';
 import { ProvinceService } from 'src/app/services/province.service';
 import { Province } from 'src/app/common/Province';
@@ -34,25 +31,26 @@ export class SignFormComponent implements OnInit {
   isLoginFailed = false;
   roles: string = '';
   isSingUp = false;
-  provinces!: Province[];
-  districts!: District[];
 
-  wards!: Ward[];
+  provinces!: any[];
+
+  districts!: any[];
+
+   wards!: any[];
 
   provinceCode!: number;
+
   districtCode!: number;
+
   wardCode!: number;
 
-  province!: Province;
-  district!: District;
-  ward!: Ward;
+  district!: any[];
+  province!: any[];
+  ward!: any[];
 
   constructor(
-    private sendMailService: SendmailService,
-    private sessionService: SessionService,
     private toastr: ToastrService,
     private location: ProvinceService,
-    private dataService: DataService,
     private router: Router,
     private authService: AuthService,
     private userService: CustomerService) {
@@ -75,7 +73,7 @@ export class SignFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.getProvinces();
+      this.getProvinces1();
   }
 
 
@@ -112,12 +110,8 @@ export class SignFormComponent implements OnInit {
       });
     }
     else {
-
     }
   }
-
-
-
 
   sign_in() {
     this.login = this.loginForm.value;
@@ -155,54 +149,45 @@ export class SignFormComponent implements OnInit {
     );
   }
 
-
-
-
-   getProvinces() {
-    this.location.getAllProvinces().subscribe(data => {
-      this.provinces = data as Province[];
+  getProvinces1() {
+    this.location.getAllProvinces1().subscribe(data => {
+      this.provinces = (data as any).data;
     })
   }
 
-  getDistricts() {
-    this.location.getDistricts(this.provinceCode).subscribe(data => {
-      this.province = data as Province;
-      this.districts = this.province.districts;
+  getDistricts1() {
+    this.location.getDistricts1(this.provinceCode).subscribe(data => {
+      // this.province = data as Province;
+      this.province = (data as any).data;
+      this.districts = this.province;
     })
   }
 
-  getWards() {
-    this.location.getWards(this.districtCode).subscribe(data => {
-      this.district = data as District;
-      this.wards = this.district.wards;
+  getWards1() {
+    this.location.getWards1(this.districtCode).subscribe(data => {
+      // this.district = data as District;
+      this.district = (data as any).data;
+      this.wards = this.district;
     })
   }
 
-  getWard() {
-    this.location.getWard(this.wardCode).subscribe(data => {
-      this.ward = data as Ward;
-    })
-  }
-
- setProvinceCode(event: Event) {
+setProvinceCode1(event: Event) {
   let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
   this.provinceCode = Number(selectedOptionData);
-  this.getDistricts();
+  this.getDistricts1();
 }
 
-  setDistrictCode(event: Event) {
+  setDistrictCode1(event: Event) {
     let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
     this.districtCode = Number(selectedOptionData);
-    this.getWards();
+    this.getWards1();
   }
 
-  setWardCode(event: Event) {
+  setWardCode1(event: Event) {
     let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
     this.wardCode = Number(selectedOptionData);
-    this.getWard();
   }
-
-
+  
   toggle() {
     this.show = !this.show;
   }

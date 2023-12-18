@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { Cart } from 'src/app/common/Cart';
 import { Category } from 'src/app/common/Category';
 import { Favorites } from 'src/app/common/Favorites';
@@ -11,8 +10,6 @@ import { SessionService } from 'src/app/services/session.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CartDetail } from 'src/app/common/CartDetail';
 import { AuthService } from 'src/app/services/auth.service';
-import { UserLogin } from 'src/app/dto/UserLogin';
-
 
 @Component({
   selector: 'app-header',
@@ -31,13 +28,12 @@ export class HeaderComponent implements OnInit {
 
   totalFavoriteItem!: number;
   totalCartItem!: number;
-  keyword: string = ' ';
+  keyword: string = '';
 
   constructor(
     private cartService: CartService,
     private toastr: ToastrService,
     private sessionService: SessionService,
-    private customerService: CustomerService,
     private favoriteService: FavoritesService,
     private authService: AuthService,
     private router: Router) { }

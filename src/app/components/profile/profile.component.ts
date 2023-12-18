@@ -3,20 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/common/Customer';
-import { District } from 'src/app/common/District';
 import { Order } from 'src/app/common/Order';
-import { Province } from 'src/app/common/Province';
 import { Ward } from 'src/app/common/Ward';
-import { BillReponse } from 'src/app/dto/BillReponse';
-import { DataTableReponse } from 'src/app/dto/DataTableReponse';
 import { SignupRequest } from 'src/app/dto/SignupRequest';
 import { AuthService } from 'src/app/services/auth.service';
-import { CustomerService } from 'src/app/services/customer.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { OrderService } from 'src/app/services/order.service';
 import { ProvinceService } from 'src/app/services/province.service';
-import { SessionService } from 'src/app/services/session.service';
-import { WebSocketService } from 'src/app/services/web-socket.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -35,17 +26,24 @@ export class ProfileComponent implements OnInit {
   done!: number;
 
 
-  provinces!: Province[];
-  districts!: District[];
+  provinces!: any[];
 
-  wards!: Ward[];
+  districts!: any[];
+
+  wards!: any[];
+
   profileForm!: FormGroup;
+
   provinceCode!: number;
+
   districtCode!: number;
+
   wardCode!: number;
 
-  province!: Province;
-  district!: District;
+  province!: any[];
+
+  district!: any[];
+  
   ward!: Ward;
   
 
@@ -57,16 +55,10 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private customerService: CustomerService,
     private toastr: ToastrService,
-    private sessionService: SessionService,
     private router: Router,
      private location: ProvinceService,
-    private orderService: OrderService,
-    private webSocketService: WebSocketService,
-    private notificationService: NotificationService,
     private authService: AuthService,
-    private renderer: Renderer2
    ) {
    this.profileForm = new FormGroup({
       'name': new FormControl(null, [Validators.required, Validators.minLength(6)]),
@@ -90,8 +82,7 @@ export class ProfileComponent implements OnInit {
       window.scrollTo(0, 0)
     });
     this.getProfile();
-    this.getProvinces();
-    // this.getOrder();
+    this.getProvinces1();
   }
 
    selectCityWithValue(value: string) {
@@ -118,9 +109,9 @@ export class ProfileComponent implements OnInit {
         });
         setTimeout(() => {
             let citySelectElement: HTMLSelectElement = this.citySelect.nativeElement;
-           let citySelectedOptionData = (citySelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+           let citySelectedOptionData = (citySelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
             this.provinceCode = Number(citySelectedOptionData);
-         this.getDistricts();
+         this.getDistricts1();
           this.profileForm.setValue({
             'name':  this.customer.name,
             'phoneNumber': this.customer.phoneNumber,
@@ -133,9 +124,9 @@ export class ProfileComponent implements OnInit {
         });
          setTimeout(() => {
             let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
-                    let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
+                    let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement)?.getAttribute("data");
                     this.districtCode = Number(districtSelectOptionData);
-                    this.getWards();
+                    this.getWards1();
                       this.profileForm.setValue({
                         'name':  this.customer.name,
                         'phoneNumber': this.customer.phoneNumber,
@@ -149,70 +140,65 @@ export class ProfileComponent implements OnInit {
          }, 500);
         }, 500);
         
-           
-        
       },error =>{
         this.toastr.error('lỗi!', 'Hệ thống');
       }
     ); 
   }
 
+  getProvinces1() {
+    this.location.getAllProvinces1().subscribe(data => {
+      this.provinces = (data as any).data;
+    })
+  }
+
+  getDistricts1() {
+    this.location.getDistricts1(this.provinceCode).subscribe(data => {
+      // this.province = data as Province;
+      this.province = (data as any).data;
+      this.districts = this.province;
+    })
+  }
+
+
   
-   getProvinces() {
-    this.location.getAllProvinces().subscribe(data => {
-      this.provinces = data as Province[];
+  getWards1() {
+    this.location.getWards1(this.districtCode).subscribe(data => {
+      this.district = (data as any).data;
+      this.wards = this.district;
     })
   }
 
-  getDistricts() {
-    this.location.getDistricts(this.provinceCode).subscribe(data => {
-      this.province = data as Province;
-      this.districts = this.province.districts;
-    })
-  }
-
-
-  getWards() {
-    this.location.getWards(this.districtCode).subscribe(data => {
-      this.district = data as District;
-      this.wards = this.district.wards;
-    })
-  }
-
-  getWard() {
-    this.location.getWard(this.wardCode).subscribe(data => {
-      this.ward = data as Ward;
-    })
-  }
-
- setProvinceCode(event: Event) {
+setProvinceCode1(event: Event) {
   let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
   this.provinceCode = Number(selectedOptionData);
-  this.getDistricts();
+
+  this.getDistricts1();
   setTimeout(() => {
         let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
                 let districtSelectOptionData = (districtSelectElement.selectedOptions[0] as HTMLOptionElement).getAttribute("data");
                 this.districtCode = Number(districtSelectOptionData);
-                this.getWards();
+                this.getWards1();
           
   }, 500);
-}
 
-  setDistrictCode(event: Event) {
+}
+  setDistrictCode1(event: Event) {
     let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
     this.districtCode = Number(selectedOptionData);
-    this.getWards();
+    this.getWards1();
   }
 
-  setWardCode(event: Event) {
+  setWardCode1(event: Event) {
     let selectedOptionData = ((event.target  as HTMLSelectElement).selectedOptions[0] as HTMLOptionElement).getAttribute("data");
     this.wardCode = Number(selectedOptionData);
-    this.getWard();
   }
 
   finish() {
     this.ngOnInit();
   }
+
+
   changeProfile() {
      if (this.profileForm.invalid) {
       this.toastr.error('Hãy nhập đầy đủ thông tin!', 'Hệ thống');
@@ -243,10 +229,6 @@ export class ProfileComponent implements OnInit {
       });
       }
     })
-    
-     
-  
-
   }
 
    openChangePasswordDialog() {
@@ -261,7 +243,6 @@ export class ProfileComponent implements OnInit {
       this.changePasswordModal.nativeElement.style.display = 'none';
     }
   }
-
 
   changePassword() {
     // Kiểm tra xác nhận mật khẩu
@@ -297,7 +278,5 @@ export class ProfileComponent implements OnInit {
       });
           }
       })
-
-
 }
 }
