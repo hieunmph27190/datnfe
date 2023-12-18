@@ -9,87 +9,86 @@
     </div>
       <form style="" [formGroup]="profileForm" class="row p-5">
         
-          <div class="form-group col-6">
+          <div class="form-group col-6" style="font-size: 30px;">
             <label for="name">Họ và Tên: 
             </label>
-              <input class="form-control" type="text" id="name" formControlName="name"  name="name" >
+              <input style="font-size: 25px; font-family: 'Times New Roman', Times, serif;"  class="form-control" type="text" id="name" formControlName="name"  name="name" >
           </div>
-          <div class="form-group col-2">
-            <label for="gender">Gioi tinh:</label>
-            <select class="form-control" id="gender" formControlName="gender" name="gender">
+          <div class="form-group col-2" style="font-size: 30px;">
+            <label for="gender">Giới Tính:</label>
+            <select class="form-control" id="gender" formControlName="gender" name="gender" style="font-size: 25px; font-family: 'Times New Roman', Times, serif;">
               <option value="true">Nam</option>
               <option value="false">Nữ</option>
             </select>
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-4" style="font-size: 30px;">
             <label for="phoneNumber">Số điện thoại:</label>
-            <input class="form-control" type="tel" formControlName="phoneNumber" id="phoneNumber" name="phoneNumber" >
+            <input class="form-control" style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" type="tel" formControlName="phoneNumber" id="phoneNumber" name="phoneNumber" >
           </div>
-          <div class="form-group col-4">
+          <div class="form-group col-4" style="font-size: 28px;">
             <label>Chọn tỉnh thành<sup>*</sup>
             </label>
             <div class="form-group__content">
-              <select style="font-size: 16px;" class="product-short-select custom-select" id="city" #citySelect
-                (change)="setProvinceCode($event)" formControlName="city"
+              <select style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" class="product-short-select custom-select" id="city" #citySelect
+                (change)="setProvinceCode1($event)" formControlName="city"
                 [ngClass]="{'is-invalid':profileForm.get('city')?.touched && profileForm.get('city')?.invalid}">
                 <option value="0" selected disabled>Chọn tỉnh thành</option>
-                <option *ngFor="let item of provinces" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                <option *ngFor="let item of provinces" [attr.data]="item.ProvinceID" [value]="item.ProvinceName">{{item.ProvinceName}}</option>
               </select>
               <small class="invalid-feedback">Hãy chọn tỉnh thành của bạn</small>
             </div>
           </div>
           
           
-          <div class="form-group col-4">
+          <div class="form-group col-4" style="font-size: 28px;">
             <label>Chọn huyện/thành phố <sup>*</sup>
             </label>
-            <div class="form-group__content">
-              <select style="font-size: 16px;" class="product-short-select custom-select" id="district" #districtSelect
-                (change)="setDistrictCode($event)" formControlName="district"
+            <div class="form-group__content" >
+              <select style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" class="product-short-select custom-select" id="district" #districtSelect
+                (change)="setDistrictCode1($event)" formControlName="district"
                 [ngClass]="{'is-invalid':profileForm.get('district')?.touched && profileForm.get('district')?.invalid}">
                 <option value="0" selected disabled>Chọn huyện/thành phố</option>
-                <option *ngFor="let item of districts" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                <option *ngFor="let item of districts" [attr.data]="item.DistrictID" [value]="item.DistrictName">{{item.DistrictName}}</option>
               </select>
               <small class="invalid-feedback">Hãy chọn huyện/thành phố của bạn</small>
             </div>
           </div>
           
-          <div class="form-group col-4">
+          <div class="form-group col-4" style="font-size: 28px;">
             <label>Chọn phường/xã<sup>*</sup>
             </label>
             <div class="form-group__content">
-              <select style="font-size: 16px;" class="product-short-select custom-select" id="ward" #wardSelect (change)="setWardCode($event)"
+              <select style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" class="product-short-select custom-select" id="ward" #wardSelect (change)="setWardCode1($event)"
                 formControlName="ward"
                 [ngClass]="{'is-invalid':profileForm.get('ward')?.touched && profileForm.get('ward')?.invalid}">
                 <option value="0" selected disabled>Chọn phường/xã</option>
-                <option *ngFor="let item of wards" [attr.data]="item.code" [value]="item.name">{{item.name}}</option>
+                <option *ngFor="let item of wards" [attr.data]="item.WardCode" [value]="item.WardName">{{item.WardName}}</option>
               </select>
               <small class="invalid-feedback">Hãy chọn phường/xã của bạn</small>
             </div>
           </div>
           
-          <div class="form-group">
-            <input [ngClass]="{'is-invalid':profileForm.get('address')?.touched && profileForm.get('address')?.invalid}"
+          <div class="form-group" style="font-size: 28px;">
+            <label for="phoneNumber">Địa Chỉ:</label>
+            <input  style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" [ngClass]="{'is-invalid':profileForm.get('address')?.touched && profileForm.get('address')?.invalid}"
               formControlName="address"  class="form-control" type="text" placeholder="Địa chỉ">
           </div>
 
         <div class="form-group d-flex justify-content-center">
           <button class="btn btn-primary btn-lg"
-            style="max-width: 200px; display: block; margin: auto; padding: 5px 10px; font-size: larger;"
+            style="max-width: 200px; display: block; margin: auto; padding: 5px 10px; font-size: larger; font-size: 20px;"
             (click)="changeProfile()" type="button">Thay đổi thông tin</button>
         </div>
 
 
-         
-        
-          <div class="form-group">
+          <div class="form-group" style="font-size: 28px;">
             <label for="email">Email:</label>
-            <input class="form-control" readonly type="email" id="email" name="email" formControlName="email" >
+            <input style="font-size: 25px; font-family: 'Times New Roman', Times, serif;" class="form-control" readonly type="email" id="email" name="email" formControlName="email" >
           </div>
           
           <!-- Nút Đổi Mật Khẩu -->
           <button class="btn btn-primary" (click)="openChangePasswordDialog()"
-            style="max-width: 150px; display: block; margin: auto; padding: 5px 10px; font-size: larger;">Đổi Mật Khẩu</button>
+            style="max-width: 180px; display: block; margin: auto; padding: 5px 10px; font-size: larger; font-size: 20px;">Đổi Mật Khẩu</button>
           <!-- Modal Đổi Mật Khẩu -->
           
          

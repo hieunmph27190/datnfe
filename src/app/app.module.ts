@@ -21,7 +21,6 @@ import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { AllProductComponent } from './components/all-product/all-product.component';
-// import { ByCategoryComponent } from './components/by-category/by-category.component';
 import { SignFormComponent } from './components/sign-form/sign-form.component';
 import { AuthGuard } from './guard/auth.guard';
 import { BillComponent } from './components/bills/bill.component';
@@ -48,7 +47,6 @@ const routes: Routes = [
   { path:'bill', component: BillComponent },
   // { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent},
-  // { path: 'by-category/:id', component: ByCategoryComponent, canActivate: [AuthGuard] },
   
 ];
 

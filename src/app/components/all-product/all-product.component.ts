@@ -36,6 +36,7 @@ export class AllProductComponent implements OnInit {
   cartDetails!: CartDetail[];
 
   page: number = 1;
+
   size: number = 12;
 
   key: string = '';
@@ -46,10 +47,8 @@ export class AllProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService:CategoryService,
-    private cartService: CartService,
     private toastr: ToastrService,
     private favoriteService: FavoritesService,
-    // private location: Location,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }
 
@@ -66,9 +65,6 @@ export class AllProductComponent implements OnInit {
         // Sử dụng productId để làm gì đó...
       }
     });
-    
-
-
     this.getCategorys();
     this.getAllProduct('');
    
@@ -78,7 +74,6 @@ export class AllProductComponent implements OnInit {
     this.activeItem = item;
     this.getAllProduct(this.activeItem as string);
   }
-
   getCategorys() {
     this.categoryService.gets().subscribe(data=>{
       this.categorys = data as DataTableReponse<Category>;
@@ -87,9 +82,6 @@ export class AllProductComponent implements OnInit {
       console.log(error);
     })
   }
-
-  
-
   getAllProduct(categoryId:string) {
     this.productService.getAll({"categoryId":(categoryId==''?null:categoryId)}).subscribe(data=>{
       this.products = data as DataTableReponse<ProductBanHangResponse>;
@@ -101,48 +93,8 @@ export class AllProductComponent implements OnInit {
     })
   }
  
-
     // yeu thich
 productLikes: { [id: string]: boolean } = {};
-
-
-
-//   getCategories() {
-//     this.categoryService.getAll().subscribe(data => {
-//       this.categories = data as Category[];
-//     })
-//   }
-
-
-
-
-//   addCart(id: string, price:number) {
-//     let email = this.sessionService.getUser();
-//     if (email == null) {
-//       this.router.navigate(['/sign-form']);
-//       this.toastr.info('Hãy đăng nhập để sử dụng dịch vụ của chúng tôi', 'Hệ thống');
-//       return;
-//     }
-//     this.cartService.getCart(email).subscribe(data => {
-//       this.cart = data as Cart;
-//       console.log(this.cart);
-//       this.cartDetail = new CartDetail(0, 1, price, new productdetail(id), new Cart(this.cart.cart_id));
-//       console.log(this.cartDetail);
-//       this.cartService.postDetail(this.cartDetail).subscribe(data => {
-//         this.toastr.success('Thêm vào giỏ hàng thành công!', 'Hệ thống!');
-//         this.cartService.getAllDetail(this.cart.cart_id).subscribe(data => {
-//           this.cartDetails = data as CartDetail[];
-//           this.cartService.setLength(this.cartDetails.length);
-//         console.log(this.cartDetail)
-//         })
-//       }, error => {
-//         this.toastr.error('Sản phẩm này có thể đã hết hàng!', 'Hệ thống');
-//         this.router.navigate(['/home']);
-//         window.location.href = "/";
-//       })
-//     })
-//   }
-
 
 //   // yeu thich
 // productLikes: { [id: string]: boolean } = {};

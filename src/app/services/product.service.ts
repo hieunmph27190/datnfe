@@ -37,25 +37,17 @@ export class ProductService {
     return this.httpClient.get(this.url,{ params: httpParams });
   }
 
-
   getRated() {
     return this.httpClient.get(this.url+'/rated');
   }
 
-  
   getOne(id: string) {
     return this.httpClient.get("http://localhost:8080/product"+'/'+id);
   }
 
-
   getByCategory(id: string) {
     return this.httpClient.get(this.url+'/category/'+id);
   }
-
-
-  // getBySole(id: number) {
-  //   return this.httpClient.get(this.url+'/sole/'+id);
-  // }
 
 
   getProductDetails(id: string) {
