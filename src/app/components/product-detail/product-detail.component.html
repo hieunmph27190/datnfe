@@ -27,15 +27,15 @@
                                         <div class="item">
                                                 <div class="product-display">
                                                     <div class="main-image">
-                                                      
+
                                               <!-- Mã HTML cho ảnh chính -->
-                                    
+
                                               <div style="display: flex; justify-content: center ;" class="thumbnail-clickable" data-toggle="modal"
                                                 data-target="#imageModal">
                                                 <img (click)="showLargeImage($event)" style="width: 50%; aspect-ratio: 3/4;object-fit: cover;"
                                                   src="http://localhost:8080/product/{{product.id}}/image-main">
                                               </div>
-                                              
+
                                               <!-- Modal cho ảnh lớn -->
                                               <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg">
@@ -47,7 +47,7 @@
                                                   </div>
                                                 </div>
                                               </div>
-                                              
+
                                               <!-- Thay đổi mã HTML của carousel -->
                                               <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" style="height: 150px;">
                                                 <div ngxSlickItem *ngFor="let item of productImage | paginate: { itemsPerPage: 8, currentPage: 0 }" class="slide">
@@ -85,6 +85,10 @@
                                 Loại đế: <a href="javascript:void(0);"><strong>{{product.sole.name}}</strong></a>
                             </p>
 
+                            <p *ngIf="product.type==0" style=" font-size: 25px; color: #ee4d2d">
+                                Sản phẩm ngừng kinh doanh
+                            </p>
+
 
                             <section class="flex items-center" style="margin-bottom: 20px; align-items: baseline;">
                                 <h3 class="oN9nMU" style="color: black;">Màu Sắc</h3>
@@ -107,6 +111,17 @@
                             <p *ngIf="showPrice" style="font-size: 24px;">
                                 Giá: <strong style=" color: #ee4d2d;">{{productdetail?.price| currency:'VND' }}</strong>
                             </p>
+                            <div *ngIf="showPrice" style="font-size: 24px;">
+                               <div *ngIf="productdetail && productdetail.amount !== undefined && productdetail.amount > 0">
+                                Số lượng còn: <strong style=" color: #ee4d2d;">{{productdetail?.amount| number }}</strong>
+                               </div>
+                                <p *ngIf="productdetail.type==0" style=" font-size: 25px;color: #ee4d2d">
+                                  Biến thể ngừng kinh doanh
+                                </p>
+                              <div *ngIf="productdetail?.amount==0">
+                                  Sản phẩm tạm thời hết hàng
+                              </div>
+                            </div>
 
 
                             <style>
@@ -148,7 +163,7 @@
 
 
                             </div>
-                            <div class="ps-product__sharing"><a class="facebook" href="#"><i class="fa fa-facebook"></i></a><a class="twitter" href="#"><i class="fa fa-twitter"></i></a><a class="google" href="#"><i class="fa fa-google-plus"></i></a><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></div>
+
                         </div>
                     </div>
                     <div >

@@ -9,7 +9,7 @@ export class SellOnRequest {
     'district': string;
     'ward': string;
     'note': string;
-
+    "paymentType":number;
      constructor(sanPhams: any[] ) {
         this['sanPhams'] = sanPhams;
       }
@@ -21,6 +21,9 @@ export class SellOnRequest {
 
       setPhoneNumber(phoneNumber: string) {
          this['phoneNumber'] = phoneNumber;
+      }
+      setPaymentType(paymentType: number) {
+         this['paymentType'] = paymentType;
       }
       setCity(city: string) {
          this['city'] = city;

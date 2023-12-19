@@ -29,22 +29,37 @@
 
                         <h4 style="color: #05a">Tổng số: {{cartDetails.length}} Sản phẩm</h4>
                     <table class="table ps-table--shopping-cart ps-table--responsive">
- 
-                        <thead>                         
+
+                        <thead>
                             <tr>
                                <th><input style="text-align: center;width: 25px;height: 25px;" (change)="checkAll($event)" type="checkbox" id="selectAllProduct"></th>
 
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
+                                <th>Số lượng còn</th>
                                 <th>Tổng tiền</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
+                          <style>
+                            .hethang {
+                                border: 1px solid yellow;
+                                background-color: rgb(193, 193, 66);
+                            }
+                            .ngungkd{
+                               border: 1px solid rgb(217, 62, 62)  !important;
+                              background-color: #ca0c0ce0  !important;
+                            }
+                             .ok{
+                               border: 1px solid rgb(54, 191, 97);
+                              background-color: green;
+                            }
+                          </style>
 
                             <tr *ngFor="let item of cartDetails, index as i">
-                               <td><input style="text-align: center;width: 20px;height: 20px;" #selectProduct type="checkbox" (change)="checkProduct()" [value]="item.productDetail.id"></td>
+                               <td  [ngClass]="{'hethang':item.productDetail.amount == 0,'ngungkd':item.productDetail.type == 0||item.productDetail.product.type == 0,'ok':item.productDetail.quantity<=item.productDetail.amount}" ><input style="text-align: center;width: 20px;height: 20px;" #selectProduct type="checkbox" (change)="checkProduct()" [value]="item.productDetail.id"></td>
                                 <td data-label="Product">
                                     <div class="ps-product--cart">
 
@@ -65,24 +80,24 @@
                                     </div>
                                 </td>
 
-            
+
                                 <td style="text-align: center;font-size:22px" class="price" data-label="Price">
                                     {{item.productDetail.price|currency:'VND'}}
                                 </td>
-                                
+
 
                                 <td data-label="Quantity" style="text-align: center;">
                                     <input (change)="changeQuantity($event,item)"
                                     style="text-align: center; width: 50%; font-size: 24px;"
                                     type="number"
                                     min="1"
-                                    [value]="item.productDetail.amount||1"
+                                    [value]="item.productDetail.quantity||1"
                                     placeholder="0"
                                     name="quantity"
-                                    [(ngModel)]="item.productDetail.amount"/></td>
-
+                                    [(ngModel)]="item.productDetail.quantity"/></td>
+                                  <td>{{item.productDetail.amount|number}}</td>
                                 <td style="text-align: center;font-size:22px" data-label="Total">
-                                    {{item.productDetail.price * item.productDetail.amount| currency:'VND'}}
+                                    {{item.productDetail.price * item.productDetail.quantity| currency:'VND'}}
                                 </td>
 
                                 <td style="text-align: center; font-size:22px" data-label="Actions">
@@ -103,10 +118,10 @@
                               </div>
                             </div>
                           </div>
-                        </div>      
+                        </div>
 
             <div class="ps-section__footer">
-            <div class="ps-section__footer" *ngIf="cartDetails.length>0">                   
+            <div class="ps-section__footer" *ngIf="cartDetails.length>0">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-12 ">
                         <div class="ps-block--shopping-total">

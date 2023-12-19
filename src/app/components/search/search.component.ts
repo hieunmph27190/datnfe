@@ -20,28 +20,28 @@ import { ProductService } from 'src/app/services/product.service';
 export class SearchComponent implements OnInit {
 
     products!: DataTableReponse<ProductBanHangResponse>;
-   
+
     isLoading = true;
     customer!: Customer;
     favorite!: Favorites;
     favorites!: Favorites[];
     categories!: Category[];
-  
+
     cart!: Cart;
     cartDetail!: CartDetail;
     cartDetails!: CartDetail[];
-  
+
     page: number = 1;
     size: number = 12;
     key: string = '';
     keyF: string = '';
 
-    
+
     keyword!: string;
 
     reverse: boolean = true;
     countRate!: number;
-  
+
     constructor(
       private productService: ProductService,
       private toastr: ToastrService,
@@ -53,9 +53,9 @@ export class SearchComponent implements OnInit {
             this.ngOnInit();
           })
        }
-  
+
     ngOnInit(): void {
-        this.router.events.subscribe((evt) => { 
+        this.router.events.subscribe((evt) => {
             if (!(evt instanceof NavigationEnd)) {
               return;
             }
@@ -71,25 +71,25 @@ export class SearchComponent implements OnInit {
             }
             window.scrollTo(0, 0)
           });
- 
+
       this.getAllProductRated();
     }
-  
-  
-  
+
+
+
     getAllProductRated() {
-      this.productService.getAll().subscribe(data=>{
+      this.productService.getAll({"callAll":1}).subscribe(data=>{
         this.products = data as DataTableReponse<ProductBanHangResponse>;
         this.products.data = this.products.data.filter(p=>p.productName.toLowerCase().includes(this.keyword.toLowerCase()));
          this.isLoading = false;
       }, error=>{
-        this.toastr.error('Lỗi server!', 'Hệ thống')   
+        this.toastr.error('Lỗi server!', 'Hệ thống')
         console.log(error);
-           
+
       })
     }
-  
-  
+
+
   // yeu thich
   productLikes: { [id: string]: boolean } = {};
   //   toggleLike(id: string) {
@@ -99,8 +99,8 @@ export class SearchComponent implements OnInit {
   //       this.toastr.info('Hãy đăng nhập để sử dụng dịch vụ của chúng tôi', 'Hệ thống');
   //       return;
   //     }
-    
-  //     this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {    
+
+  //     this.favoriteService.getByproductdetailIidAndEmail(id, email).subscribe(data => {
   //       if (data == null) {
   //         this.customerService.getByEmail(email).subscribe(data => {
   //           this.customer = data as Customer;
@@ -134,7 +134,7 @@ export class SearchComponent implements OnInit {
   //       }
   //     })
   //   }
-  
+
 
 
 }

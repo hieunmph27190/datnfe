@@ -48,40 +48,9 @@
 
                                     <img  [routerLink]="['/product-detail/'+item.id]" alt="" />
                                 </a>
-                                <ul class="ps-product__actions">
-                                    
-                                    <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
 
-                                    <li>
-                                        <a href="javascript:void(0);" (click)="toggleLike(item.id)" data-toggle="tooltip" data-placement="top" title="Yêu Thích">
-                                          <i class="icon-heart" [ngClass]="{ 'liked': productLikes[item.id] }"></i>
-                                        </a>
-                                      </li>
-
-
-                                      <style>
-                                        
-                                        .icon-heart {
-                                            font-size: 25px; /* Kích thước của biểu tượng */
-                                  
-                                          }
-                                          
-                                          .icon-heart::before {
-                                            content: "\2665"; /* Ký tự trái tim */
-                                            color: black; /* Màu đen của biểu tượng trái tim khi sản phẩm được thích */
-                                            position: absolute;
-                                            top: 0;
-                                            left: 0;
-                                          }
-                                          
-                                          .icon-heart.liked::before {
-                                            color: red; /* Màu đỏ của biểu tượng trái tim */
-                                
-                                          }
-                                      </style>
-                                </ul>
                             </div>
-                            
+
                             <div class="ps-product__content">
                                 <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]" style="text-align: center; font-size: 20px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{{item.productName}}</a>
                                 <div class="ps-product__prices">
@@ -89,7 +58,7 @@
                                     <span>{{item.maxPrice | currency:'VND'}}</span>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
@@ -99,7 +68,7 @@
             </div>
         </div>
     </div>
-    
+
     <br><br><br>
 
     <div class="ps-home-ads">

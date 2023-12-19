@@ -33,7 +33,7 @@ export class ProductDetailComponent implements OnInit {
   @ViewChild('imageModal') imageModal: any;
   product!: Product;
   productdetail!: ProductDetail;
- 
+
   productsChecked: SellOnProductRequest[]=[];
   productdetails!: ProductDetail[];
 
@@ -114,7 +114,7 @@ export class ProductDetailComponent implements OnInit {
     if (divElement) {
       let src = divElement.getAttribute('src');
       this.largeImageUrl = src;
-    
+
     }else{
 
     }
@@ -291,24 +291,32 @@ toggleLike(id: string) {
           this.cartDetails = data as CartDetail[];
           this.cartService.setLength(this.cartDetails.length);
         })
-      }, error => { 
+      }, error => {
         if(error.status==401){
           this.checklogindk();
         }else{
           this.toastr.error(error.error, 'Hệ thống');
         }
-        
+
       })
     }else{
        this.toastr.error('Chọn màu và size', 'Hệ thống');
     }
-    
+
   }
-  
+
   muaNgay() {
     this.authService.profile().subscribe(data => {
+    if(this.productdetail?.type==0||this.productdetail==null||this.productdetail==undefined||this.product?.type==0){
+      this.toastr.error('Sản phẩm đã ngưng kinh doanh');
+      return;
+    }
+    if(this.productdetail?.amount==0||this.productdetail==null||this.productdetail==undefined){
+      this.toastr.error('Sản phẩm đã hết hàng');
+      return;
+    }
     if(this.productdetail?.id){
-          
+
           let quantityStr = prompt("Nhập số lượng :");
           if(quantityStr){
           }else{
@@ -348,10 +356,10 @@ toggleLike(id: string) {
     }, err => {
             this.checklogindk();
     });
-  
 
-   
-    
+
+
+
   }
 }
 

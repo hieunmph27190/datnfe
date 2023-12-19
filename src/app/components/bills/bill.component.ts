@@ -62,8 +62,8 @@ export class BillComponent implements OnInit {
       }
     );
   }
-  
-   thanhToanVNPay(billId:string) {
+
+    thanhToanVNPay(billId:string) {
      this.orderService.vnpay(billId).subscribe((data: any) => {
         window.location.href = (data as any).message;
       },error =>{
@@ -71,9 +71,9 @@ export class BillComponent implements OnInit {
       }
     );
   }
-  
+
   huyBill(billId:string,type:number) {
-    if(type!=1) {
+    if(type!=1&&type!=-2) {
       return;
     }
     Swal.fire({
