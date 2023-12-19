@@ -30,7 +30,6 @@
                                                 <th>Đã thanh toán</th>
                                                 <th>Trạng thái</th>
                                                 <th>Hành động</th>
-                                                <th>Thanh Toan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -49,10 +48,10 @@
                                                     onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
                                                     <i class="icon-cross" (click)="huyBill(item.id,item.type)"  style="font-size: 25px;"></i>
                                                   </a>
+                                                  <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2" (click)="thanhToanVNPay(item.id)"
+                                                    class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
                                                 </td>
-                                                <td>
-                                                      <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2" (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
-                                                </td>
+                                               
 
                                             </tr>
                                         </tbody>
