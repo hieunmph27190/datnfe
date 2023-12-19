@@ -51,7 +51,7 @@
                                                   </a>
                                                 </td>
                                                 <td>
-                                                      <button *ngIf="(item.type<4&&item.type>=1)||item.type==-2" (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
+                                                      <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2" (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
                                                 </td>
 
                                             </tr>

@@ -5,5 +5,6 @@ export class BillReponse {
     'phoneNumber': string;
     'address': string;
     'paymentAmount': number;
+    "paymentType":number;
     'type': number;
 }
