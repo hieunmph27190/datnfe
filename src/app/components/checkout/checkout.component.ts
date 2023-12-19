@@ -71,7 +71,7 @@ export class CheckoutComponent implements OnInit {
       'ward': new FormControl("", [Validators.required, Validators.min(1)]),
       'address': new FormControl('', Validators.required),
       'note': new FormControl(''),
-      "thanhToan":new FormControl(0)
+      "paymentType":new FormControl(2)
     })
 
    }
@@ -125,7 +125,7 @@ export class CheckoutComponent implements OnInit {
       this.orderService.tinhTienShip(data).subscribe(datax=>{
          this.shipFee = (datax as any).data.total
       }, error=>{
-        this.toastr.error('Lỗi server!', "Vui lòng nhập đủ địa chỉ");
+        this.toastr.error('Server!', "Vui lòng nhập đủ địa chỉ");
       })
     }
 
@@ -139,7 +139,7 @@ export class CheckoutComponent implements OnInit {
             'ward': this.customer.ward,
             'address': this.customer.address,
             'note':"",
-            "thanhToan":0
+            "paymentType":2
         });
         setTimeout(() => {
             let citySelectElement: HTMLSelectElement = this.citySelect.nativeElement;
@@ -153,7 +153,7 @@ export class CheckoutComponent implements OnInit {
             'ward': this.customer.ward,
             'address': this.customer.address,
             'note':"",
-            "thanhToan":0
+            "paymentType":2
         });
          setTimeout(() => {
             let districtSelectElement: HTMLSelectElement = this.districtSelect.nativeElement;
@@ -167,7 +167,7 @@ export class CheckoutComponent implements OnInit {
                           'ward': this.customer.ward,
                           'address': this.customer.address,
                           'note':"",
-                          "thanhToan":0
+                          "paymentType":2
                       });
                      setTimeout(() => {
                       this.getTienShip();
@@ -176,7 +176,7 @@ export class CheckoutComponent implements OnInit {
         }, 500);
 
       },error =>{
-        this.toastr.error('lỗi!', 'Hệ thống');
+        this.toastr.error('!', 'Hệ thống');
       }
     );
   }
@@ -195,7 +195,7 @@ checkOut() {
       if(result.isConfirmed){
           let dataForm = this.postForm.value;
           if(this.productsChecked==null||this.productsChecked.length<=0){
-             this.toastr.error('Lỗi : Không thể đặt hàng khi không chọn sản phẩm !', 'Hệ thống');
+             this.toastr.error('Không thể đặt hàng khi không chọn sản phẩm !', 'Hệ thống');
              return;
           }
           let newProductsChecked = this.productsChecked.map(item => {
@@ -209,15 +209,26 @@ checkOut() {
           sellOnRequest.setDistrict(dataForm.district);
           sellOnRequest.setWard(dataForm.ward);
           sellOnRequest.setNote(dataForm.note);
+          sellOnRequest.setPaymentType(dataForm.paymentType);
           this.orderService.postBill(sellOnRequest).subscribe((result) => {
               this.toastr.success('Đặt hàng thành công : '+(result as any).message , 'Hệ thống');
-              window.location.href = "http://localhost:4200/bill";
+              if(dataForm.paymentType==2){
+                this.orderService.vnpay((result as any).message).subscribe((data: any) => {
+                    window.location.href = (data as any).message;
+                },error =>{
+                  this.toastr.error(error.error, 'Hệ thống');
+                }
+              );
+              }else{
+                window.location.href = "http://localhost:4200/bill";
+              }
+             
 
           },error =>{
               if(error.status==200){
                 this.toastr.success('Đặt hàng thành công :  '+error.text, 'Hệ thống');
               }else{
-                this.toastr.error('Lỗi '+error.error, 'Hệ thống');
+                this.toastr.error(''+error.error, 'Hệ thống');
               }
           })
       }

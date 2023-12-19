@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    
+
     <section class="ps-section--account pt-5">
         <div class="container-fluid pl-5 pr-5">
           <h2 align="center">Đơn Hàng</h2>
@@ -40,20 +40,18 @@
                                                 <td>{{ item.shipeFee | number:'1.0-0' }} VND</td>
                                                 <td>{{item.phoneNumber}}</td>
                                                 <td>{{ item.paymentAmount | number:'1.0-0' }} VND</td>
-                                                <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':"")}}</td>
-
-
+                                                <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':(item.type==-2)?'Chờ thanh toán':"")}}</td>
                                                 <td style="width: 10%; text-align: center;">
                                                   <app-order-detail [billId]="item.id" ></app-order-detail>
-                                                  <a [title]="item.type==1?'Huỷ đơn':'Không thể huỷ đơn này'"
-                                                    [style]="item.type==1?'cursor: pointer':'cursor: not-allowed'"
+                                                  <a *ngIf="item.type==1||item.type==-2" [title]="item.type==1||item.type==-2?'Huỷ đơn':'Không thể huỷ đơn này'"
+                                                    [style]="item.type==1||item.type==-2?'cursor: pointer':'cursor: not-allowed'"
                                                     onMouseOver="this.style.color='white', this.style.backgroundColor='red'"
                                                     onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
                                                     <i class="icon-cross" (click)="huyBill(item.id,item.type)"  style="font-size: 25px;"></i>
                                                   </a>
                                                 </td>
                                                 <td>
-                                                      <button (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
+                                                      <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2" (click)="thanhToanVNPay(item.id)" class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
                                                 </td>
 
                                             </tr>
@@ -66,7 +64,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row" style="padding-top: 15px;  font-size: 25px;">
           <div class="col-lg-12">
             <ul>

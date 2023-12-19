@@ -9,13 +9,14 @@ import { Product } from 'src/app/common/Product';
 import { SellOnProductRequest } from 'src/app/dto/SellOnProductRequest';
 import { DataService } from 'src/app/services/data.service';
 import { ProductDetail } from 'src/app/common/ProductDetail';
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  
+
   @ViewChildren('selectProduct') selectProducts!: QueryList<any>;
 
   cart!: Cart;
@@ -56,7 +57,7 @@ export class CartComponent implements OnInit {
   getAllItem() {
       this.cartService.getAllDetail().subscribe(data => {
         this.cartDetails = data as CartDetail[];
-         this.cartDetails.forEach(item => item.productDetail.amount =1)
+         this.cartDetails.forEach(item => item.productDetail.quantity =1)
         this.cartService.setLength(this.cartDetails.length);
       });
   }
@@ -84,6 +85,7 @@ export class CartComponent implements OnInit {
 
   checkProduct(event?:Event){
     let selectAllProductInput = document.querySelector('input#selectAllProduct');
+
     if(this.isCheckAll()){
        (selectAllProductInput as HTMLInputElement ).checked = true;
     }else{
@@ -93,9 +95,11 @@ export class CartComponent implements OnInit {
   }
 
   changeQuantity(event?:Event,item?:any){
-    if( Number((event?.target as HTMLInputElement).value)<=0){
+     (event?.target as HTMLInputElement).value =""+ (Math.round(Number((event?.target as HTMLInputElement).value)));
+      item.productDetail.quantity=(Math.round(Number((event?.target as HTMLInputElement).value)));
+    if( Number((event?.target as HTMLInputElement).value)<=0|| Number((event?.target as HTMLInputElement).value)>item.productDetail.amount){
       (event?.target as HTMLInputElement).value = "1";
-      item.productDetail.amount=1;
+      item.productDetail.quantity=1;
     }
     let selectAllProductInput = document.querySelector('input#selectAllProduct');
     if(this.isCheckAll()){
@@ -133,7 +137,28 @@ export class CartComponent implements OnInit {
 
   datHang() {
       if(this.productsChecked.length>0){
-        this.router.navigate(['/checkout']);
+        let check = true;
+        this.productsChecked.forEach((item) => {
+             if(item.productDetail.amount==0){
+              this.toastr.error('Sản phẩm đã hết hàng');
+              check=false;
+              return;
+            }
+            if(item.productDetail.quantity<=0||item.productDetail.quantity>item.productDetail.amount){
+              this.toastr.error('Số lượng sản phẩm không hợp lệ');
+              check=false;
+              return;
+            }
+            if(item.productDetail.type==0||item.productDetail.product.type==0){
+              this.toastr.error(item.productDetail.product.name+ "\nĐã ngừng kinh doanh");
+              check=false;
+              return;
+            }
+        })
+        if(check){
+           this.router.navigate(['/checkout']);
+        }
+
       }else{
         this.toastr.error('Chưa chọn sản phẩm !', 'Hệ thống');
       }

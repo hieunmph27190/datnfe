@@ -52,33 +52,7 @@
                             [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
 
                         </a>
-                        <ul class="ps-product__actions">
-                    
-                          <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top"
-                              title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
-                          <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top"
-                              title="Yêu Thích"><i class="icon-heart"
-                                [ngClass]="{ 'liked': productLikes[item.id] }"></i></a></li>
 
-                          <style>
-                            .icon-heart {
-                              font-size: 25px;
-                            }
-
-                            .icon-heart::before {
-                              content: "\2665";
-                              color: black;
-                              position: absolute;
-                              top: 0;
-                              left: 0;
-                            }
-
-                            .icon-heart.liked::before {
-                              color: red;
-                            }
-                          </style>
-
-                        </ul>
                       </div>
 
                         <div class="ps-product__content">
@@ -92,7 +66,7 @@
                         <style>
                           .thumbnail-image {
                               aspect-ratio: 3/4;
-                              object-fit: cover; 
+                              object-fit: cover;
                             }
                             .ps-product__prices{
                               display: flex;
@@ -101,7 +75,7 @@
                             .ps-product__content span {
                               font-size: 19px;
                               color: #ee4d2d;
-                            }    
+                            }
                       </style>
 
                     </div>
@@ -110,7 +84,7 @@
                 <!-- Phân trang -->
                 <div class="row" style="padding-top: 50px; font-size: 25px;">
                   <div class="col-lg-12">
-                      
+
                       <ul *ngIf="products.data.length>0">
                           <pagination-controls
                               (pageChange)="page = $event"

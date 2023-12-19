@@ -37,7 +37,7 @@
             <div class="ps-layout__right">
                 <div class="ps-shopping ps-tab-root">
                   <div>
-                    <img src="" alt="" />   
+                    <img src="" alt="" />
                   </div>
                     <div class="ps-shopping__header">
                         <div class="product-page-number">
@@ -55,36 +55,15 @@
                                 <div class="row">
                                     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 border border-1 ps-product" *ngFor="let item of products.data | orderBy : key : reverse | paginate: { itemsPerPage: size, currentPage: page}">
                                         <div class="p-1" >
-                                            
+
                                             <div class="ps-product__thumbnail">
                                                 <a [routerLink]="['/product-detail/'+item.id]">
                                                     <img [src]="'http://localhost:8080/product/' + item.imageId + '/image'" [alt]="item.productName" [ngClass]="{'thumbnail-image': true}">
 
                                                 </a>
-                                                <ul class="ps-product__actions">
-                                                   
-                                                    <li><a [routerLink]="['/product-detail/'+item.id]" data-toggle="tooltip" data-placement="top" title="Xem Chi Tiết"><i class="icon-eye"></i></a></li>
-                                                    <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Yêu Thích"><i class="icon-heart" [ngClass]="{ 'liked': productLikes[item.id] }"></i></a></li>
 
-                                                    <style>
-                                                        .icon-heart {
-                                                            font-size: 25px; 
-                                                          }
-                                                          .icon-heart::before {
-                                                            content: "\2665"; 
-                                                            color: black; 
-                                                            position: absolute;
-                                                            top: 0;
-                                                            left: 0;
-                                                          }
-                                                          .icon-heart.liked::before {
-                                                            color: red; 
-                                                          }
-                                                      </style>
-
-                                                </ul>
                                             </div>
-                        
+
                                             <div class="ps-product__content">
                                                 <a class="ps-product__title" [routerLink]="['/product-detail/'+item.id]" style="text-align: center; font-size: 20px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">{{item.productName}}</a>
                                                 <div class="ps-product__prices">
@@ -93,12 +72,12 @@
                                                 </div>
                                             </div>
                                             <style>
-                               
+
                                                 .thumbnail-image {
                                                     aspect-ratio: 3/4;
                                                     object-fit: cover; /* Maintain aspect ratio and cover the container */
                                                   }
-                                                  
+
                                                   .ps-product__prices{
                                                     display: flex;
                                                     justify-content: space-between;
@@ -107,7 +86,7 @@
                                                     font-size: 18px;
                                                     color: #ee4d2d;
                                                   }
-                                                
+
                                             </style>
                                     </div>
                                 </div>
@@ -116,7 +95,7 @@
 
                             <div class="row" style="padding-top: 50px; font-size: 25px;">
                                 <div class="col-lg-12">
-                                    
+
                                     <ul *ngIf="products.data.length>0">
                                         <pagination-controls
                                             (pageChange)="page = $event"
@@ -128,7 +107,7 @@
                                 </div>
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>
