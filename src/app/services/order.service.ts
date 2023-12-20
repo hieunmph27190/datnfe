@@ -42,6 +42,9 @@ export class OrderService {
   cancelBill(billId: string) {
     return this.httpClient.put("http://localhost:8080/bill/cancel-bill/"+billId,{},{ withCredentials: true });
   }
+  nhanHang(billId: string) {
+    return this.httpClient.put("http://localhost:8080/bill/nhan-hang/"+billId,{},{ withCredentials: true });
+  }
 
 
   tinhTienShip(params?:any) {
