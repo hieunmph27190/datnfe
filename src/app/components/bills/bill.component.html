@@ -39,7 +39,7 @@
                                                 <td>{{ item.shipeFee | number:'1.0-0' }} VND</td>
                                                 <td>{{item.phoneNumber}}</td>
                                                 <td>{{ item.paymentAmount | number:'1.0-0' }} VND</td>
-                                                <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':(item.type==-2)?'Chờ thanh toán':"")}}</td>
+                                                <td style="width: 17%;">{{item.type==1?'Chờ xử lí':(item.type==2?'Chờ xác thực':(item.type==3)?'Đã xác thực':(item.type==4)?'Chờ giao hàng':(item.type==5)?'Đang giao hàng':(item.type==6)?'Đã nhận hàng':(item.type==7)?'Đã hoàn thành':(item.type==0)?'Đã hủy':(item.type==-2)?('Chờ thanh toán ( '+calculateMinutesAgo(item.billCreateDate)+" Phút)"):"")}}</td>
                                                 <td style="width: 10%; text-align: center;">
                                                   <app-order-detail [billId]="item.id" ></app-order-detail>
                                                   <a *ngIf="item.type==1||item.type==-2" [title]="item.type==1||item.type==-2?'Huỷ đơn':'Không thể huỷ đơn này'"
@@ -48,7 +48,13 @@
                                                     onMouseOut="this.style.color='red', this.style.backgroundColor='white'">
                                                     <i class="icon-cross" (click)="huyBill(item.id,item.type)"  style="font-size: 25px;"></i>
                                                   </a>
-                                                  <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2" (click)="thanhToanVNPay(item.id)"
+                                                  <a *ngIf="item.type==5" [title]="item.type==5?'Đã nhận hàng':''"
+                                                    [style]="item.type==5?'cursor: pointer':'cursor: not-allowed'"
+                                                    onMouseOver="this.style.color='white', this.style.backgroundColor='green'"
+                                                    onMouseOut="this.style.color='green', this.style.backgroundColor='white'">
+                                                    <i class="icon-bag" (click)="nhanHang(item.id,item.type)" style="font-size: 25px;"></i>
+                                                  </a>
+                                                  <button *ngIf="((item.type<4&&item.type>=1)||item.type==-2)&&item.paymentType!=-2&&calculateMinutesAgo(item.billCreateDate)>=0" (click)="thanhToanVNPay(item.id)"
                                                     class="btn btn-primary" style="font-family: 7px; font-size: 1.1em;">Thanh Toán</button>
                                                 </td>
                                                

@@ -55,6 +55,13 @@ export class BillComponent implements OnInit {
      this.getBillReponses();
   }
 
+   calculateMinutesAgo(createdAt: Date): number {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+    const timeDifference = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60));
+    return 15-timeDifference;
+  }
+
 
    getBillReponses() {
      this.orderService.getsellon().subscribe((data: any) => {
@@ -87,6 +94,29 @@ export class BillComponent implements OnInit {
       if (result.isConfirmed) {
            this.orderService.cancelBill(billId).subscribe(data => {
           this.toastr.success((data as any).message, 'Hệ thống');
+          this.getBillReponses();
+        }, error => {
+          this.toastr.error(error.error, 'Hệ thống');
+        })
+      }
+    })
+
+  }
+  nhanHang(billId:string,type:number) {
+    if(type!=5) {
+      return;
+    }
+    Swal.fire({
+      title: 'Bạn đã nhận đơn hàng này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonText: 'Không',
+      confirmButtonText: 'Đã nhận'
+    }).then((result) => {
+      if (result.isConfirmed) {
+           this.orderService.nhanHang(billId).subscribe(data => {
+           this.toastr.success((data as any).message, 'Hệ thống');
           this.getBillReponses();
         }, error => {
           this.toastr.error(error.error, 'Hệ thống');
